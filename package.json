@@ -1,0 +1,12 @@
+{
+  "name": "ept-frontend",
+  "version": "0.0.1",
+  "description": "Default Frontend Implementation for Epochtalk",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Edward Kim",
+  "license": "ISC",
+  "dependencies": { }
+}
