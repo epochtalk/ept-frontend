@@ -31,8 +31,6 @@ var ngDeps = [
   require('oclazyload'),
   require('./layout/header.controller'),
   require('./boards'),
-  require('./messages'),
-  require('./watchlist'),
   // users
   require('./users/confirm'),
   require('./users/profile'),
@@ -43,6 +41,8 @@ var ngDeps = [
   require('./threads/threads'),
   // posts
   require('./posts'),
+  require('./messages'),
+  require('./watchlist'),
   require('./admin')
 ].concat(moduleNames);
 var app = angular.module('ept', ngDeps);
@@ -54,9 +54,10 @@ require('./filters');
 require('./services');
 require('./resources');
 require('./components');
+require('./users/resource');
+require('./boards/resource');
 require('./threads/resource');
 require('./posts/resource');
-require('./users/resource');
 
 // Set Angular Configs
 app
