@@ -129,6 +129,7 @@
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'roles'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'roles'}" ng-href="#">Roles</a></li>
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'categories'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'categories'}" ng-href="#">Categories</a></li>
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'boards'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'boards'}" ng-href="#">Boards</a></li>
+        <li><a ng-click="AdminManagementCtrl.selectedTab = 'advBoards'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'advBoards'}" ng-href="#">Boards Adv</a></li>
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'threads'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'threads'}" ng-href="#">Threads</a></li>
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'posts'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'posts'}" ng-href="#">Posts</a></li>
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'messages'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'messages'}" ng-href="#">Messages</a></li>
@@ -641,35 +642,66 @@
 
       <!-- Boards Tab -->
       <div ng-if="AdminManagementCtrl.selectedTab === 'boards'">
-        <h4>Standard Permissions</h4>
-        <!-- View Boards -->
-        <label>
-          <input id="boards-find" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.boards.find" ng-false-value="undefined" />
-          Allow user to view individual boards
-        </label>
-        <!-- View Categorized Boards -->
-        <label>
-          <input id="boards-allCategories" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.boards.allCategories" ng-false-value="undefined" />
-          Allow user to view all boards within their categories
-        </label>
-        <h4><br />Elevated Permissions</h4>
+        <section class="permission" ng-repeat="(model, details) in AdminManagementCtrl.layouts.boards">
+          <!-- Main Permission -->
+          <label>
+            <input type="checkbox"
+              ng-change="AdminManagementCtrl.newRole.permissions.boards[model].allow ? null : AdminManagementCtrl.newRole.permissions.boards[model] = undefined"
+              ng-model="AdminManagementCtrl.newRole.permissions.boards[model].allow"
+              ng-false-value="undefined" />
+            <span class="permission-title" ng-bind="details.title"></span>
+          </label>
+          <!-- Bypasses -->
+          <div class="bypass" ng-repeat="bypass in details.bypasses">
+            <!-- Boolean Bypass View -->
+            <div class="bypass-header" ng-if="bypass.type === 'boolean'">
+              <label>
+                <input type="checkbox"
+                  ng-disabled="!AdminManagementCtrl.newRole.permissions.boards[model].allow"
+                  ng-model="AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control]"
+                  ng-false-value="undefined" />
+                <span class="bypass-description" ng-class="{ disabled: !AdminManagementCtrl.newRole.permissions.boards[model].allow }" ng-bind-html="bypass.description"></span>
+              </label>
+            </div>
+            <!-- Object Bypass View -->
+            <div ng-if="bypass.type === 'object' || !bypass.type">
+              <div class="bypass-header">
+                <label>
+                  <input type="checkbox"
+                    ng-init="AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].show = AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].admin || AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].mod; AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].show ? null : AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control] = undefined"
+                    ng-disabled="!AdminManagementCtrl.newRole.permissions.boards[model].allow"
+                    ng-change="AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].show ? AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].mod = true : AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control] = undefined"
+                    ng-model="AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].show"
+                    ng-false-value="undefined" />
+                  <span class="bypass-description" ng-class="{ disabled: !AdminManagementCtrl.newRole.permissions.boards[model].allow }" ng-bind-html="bypass.description"></span>
+                </label>
+              </div>
+              <div class="bypass-control">
+                <label ng-class="{ disabled: !AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].show }">
+                  <input type="radio"
+                    ng-disabled="!AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].show"
+                    ng-model="AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].admin"
+                    ng-click="AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].mod = undefined" ng-value="true" />
+                  All
+                </label>
+                <label ng-class="{ disabled: !AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].show }">
+                  <input type="radio"
+                    ng-disabled="!AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].show"
+                    ng-model="AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].mod"
+                    ng-click="AdminManagementCtrl.newRole.permissions.boards[model].bypass[bypass.control].admin = undefined" ng-value="true" />
+                  Moderated
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Boards Adv Tab -->
+      <div ng-if="AdminManagementCtrl.selectedTab === 'advBoards'">
+        <h4>Advanced Permissions</h4>
         <div>
           <div class="half-column">
-            <!-- Create New Boards -->
-            <label>
-              <input id="boards-create" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.boards.create" ng-false-value="undefined" />
-              Allow user to create new boards
-            </label>
-            <!-- Update Boards -->
-            <label>
-              <input id="boards-update" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.boards.update" ng-false-value="undefined" />
-              Allow user to update existing boards
-            </label>
-            <!-- Delete Boards -->
-            <label>
-              <input id="boards-delete" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.boards.delete" ng-false-value="undefined" />
-              Allow user to delete existing boards
-            </label>
             <!-- Recategorize Boards -->
             <label>
               <input id="adminBoards-updateCategories" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminBoards.updateCategories" ng-false-value="undefined" />
@@ -697,22 +729,6 @@
               <input id="adminModerators-remove" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminModerators.remove" ng-false-value="undefined" />
               Allow user to remove moderators from boards
             </label>
-            <!-- View Uncategorized -->
-            <label>
-              <input id="boards-viewUncategorized" type="checkbox" ng-init="viewUncategorized = AdminManagementCtrl.newRole.permissions.boards.viewUncategorized.some || AdminManagementCtrl.newRole.permissions.boards.viewUncategorized.all" ng-model="viewUncategorized" ng-change="viewUncategorized ? AdminManagementCtrl.newRole.permissions.boards.viewUncategorized.some = true : AdminManagementCtrl.newRole.permissions.boards.viewUncategorized = undefined; viewUncategorized ? AdminManagementCtrl.newRole.permissions.boards.viewUncategorized.all = undefined : null" ng-false-value="undefined" />
-              Allow user to view uncategorized boards
-            </label>
-            <div class="indent">
-              <label ng-if="viewUncategorized">
-                <input name="boards-viewUncategorized-status" type="radio" ng-model="AdminManagementCtrl.newRole.permissions.boards.viewUncategorized.some" ng-click="AdminManagementCtrl.newRole.permissions.boards.viewUncategorized.all = undefined" ng-value="true" />
-                Only view uncategorized boards which this user moderates
-              </label>
-              <label ng-if="viewUncategorized">
-                <input name="boards-viewUncategorized-status" type="radio" ng-model="AdminManagementCtrl.newRole.permissions.boards.viewUncategorized.all" ng-click="AdminManagementCtrl.newRole.permissions.boards.viewUncategorized.some = undefined" ng-value="true" />
-                View all uncategorized boards regardless of moderation status
-              </label>
-            </div>
-
           </div>
         </div>
       </div>
