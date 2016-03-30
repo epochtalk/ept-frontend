@@ -77,7 +77,8 @@
         <td ng-bind="AdminManagementCtrl.selectedUser.created_at | humanDate"></td>
       </tr>
     </table>
-
+    <label for="ipBan">Ban User's IP     <input type="checkbox" name="banIp" ng-model="AdminManagementCtrl.banUserIp" id="banIp" />
+    </label>
     <label for="banType">Select Ban Type:</label>
     <input type="radio" name="banType" ng-model="AdminManagementCtrl.permanentBan" ng-value="true" id="permanent" ng-disabled="AdminManagementCtrl.banSubmitted" required><label for="permanent">Permanent</label>
     <input type="radio" name="banType" ng-model="AdminManagementCtrl.permanentBan" ng-value="false" id="temporary" ng-disabled="AdminManagementCtrl.banSubmitted" required><label for="temporary">Temporary</label><br /><br />
