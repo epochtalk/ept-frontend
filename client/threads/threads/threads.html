@@ -12,7 +12,7 @@
 </div>
 
 <div class="fill-row" ng-if="ThreadsWrapperCtrl.loggedIn()">
-  <a ng-if="ThreadsWrapperCtrl.canCreate" class="inverted-button" ui-sref="newThread({boardId: ThreadsWrapperCtrl.board.id})">
+  <a ng-if="ThreadsWrapperCtrl.canCreate()" class="inverted-button" ui-sref="newThread({boardId: ThreadsWrapperCtrl.board.id})">
     <i class="icon-epoch-add"></i>Start a New Thread
   </a>
   <a class="inverted-button" ng-click="ThreadsWrapperCtrl.watchBoard()" ng-if="!ThreadsWrapperCtrl.board.watched">

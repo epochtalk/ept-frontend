@@ -10,10 +10,6 @@ var route = ['$stateProvider', function($stateProvider) {
       }
     },
     resolve: {
-      userAccess: ['$q', 'Session', function($q, Session) {
-        if (Session.isAuthenticated) { return true; }
-        else { return $q.reject('Unauthorized'); }
-      }],
       $title: function() { return 'Private Messages'; },
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
@@ -24,7 +20,15 @@ var route = ['$stateProvider', function($stateProvider) {
         });
         return deferred.promise;
       }],
-      pageData: ['Messages', function(Messages) { return Messages.latest().$promise; }]
+      pageData: ['Session', 'Alert', 'Messages', '$q', function(Session, Alert, Messages, $q) {
+        if (Session.isAuthenticated && Session.hasPermission('messages.latest.allow')) {
+          return Messages.latest().$promise;
+        }
+        else {
+          Alert.error('You do not have access to this page.');
+          return $q.reject('NoPageChange');
+        }
+      }]
     }
   });
 }];

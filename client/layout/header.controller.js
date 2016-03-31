@@ -39,6 +39,7 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
       messages: 0,
       mentions: 0
     };
+
     this.refreshNotificationsCounts = function() {
       return Notifications.counts().$promise
       .then(function(counts) {
@@ -46,27 +47,22 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
         ctrl.notifications.mentions = counts.mention;
       });
     };
+
     this.dismissNotifications = function(type) {
-      var query = {
-        type: type
-      };
+      var query = { type: type };
       return Notifications.dismiss(query).$promise
-      .then(function() {
-        ctrl.refreshNotificationsCounts();
-      });
+      .then(function() { ctrl.refreshNotificationsCounts(); });
     };
 
     $scope.$watch(function() { return Session.getToken(); }, function(token) {
       if (token) {
         Websocket.authenticate(token);
-        Websocket.subscribe('/u/' + Session.user.id, {waitForAuth: true}).watch(function(data) {
+        Websocket.subscribe('/u/' + Session.user.id, {waitForAuth: true}).watch(function() {
           ctrl.refreshNotificationsCounts();
         });
         ctrl.refreshNotificationsCounts();
       }
-      else {
-        Websocket.deauthenticate();
-      }
+      else { Websocket.deauthenticate(); }
     });
 
     // Login/LogOut

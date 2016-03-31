@@ -83,6 +83,10 @@ app
       event.preventDefault();
 
       console.log(error);
+      
+      // stop page change
+      if (error === 'NoPageChange') { return; }
+
       // Unauthorized is redirected to login, save next so we can redirect after login
       if (error.status === 401 || error.statusText === 'Unauthorized') {
         $state.go('login');

@@ -5,10 +5,11 @@
     <div class="inbox" ng-click="MessagesCtrl.loadRecentMessages();">
       <i class="fa fa-envelope"></i> Inbox
     </div>
-    <div class="add" ng-if='MessagesCtrl.controlAccess.createConversations' ng-click="MessagesCtrl.showConvoModal = true">
+    <div class="add" ng-if="MessagesCtrl.canCreateConversation()" ng-click="MessagesCtrl.showConvoModal = true">
       <i class="fa fa-plus"></i> New Message
     </div>
   </div>
+
   <div class="pagination-slide" ng-if="MessagesCtrl.pageMax > 0">
     <div class="prev">
       <button ng-click="MessagesCtrl.loadRecentMessages(MessagesCtrl.page - 1)" ng-disabled="MessagesCtrl.page === 1">&#10094;</button>
@@ -18,6 +19,7 @@
       <button ng-click="MessagesCtrl.loadRecentMessages(MessagesCtrl.page + 1)" ng-disabled="MessagesCtrl.page === MessagesCtrl.pageMax">&#10095;</button>
     </div>
   </div>
+
   <div class="list" ng-if="MessagesCtrl.pageMax > 0">
     <div ng-repeat="message in MessagesCtrl.recentMessages track by message.id" class="cell" ng-click="MessagesCtrl.loadConversation(message.conversation_id)" ng-class="{ 'active': MessagesCtrl.selectedConversationId === message.conversation_id}">
       <strong>To:</strong> {{ message.receiver_username }}<br>
@@ -32,7 +34,7 @@
   <!-- New Message -->
   <div ng-if="MessagesCtrl.currentConversation.messages.length > 0" class="thin-underline">
     <h4>Conversation with {{ MessagesCtrl.receiverName }}</h4> {{showReply}}
-    <a class="right no-select" ng-if='MessagesCtrl.controlAccess.createMessages' ng-click="MessagesCtrl.showReply = !MessagesCtrl.showReply"><i class="fa fa-reply"></i> Reply</a>
+    <a class="right no-select" ng-if='MessagesCtrl.canCreateMessage()' ng-click="MessagesCtrl.showReply = !MessagesCtrl.showReply"><i class="fa fa-reply"></i> Reply</a>
   </div>
   <div ng-if="MessagesCtrl.currentConversation.messages.length > 0" class="reply" ng-show="MessagesCtrl.showReply">
     <!-- Messages Receiver -->
@@ -62,7 +64,7 @@
           <strong>{{ message.sender_username}}</strong>
           <span class="date">{{ message.created_at | humanDate }}</span>
           <div class="right">
-            <a ng-if="message.sender_id === MessagesCtrl.currentUserId && MessagesCtrl.controlAccess.deleteMessages" ng-href="#" class="action css-tooltip" ng-click="MessagesCtrl.openDeleteModal(message.id)" data-css-tooltip="Delete">
+            <a ng-if="MessagesCtrl.canDeleteMessage(message.sender_id)" ng-href="#" class="action css-tooltip" ng-click="MessagesCtrl.openDeleteModal(message.id)" data-css-tooltip="Delete">
               <i class="fa fa-trash"></i>
             </a>
             <a ng-if="message.sender_id !== MessagesCtrl.currentUserId && MessagesCtrl.controlAccess.reportMessages" ng-href="#" class="action css-tooltip" ng-click="MessagesCtrl.openReportModal(message)" data-css-tooltip="Report">

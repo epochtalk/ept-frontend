@@ -16,10 +16,31 @@ var ctrl = [
     this.newConversation = {body: '', receiver_id: ''};
     this.newMessage = {body: '', receiver_id: '', previewBody: '' };
     this.showReply = false;
+
+    this.canCreateMessage = function() {
+      if (!Session.isAuthenticated()) { return false; }
+      if (!Session.hasPermission('messages.create.allow')) { return false; }
+      return true;
+    };
+
+    this.canDeleteMessage = function(messageUserId) {
+      if (!Session.isAuthenticated()) { return false; }
+      if (!Session.hasPermission('messages.delete.allow')) { return false; }
+
+      // ownership
+      var owner = false;
+      if (messageUserId === Session.user.id) { owner = true; }
+      else if (Session.hasPermission('messages.delete.bypass.owner')) { owner = true; }
+      return owner;
+    };
+
+    this.canCreateConversation = function () {
+      if (!Session.isAuthenticated()) { return false; }
+      if (!Session.hasPermission('conversations.create.allow')) { return false; }
+      return true;
+    };
+
     this.controlAccess = {
-      createConversations: Session.hasPermission('conversations.create'),
-      createMessages: Session.hasPermission('messages.create'),
-      deleteMessages: Session.hasPermission('messages.delete'),
       reportMessages: Session.hasPermission('reports.createMessageReport')
     };
 
@@ -77,9 +98,7 @@ var ctrl = [
         }
       })
       // scroll last message into view
-      .then(function() {
-        $anchorScroll();
-      });
+      .then(function() { $anchorScroll(); });
     };
 
     this.loadMoreMessages = function() {
@@ -155,7 +174,8 @@ var ctrl = [
     };
 
     // Messages
-    Websocket.subscribe('/u/' + Session.user.id, { waitForAuth: true }).watch(function(data) {
+    Websocket.subscribe('/u/' + Session.user.id, { waitForAuth: true })
+    .watch(function() {
       ctrl.loadRecentMessages(ctrl.page, ctrl.limit);
       if (ctrl.selectedConversationId) {
         ctrl.loadConversation(ctrl.selectedConversationId);
