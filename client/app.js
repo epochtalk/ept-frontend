@@ -42,7 +42,6 @@ var ngDeps = [
   // posts
   require('./posts'),
   require('./messages'),
-  require('./watchlist'),
   require('./admin')
 ].concat(moduleNames);
 var app = angular.module('ept', ngDeps);
@@ -83,7 +82,7 @@ app
       event.preventDefault();
 
       console.log(error);
-      
+
       // stop page change
       if (error === 'NoPageChange') { return; }
 
