@@ -77,16 +77,18 @@
         <td ng-bind="AdminManagementCtrl.selectedUser.created_at | humanDate"></td>
       </tr>
     </table>
-    <label for="ipBan">Ban User's IP     <input type="checkbox" name="banIp" ng-model="AdminManagementCtrl.banUserIp" id="banIp" />
-    </label>
     <label for="banType">Select Ban Type:</label>
-    <input type="radio" name="banType" ng-model="AdminManagementCtrl.permanentBan" ng-value="true" id="permanent" ng-disabled="AdminManagementCtrl.banSubmitted" required><label for="permanent">Permanent</label>
-    <input type="radio" name="banType" ng-model="AdminManagementCtrl.permanentBan" ng-value="false" id="temporary" ng-disabled="AdminManagementCtrl.banSubmitted" required><label for="temporary">Temporary</label><br /><br />
-    <div ng-show="AdminManagementCtrl.permanentBan === false">
+    <input type="radio" name="banType" ng-model="AdminManagementCtrl.banType" value="perm" id="permanent" ng-disabled="AdminManagementCtrl.banSubmitted" required><label for="permanent">Permanent</label>
+    <input type="radio" name="banType" ng-model="AdminManagementCtrl.banType" value="temp" id="temporary" ng-disabled="AdminManagementCtrl.banSubmitted" required><label for="temporary">Temporary</label>
+    <input type="radio" name="banType" ng-model="AdminManagementCtrl.banType" value="ip" id="ip" ng-disabled="AdminManagementCtrl.banSubmitted" required><label for="ip">IP</label>
+    <br /><br />
+    <div ng-show="AdminManagementCtrl.banType === 'temp'">
       <label for="banUntil">Enter Ban Expiration Date:</label>
-      <input type="date" ng-model="AdminManagementCtrl.banUntil" min="{{AdminManagementCtrl.minDate()}}" name="banUntil" ng-required="AdminManagementCtrl.permanentBan === false" />
+      <input type="date" ng-model="AdminManagementCtrl.banUntil" min="{{AdminManagementCtrl.minDate()}}" name="banUntil" ng-required="AdminManagementCtrl.banType === 'temp'" />
     </div>
     <div class="clear">
+    {{ AdminManagementCtrl.banType }} {{ AdminManagementCtrl.banType === 'temp'}}
+
       <button class="fill-row" ng-click="AdminManagementCtrl.banUser()"
         ng-disabled="$parent.form.$invalid || $parent.form.$errors || AdminManagementCtrl.banSubmitted" ng-bind="AdminManagementCtrl.confirmBanBtnLabel"></button>
     </div>

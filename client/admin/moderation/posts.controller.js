@@ -146,6 +146,8 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
   this.permanentBan = undefined; // boolean indicating if ban is permanent
   this.banUntil = null; // model backing temporary ban date
   this.boardBanList = []; // model backing list of banned boards
+  this.showIpBan = true; // Boolean which hides/shows ip ban checkbox
+  this.banUserIp = false; // Model backing ip ban checkbox
 
   // Set Status Vars
   this.showSetStatusModal  = false;
@@ -267,6 +269,7 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
       var maxDate = new Date(8640000000000000);
       var banDate = new Date(user.ban_expiration);
       ctrl.permanentBan = banDate.getTime() === maxDate.getTime();
+      if (ctrl.permanentBan) { ctrl.showIpBan = false; }
       ctrl.banUntil = ctrl.permanentBan ? undefined : banDate;
       ctrl.selectedUser.permanent_ban = ctrl.banUntil ? false : true;
     }
@@ -290,6 +293,8 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
     ctrl.permanentBan = undefined;
     ctrl.banUntil = null;
     ctrl.boardBanList = [];
+    ctrl.showIpBan = true;
+    ctrl.banUserIp = false;
     // Fix for modal not opening after closing
     $timeout(function() { ctrl.showManageBansModal = false; });
   };
@@ -353,7 +358,8 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
     // Used for updating global bans
     var globalBanParams = {
       user_id: ctrl.selectedUser.id,
-      expiration: ctrl.permanentBan ? undefined : ctrl.banUntil
+      expiration: ctrl.permanentBan ? undefined : ctrl.banUntil,
+      ip_ban: ctrl.permanentBan && ctrl.banUserIp ? true : undefined
     };
     // Used for updating banned boards
     var banBoardParams = {

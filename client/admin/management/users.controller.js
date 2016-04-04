@@ -25,9 +25,8 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
   this.banSubmitted = false; // form submitted bool
   this.selectedUser = null; //  model backing selected user
   this.confirmBanBtnLabel = 'Confirm'; // modal button label
-  this.permanentBan = undefined; // boolean indicating if ban is permanent
-  this.banUntil = null; // model
-  this.banUserIp = false; // model backing if user should be ip banned
+  this.banType = undefined; // boolean indicating if ban is permanent
+  this.banUntil = undefined; // model backing ban type
 
   this.searchUsers = function() {
     if (!ctrl.searchStr.length) {
@@ -96,9 +95,8 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
 
   this.closeConfirmBan = function() {
     ctrl.selectedUser = null;
-    ctrl.permanentBan = undefined;
+    ctrl.banType = undefined;
     ctrl.banUntil = null;
-    ctrl.banUserIp = false;
     // Fix for modal not opening after closing
     $timeout(function() { ctrl.showConfirmBanModal = false; });
   };
@@ -109,7 +107,7 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
     var params = {
       user_id: ctrl.selectedUser.id,
       expiration: ctrl.banUntil || undefined,
-      ip_ban: ctrl.banUserIp || false
+      ip_ban: ctrl.banType === 'ip' || undefined
     };
     AdminUsers.ban(params).$promise
     .then(function(ban) {

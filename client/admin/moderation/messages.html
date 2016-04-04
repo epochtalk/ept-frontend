@@ -239,6 +239,10 @@
         <label for="banUntil">Enter Ban Expiration Date:</label>
         <input type="date" ng-model="ModerationCtrl.banUntil" min="{{ModerationCtrl.minDate()}}" name="banUntil" ng-required="ModerationCtrl.permanentBan === false" />
       </div>
+
+      <div ng-show="ModerationCtrl.showIpBan && ModerationCtrl.permanentBan === true">
+        <input type="checkbox" ng-model="ModerationCtrl.banUserIp" ng-disabled="ModerationCtrl.banSubmitted" name="ipBan" id="ipBan" /><label for="ipBan">Ban all of {{ModerationCtrl.selectedUser.username}}'s known IP addresses</label>
+      </div>
     </div>
 
     <label>
