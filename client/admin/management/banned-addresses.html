@@ -1,0 +1,49 @@
+<div class="admin-table-header">
+  <div class="half-column">
+    <button class="fill-row"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Ban New Addresses</button>
+  </div>
+  <div class="half-column">
+    <div class="nested-input-container">
+      <a ng-if="AdminManagementCtrl.search" ng-click="AdminManagementCtrl.clearSearch()" class="nested-clear-btn fa fa-times"></a>
+      <a ng-click="AdminManagementCtrl.searchAddresses()" class="nested-btn">Search</a>
+      <input class="input-text nested-input" ng-model="AdminManagementCtrl.searchStr" type="text" id="search-users" placeholder="Search addresses" ng-keydown="$event.which === 13 && AdminManagementCtrl.searchAddresses()" ng-keyup="$event.which === 27 && AdminManagementCtrl.clearSearch()" />
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>
+<div class="fill-row centered-text" ng-if="!AdminManagementCtrl.addresses.length">
+  <h4>No Banned Addresses to display</h4>
+</div>
+<div class="fill-row" ng-if="AdminManagementCtrl.addresses.length">
+  <table class="underlined log" width="100%">
+    <thead>
+      <th>Address</th>
+      <th class="pointer" ng-click="AdminManagementCtrl.setSortField('weight')"><span ng-class="AdminManagementCtrl.getSortClass('weight')"></span>&nbsp;Weight</th>
+      <th class="pointer" ng-click="AdminManagementCtrl.setSortField('created_at')"><span ng-class="AdminManagementCtrl.getSortClass('created_at')"></span>&nbsp;Date Banned</th>
+      <th class="pointer" ng-click="AdminManagementCtrl.setSortField('decay')"><span ng-class="AdminManagementCtrl.getSortClass('decay')"></span>&nbsp;Decays</th>
+      <th class="pointer" ng-click="AdminManagementCtrl.setSortField('updates')"><span ng-class="AdminManagementCtrl.getSortClass('updates')"></span>&nbsp;Last Updated</th>
+      <th class="pointer" ng-click="AdminManagementCtrl.setSortField('update_count')"><span ng-class="AdminManagementCtrl.getSortClass('update_count')"></span>&nbsp;Update Count</th>
+    </thead>
+    <tbody>
+      <tr ng-repeat="address in AdminManagementCtrl.addresses">
+        <td ng-bind="address.hostname || address.ip"></td>
+        <td ng-bind="address.weight"></td>
+        <td ng-bind="address.created_at | humanDate"></td>
+        <td ng-bind="address.decay ? 'YES' : 'NO'"></td>
+        <td ng-bind="(address.updated_at | humanDate) || 'N/A'"></td>
+        <td ng-bind="address.update_count || 0"></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="pagination-simple">
+    <a ng-show="AdminManagementCtrl.prev" ui-sref=".({ page: AdminManagementCtrl.prev, limit: AdminManagementCtrl.limit, search: AdminManagementCtrl.search, field: AdminManagementCtrl.field, desc: AdminManagementCtrl.desc })">
+      &#10094; Previous
+    </a>
+    <span ng-hide="AdminManagementCtrl.prev">&#10094; Previous</span>
+    &nbsp;&nbsp;&nbsp;
+    <a ng-show="AdminManagementCtrl.next" ui-sref=".({ page: AdminManagementCtrl.next, limit: AdminManagementCtrl.limit, search: AdminManagementCtrl.search, field: AdminManagementCtrl.field, desc: AdminManagementCtrl.desc })">
+       Next &#10095;
+    </a>
+    <span ng-hide="AdminManagementCtrl.next">Next &#10095;</span>
+  </div>
+</div>

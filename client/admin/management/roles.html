@@ -123,6 +123,7 @@
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'general'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'general'}" ng-href="#">General</a></li>
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'views'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'views'}" ng-href="#">Views</a></li>
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'users'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'users'}" ng-href="#">Users</a></li>
+        <li><a ng-click="AdminManagementCtrl.selectedTab = 'bans'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'bans'}" ng-href="#">Bans</a></li>
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'settings'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'settings'}" ng-href="#">Settings</a></li>
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'reports'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'reports'}" ng-href="#">Reports</a></li>
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'roles'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'roles'}" ng-href="#">Roles</a></li>
@@ -228,6 +229,10 @@
             <input id="adminAccess-management-roles" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminAccess.management.roles" ng-false-value="undefined" />
             Roles Management Tab
           </label>
+          <label>
+            <input id="adminAccess-management-bannedAddresses" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminAccess.management.bannedAddresses" ng-false-value="undefined" />
+            Banned Addresses Management Tab
+          </label>
         </div>
 
       </div>
@@ -310,6 +315,23 @@
           </div>
 
         </section>
+      </div>
+
+      <!-- Bans Tab -->
+      <div ng-if="AdminManagementCtrl.selectedTab === 'bans'">
+        <h4>Elevated Permissions</h4>
+
+        <!-- Page Banned Addresses -->
+        <label>
+          <input id="adminBans-pageBannedAddresses" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminBans.pageBannedAddresses" ng-false-value="undefined" />
+          Allow user to page through banned addresses, used for admin banned addressess page
+        </label>
+
+        <!-- Add Banned Addresses -->
+        <label>
+          <input id="adminBans-addAddresses" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminBans.addAddresses" ng-false-value="undefined" />
+          Allow user to maunally ban addresses, used for admin banned addressess page
+        </label>
       </div>
 
       <!-- Settings Tab -->
