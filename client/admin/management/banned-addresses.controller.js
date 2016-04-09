@@ -3,8 +3,12 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'S
   this.parent = $scope.$parent.AdminManagementCtrl;
   this.parent.tab = 'bannedAddresses';
 
-  this.search = bannedAddresses.search;
+  this.showBanAddresses = false;
   this.searchStr = bannedAddresses.search;
+  this.addressesToBan = [{}];
+
+  // Models backing pagination of addresses
+  this.search = bannedAddresses.search;
   this.page = bannedAddresses.page;
   this.limit = bannedAddresses.limit;
   this.field = bannedAddresses.field;
@@ -56,6 +60,46 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'S
   this.clearSearch = function() {
     $location.search('search', undefined);
     ctrl.searchStr = null;
+  };
+
+  this.banAddressesBtnLabel = 'Ban Addresses';
+  this.banAddressesSubmitted = false;
+
+  this.closeBanAddresses = function() {
+    ctrl.showBanAddresses = false;
+    ctrl.addressesToBan = [{}];
+    ctrl.banAddressMsg = null;
+  };
+
+  this.checkAddresses = function() {
+    return !ctrl.addressesToBan.filter(function(addr) {
+      if (addr.address && addr.weight) { return addr; }
+    }).length;
+  };
+
+  this.banAddresses = function() {
+    ctrl.banAddressesBtnLabel = 'Loading...';
+    ctrl.banAddressesSubmitted = true;
+
+    var addresses = ctrl.addressesToBan.filter(function(addr) {
+      if (addr.address && addr.weight) { return addr; }
+    });
+
+    if (addresses.length) {
+      AdminBans.addAddresses(addresses).$promise
+      .then(function() {
+        Alert.success('Sucessfully banned addresses');
+        ctrl.pullPage();
+        ctrl.closeBanAddresses();
+        $timeout(function() { // wait for modal to close
+          ctrl.banAddressesBtnLabel = 'Ban Addresses';
+          ctrl.banAddressesSubmitted = false;
+        }, 500);
+      })
+      .catch(function() {
+        Alert.error('There was an error banning addresses');
+      });
+    }
   };
 
   $timeout($anchorScroll);

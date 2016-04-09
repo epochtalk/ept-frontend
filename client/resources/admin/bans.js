@@ -8,7 +8,8 @@ module.exports = ['$resource',
         method: 'GET'
       },
       addAddresses: {
-        method: 'PUT'
+        method: 'PUT',
+        isArray: true
       }
     });
   }

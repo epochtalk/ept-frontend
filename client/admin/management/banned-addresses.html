@@ -1,6 +1,6 @@
 <div class="admin-table-header">
   <div class="half-column">
-    <button class="fill-row"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Ban New Addresses</button>
+    <button ng-click="AdminManagementCtrl.showBanAddresses = true" class="fill-row"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Manually Ban Addresses</button>
   </div>
   <div class="half-column">
     <div class="nested-input-container">
@@ -47,3 +47,41 @@
     <span ng-hide="AdminManagementCtrl.next">Next &#10095;</span>
   </div>
 </div>
+
+<!-- Ban New Addresses Modal -->
+<modal show="AdminManagementCtrl.showBanAddresses" on-close="AdminManagementCtrl.closeBanAddresses()">
+  <form name="$parent.form" class="css-form">
+    <h3 class="thin-underline">Manually Ban Addresses</h3>
+    <table class="striped" width="100%">
+      <thead>
+        <tr>
+          <th width="60%">Address</th>
+          <th>Decays</th>
+          <th width="30%">Weight</th>
+        </tr>
+      </thead>
+      <tr ng-repeat="addr in AdminManagementCtrl.addressesToBan track by $index">
+        <td>
+          <input ng-model="addr.address" ng-change="addr.weight ? null : addr.weight = 20" type="text" style="margin: 0; outline: none;" placeholder="IP or Hostname to ban" address-validator="addr" />
+        </td>
+        <td>
+          <input ng-model="addr.decay" ng-change="addr.decay ? addr.weight = 50 : addr.weight = 20" style="margin: 0 auto; display: block" type="checkbox" />
+        </td>
+        <td>
+          <input ng-model="addr.weight" type="number" min="0" style="margin: 0; outline: none;" placeholder="Weight" ng-keydown="!$event.shiftKey && ($event.which === 9 || $event.which === 13) && AdminManagementCtrl.addressesToBan.length === ($index + 1) &&AdminManagementCtrl.addressesToBan.push({})" />
+        </td>
+      </tr>
+      <tfoot>
+        <tr>
+          <td></td>
+          <td></td>
+          <td><a class="right" ng-click="AdminManagementCtrl.addressesToBan.push({})" href="#"><i class="fa fa-plus"></i>&nbsp;Add another address</a></td>
+        </tr>
+      </tfoot>
+    </table>
+    <div class="clear">
+      <button class="fill-row" ng-click="AdminManagementCtrl.banAddresses()"
+        ng-disabled="$parent.form.$invalid || $parent.form.$errors || AdminManagementCtrl.banAddressesSubmitted || AdminManagementCtrl.checkAddresses()" ng-bind="AdminManagementCtrl.banAddressesBtnLabel"></button>
+    </div>
+  </form>
+</modal>
