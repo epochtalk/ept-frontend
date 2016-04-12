@@ -87,8 +87,6 @@
       <input type="date" ng-model="AdminManagementCtrl.banUntil" min="{{AdminManagementCtrl.minDate()}}" name="banUntil" ng-required="AdminManagementCtrl.banType === 'temp'" />
     </div>
     <div class="clear">
-    {{ AdminManagementCtrl.banType }} {{ AdminManagementCtrl.banType === 'temp'}}
-
       <button class="fill-row" ng-click="AdminManagementCtrl.banUser()"
         ng-disabled="$parent.form.$invalid || $parent.form.$errors || AdminManagementCtrl.banSubmitted" ng-bind="AdminManagementCtrl.confirmBanBtnLabel"></button>
     </div>
