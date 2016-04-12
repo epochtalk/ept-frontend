@@ -20,7 +20,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     // Report Permission
     this.reportControlAccess = {
       reportPosts: Session.hasPermission('reports.createPostReport'),
-      reportUsers: Session.hasPermission('reports.createUsersReport')
+      reportUsers: Session.hasPermission('reports.createUserReport')
     };
 
     // Thread Permissions

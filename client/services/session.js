@@ -94,16 +94,16 @@ module.exports = ['$window', function($window) {
       if (user.permissions) {
         var globalModPermissions = [
           'posts.update.bypass.owner.admin',
-          'threads.privilegedTitle',
-          'threads.privilegedLock',
-          'threads.privilegedSticky',
-          'threads.privilegedMove',
-          'threads.privilegedPurge',
-          'polls.privilegedLock'
+          'threads.title.bypass.owner.admin',
+          'threads.lock.bypass.owner.admin',
+          'threads.sticky.bypass.owner.admin',
+          'threads.move.bypass.owner.admin',
+          'threads.purge.bypass.owner.admin',
+          'threads.lockPoll.bypass.owner.admin'
         ];
-        // If user has any of the permissions above set to all they are a global mod
+        // If user has any of the permissions above set to true they are a global mod
         globalModPermissions.forEach(function(permission) {
-          var allPermission = get(user.permissions, permission + '.all');
+          var allPermission = get(user.permissions, permission);
           globalMod = globalMod || allPermission;
         });
       }
@@ -143,22 +143,9 @@ module.exports = ['$window', function($window) {
         };
         result.messageControls = hasPermission('messages');
         if (result.messageControls) {
-          result.messageControls.createConversations = perm('conversations.create');
+          result.messageControls.createConversations = perm('conversations.create.allow');
         }
         result.reportControls = hasPermission('reports');
-        if (result.reportControls) {
-          result.reportControls.updateUserReport = perm('adminReports.updateUserReport');
-          result.reportControls.updatePostReport = perm('adminReports.updatePostReport');
-          result.reportControls.updateMessageReport = perm('adminReports.updateMessageReport');
-
-          result.reportControls.createUserReportNote = perm('adminReports.createUserReportNote');
-          result.reportControls.createPostReportNote = perm('adminReports.createPostReportNote');
-          result.reportControls.createMessageReportNote = perm('adminReports.createMessageReportNote');
-
-          result.reportControls.updateUserReportNote = perm('adminReports.updateUserReportNote');
-          result.reportControls.updatePostReportNote = perm('adminReports.updatePostReportNote');
-          result.reportControls.updateMessageReportNote = perm('adminReports.updateMessageReportNote');
-        }
       }
       return result;
     }

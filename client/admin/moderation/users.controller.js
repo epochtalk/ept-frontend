@@ -1,7 +1,6 @@
 var difference = require('lodash/difference');
 
-var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$state', '$location', '$timeout', '$anchorScroll',
-'Alert', 'Session', 'AdminReports', 'AdminUsers', 'Conversations', 'User', 'userReports', 'reportId', 'boards', function($rootScope, $scope, $q, $filter, $state, $location, $timeout, $anchorScroll, Alert, Session, AdminReports, AdminUsers, Conversations, User, userReports, reportId, boards) {
+var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$anchorScroll', 'User', 'Alert', 'Session', 'Reports', 'AdminUsers', 'Conversations', 'userReports', 'reportId', 'boards', function($rootScope, $scope, $q, $filter, $location, $timeout, $anchorScroll, User, Alert, Session, Reports, AdminUsers, Conversations, userReports, reportId, boards) {
   var ctrl = this;
   this.parent = $scope.$parent.ModerationCtrl;
   this.parent.tab = 'users';
@@ -16,9 +15,52 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$state', '$location', '$ti
   else if (userReports.filter === 'Ignored') { this.tableFilter = 3; }
   else if (userReports.filter === 'Bad Report') { this.tableFilter = 4; }
 
-  // Get Action Control Access
-  this.actionAccess = Session.getModPanelControlAccess();
-  this.hasGlobalModPerms = Session.hasPermission('adminUsers.privilegedBanFromBoards.all');
+  this.currentUser = {};
+
+  // Permissions
+
+  this.canUpdateUserReport = function() {
+    var loggedIn = Session.isAuthenticated();
+    var hasPermission = Session.hasPermission('reports.updateUserReport.allow');
+    if (loggedIn && hasPermission) { return true; }
+    else { return false; }
+  };
+
+  this.canCreateConversation = function() {
+    var loggedIn = Session.isAuthenticated();
+    var hasPermission = Session.hasPermission('conversations.create.allow');
+    if (loggedIn && hasPermission) { return true; }
+    else { return false; }
+  };
+
+  this.canBanUser = function() {
+    var loggedIn = Session.isAuthenticated();
+    var banPermission = Session.hasPermission('adminUsers.privilegedBan');
+    var banBoardsPermission = Session.hasPermission('adminUsers.privilegedBanFromBoards');
+    if (loggedIn && banPermission && banBoardsPermission) { return true; }
+    else { return false; }
+  };
+
+  this.canGlobalBanUser = function() {
+    var loggedIn = Session.isAuthenticated();
+    var banPermission = Session.hasPermission('adminUsers.privilegedBan');
+    if (loggedIn && banPermission) { return true; }
+    else { return false; }
+  };
+
+  this.canBoardBanUser = function(boardId) {
+    var moderatingBoard = ctrl.user.moderating.indexOf(boardId) >= 0;
+    var banAllBoardsPermission = Session.hasPermission('adminUsers.privilegedBanFromBoards.all');
+    if (moderatingBoard || banAllBoardsPermission) { return true; }
+    else { return false; }
+  };
+
+  this.loadBoardBans = function(boardId) {
+    var banAllBoardsPermission = Session.hasPermission('adminUsers.privilegedBanFromBoards.all');
+    if (banAllBoardsPermission && ctrl.allBoardIds.indexOf(boardId) < 0) {
+      ctrl.allBoardIds.push(boardId);
+    }
+  };
 
   // Search Vars
   this.search = userReports.search;
@@ -114,7 +156,7 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$state', '$location', '$ti
       status: ctrl.selectedStatus,
       reviewer_user_id: ctrl.user.id
     };
-    AdminReports.updateUserReport(updateReport).$promise
+    Reports.updateUserReport(updateReport).$promise
     .then(function(updatedReport) {
       ctrl.selectedUserReport.reviewer_user_id = updatedReport.reviewer_user_id;
       ctrl.selectedUserReport.status = updatedReport.status;
@@ -136,7 +178,7 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$state', '$location', '$ti
           user_id: ctrl.user.id,
           note: ctrl.statusReportNote
         };
-        return AdminReports.createUserReportNote(params).$promise
+        return Reports.createUserReportNote(params).$promise
         .then(function() {
           // Add note if report is currently being previewed
           if (ctrl.reportNotes && ctrl.previewReport.id === ctrl.selectedUserReport.id) {
@@ -196,7 +238,8 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$state', '$location', '$ti
   this.allBoardIds = []; // populated by init of inputs
 
   this.uncheckModBoards = function() {
-    if (ctrl.hasGlobalModPerms) { ctrl.boardBanList = []; }
+    var banBoardsPermission = Session.hasPermission('adminUsers.privilegedBanFromBoards.all');
+    if (banBoardsPermission) { ctrl.boardBanList = []; }
     else {
       ctrl.user.moderating.forEach(function(id) {
         var index = ctrl.boardBanList.indexOf(id);
@@ -206,7 +249,8 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$state', '$location', '$ti
   };
 
   this.checkModBoards = function() {
-    if (ctrl.hasGlobalModPerms) { ctrl.boardBanList = ctrl.allBoardIds; }
+    var banBoardsPermission = Session.hasPermission('adminUsers.privilegedBanFromBoards.all');
+    if (banBoardsPermission) { ctrl.boardBanList = ctrl.allBoardIds; }
     else {
       ctrl.user.moderating.forEach(function(id) {
         var index = ctrl.boardBanList.indexOf(id);
@@ -350,7 +394,7 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$state', '$location', '$ti
   this.updateReportNote = function(note) {
     delete note.edit;
     note.report_id = ctrl.reportId;
-    AdminReports.updateUserReportNote(note).$promise
+    Reports.updateUserReportNote(note).$promise
     .then(function(updatedNote) {
       for (var i = 0; i < ctrl.reportNotes.length; i++) {
         if (ctrl.reportNotes[i].id === note.id) {
@@ -375,7 +419,7 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$state', '$location', '$ti
       user_id: ctrl.user.id,
       note: ctrl.reportNote
     };
-    AdminReports.createUserReportNote(params).$promise
+    Reports.createUserReportNote(params).$promise
     .then(function() {
       ctrl.submitBtnLabel = 'Add Note';
       ctrl.noteSubmitted = false;
@@ -410,13 +454,14 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$state', '$location', '$ti
       ctrl.pageReportNotes(userReport.id);
 
       if (initialPageLoad) {
-        $state.go('admin-moderation.users.preview', { username: ctrl.selectedUsername }, { location: false, reload: 'admin-moderation.users.preview' });
+        User.get({ id: ctrl.selectedUsername }).$promise
+        .then(function(user) { ctrl.currentUser = user; });
       }
     }
   };
 
   this.pageReportNotes = function(reportId, page) {
-    AdminReports.pageUserReportsNotes({ report_id: reportId, page: page }).$promise
+    Reports.pageUserReportsNotes({ report_id: reportId, page: page }).$promise
     .then(function(reportNotes) {
       ctrl.reportNotes = reportNotes.data;
       ctrl.reportNotesPage = reportNotes.page;
@@ -586,7 +631,7 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$state', '$location', '$ti
     };
 
     // replace current reports with new reports
-    AdminReports.pageUserReports(query).$promise
+    Reports.pageUserReports(query).$promise
     .then(function(newReports) {
       ctrl.userReports = newReports.data;
       ctrl.count = newReports.count;
@@ -594,8 +639,9 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$state', '$location', '$ti
     });
 
     // Location has already been updated using location.search, reload only child state
-    if (ctrl.selectedUsername) {
-      $state.go('admin-moderation.users.preview', { username: ctrl.selectedUsername }, { location: false, reload: 'admin-moderation.users.preview' });
+    if (ctrl.selectedUsername && ctrl.selectedUsername !== ctrl.currentUser.username) {
+      User.get({ id: ctrl.selectedUsername }).$promise
+      .then(function(user) { ctrl.currentUser = user; });
     }
   };
 }];

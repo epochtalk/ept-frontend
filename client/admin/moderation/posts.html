@@ -1,3 +1,4 @@
+<!-- Report Status Type Filtering -->
 <div class="admin-table-header">
   <div class="filter radio-button">
     <input type="radio" class="hide-radio" name="table-filter" value="0" id="posts-filter-0" ng-model="ModerationCtrl.tableFilter" ng-click="ModerationCtrl.setFilter()" />
@@ -28,15 +29,19 @@
     </div>
   </div>
 </div>
+
+<!-- no content warning -->
 <div class="fill-row" ng-if="ModerationCtrl.search">
   <h5>Displaying {{ModerationCtrl.count | number}} search result(s) for "<strong>{{ModerationCtrl.search}}</strong>" in <strong>{{ModerationCtrl.filter ? ModerationCtrl.filter : 'All'}}</strong>:</h5> <br />
 </div>
+
 <div class="padded-row" ng-if="!ModerationCtrl.isGlobalModerator">
   <div class="option">
     <input type="checkbox" id="showModeratedOnly" ng-checked="ModerationCtrl.allReports" ng-click="ModerationCtrl.toggleModeratedBoards()" />
     <label class="no-select" for="showModeratedOnly">Show <strong>Post Reports</strong> for all boards</label>
   </div>
 </div>
+
 <div class="fill-row centered-text" ng-if="!ModerationCtrl.search && ModerationCtrl.count < 1">
   <h4>
     <span ng-if="ModerationCtrl.allReports">No Post Reports to display in <strong>{{ModerationCtrl.filter ? ModerationCtrl.filter : 'All'}}</strong></span>
@@ -44,9 +49,12 @@
   </h4>
   <a ng-if="!ModerationCtrl.allReports" ng-click="ModerationCtrl.toggleModeratedBoards()">View Post Reports for All Boards</a>
 </div>
+
+  <!-- Reports -->
 <div class="fill-row" ng-if="ModerationCtrl.count > 0">
   <div class="fill-row admin-content-selectable">
     <table class="underlined" width="100%">
+
       <thead>
         <th class="left-icon-col"></th>
         <th class="pointer hide-mobile" ng-click="ModerationCtrl.setSortField('reporter_username')"><span ng-class="ModerationCtrl.getSortClass('reporter_username')"></span>&nbsp;Reported By</th>
@@ -59,35 +67,48 @@
         <th class="reason hide-mobile">Reason</th>
         <th class="mod-actions">Actions</th>
       </thead>
+
       <tbody>
         <tr ng-class="{ 'active-row' : ModerationCtrl.reportId === postReport.id }" class="selectable-row pointer" ng-click="ModerationCtrl.selectReport(postReport)" ng-repeat="postReport in ModerationCtrl.postReports track by postReport.id">
-          <td class="left-icon-col"><i ng-if="ModerationCtrl.isGlobalModerator || ModerationCtrl.moderatesBoard(postReport.board_id)" class="fa fa-star-o"></i></td>
-          <td class="hide-mobile"><a ui-sref="profile({ username: postReport.reporter_username })" ng-bind="postReport.reporter_username"></td>
+          <td class="left-icon-col">
+            <i ng-if="ModerationCtrl.isGlobalModerator || ModerationCtrl.moderatesBoard(postReport.board_id)" class="fa fa-star-o"></i>
+          </td>
+          <td class="hide-mobile">
+            <a ui-sref="profile({ username: postReport.reporter_username })" ng-bind="postReport.reporter_username">
+          </td>
           <td ng-bind="postReport.created_at | date:'MM/dd/yy @ h:mma'"></td>
           <td ng-bind="postReport.status"></td>
           <td class="hide-mobile" ng-bind="postReport.offender_created_at | date:'MM/dd/yy @ h:mma'"></td>
-          <td class="hide-mobile"><a ui-sref="posts.data({ threadId: postReport.offender_thread_id, '#': postReport.offender_post_id })" ng-bind="postReport.offender_title"></a></td>
+          <td class="hide-mobile">
+            <a ui-sref="posts.data({ threadId: postReport.offender_thread_id, '#': postReport.offender_post_id })" ng-bind="postReport.offender_title"></a>
+          </td>
           <td>
             <i ng-show="postReport.offender_ban_expiration || postReport.offender_board_banned" class="fa fa-user-times"></i>
           </td>
-          <td><a ui-sref="profile({ username: postReport.offender_author_username })" ng-bind="postReport.offender_author_username"></a></td>
+          <td>
+            <a ui-sref="profile({ username: postReport.offender_author_username })" ng-bind="postReport.offender_author_username"></a>
+          </td>
           <td class="hide-mobile"><div ng-bind="postReport.reporter_reason"></div></td>
           <td class="inline">
             <!-- Modify Report -->
-            <button class="icon css-tooltip" data-css-tooltip="Modify Report Status" ng-click="ModerationCtrl.showSetStatus(postReport)" ng-disabled="!ModerationCtrl.actionAccess.reportControls.updatePostReport"><i class="fa fa-cog"></i></button>
+            <button class="icon css-tooltip" data-css-tooltip="Modify Report Status" ng-click="ModerationCtrl.showSetStatus(postReport)" ng-disabled="!ModerationCtrl.canUpdateUserReport()"><i class="fa fa-cog"></i></button>
 
             <!-- Warn User -->
-            <button class="icon css-tooltip" data-css-tooltip="Warn User" ng-click="ModerationCtrl.showWarn({ id: postReport.offender_author_id, username: postReport.offender_author_username })" ng-disabled="!ModerationCtrl.actionAccess.messageControls.createConversations"><i class="fa fa-exclamation-circle"></i></button>
+            <button class="icon css-tooltip" data-css-tooltip="Warn User" ng-click="ModerationCtrl.showWarn({ id: postReport.offender_author_id, username: postReport.offender_author_username })" ng-disabled="!ModerationCtrl.canCreateConversation()"><i class="fa fa-exclamation-circle"></i></button>
 
             <!-- Ban User -->
-            <button class="icon css-tooltip" data-css-tooltip="Manage Bans" ng-click="ModerationCtrl.showManageBans({ id: postReport.offender_author_id, username: postReport.offender_author_username, email: postReport.offender_author_email, created_at: postReport.offender_author_created_at, ban_expiration: postReport.offender_ban_expiration })" ng-disabled="!ModerationCtrl.actionAccess.userControls.privilegedBan && !ModerationCtrl.actionAccess.userControls.privilegedBanFromBoards"><i class="fa fa-ban"></i></button>
+            <button class="icon css-tooltip" data-css-tooltip="Manage Bans" ng-click="ModerationCtrl.showManageBans({ id: postReport.offender_author_id, username: postReport.offender_author_username, email: postReport.offender_author_email, created_at: postReport.offender_author_created_at, ban_expiration: postReport.offender_ban_expiration })" ng-disabled="!ModerationCtrl.canBanUser()"><i class="fa fa-ban"></i></button>
           </td>
         </tr>
       </tbody>
+
     </table>
+
     <div class="fill-row">
       <div class="half-column">
-        <div class="indicator"><i class="fa fa-star-o"></i> Indicates a report made in a board you moderate</div>
+        <div class="indicator">
+          <i class="fa fa-star-o"></i> Indicates a report made in a board you moderate
+        </div>
       </div>
       <div class="half-column">
         <pagination page-count="ModerationCtrl.pageCount" page="ModerationCtrl.page" query-params="ModerationCtrl.queryParams"></pagination>
@@ -95,32 +116,41 @@
     </div>
   </div>
 </div>
+
 <br />
+
+<!-- Report Viewer -->
 <div ng-show="ModerationCtrl.previewPost !== null">
   <div class="report-details-wrap">
     <h5 class="thin-underline">Report Details</h5>
+
     <table width="100%" class="report-details">
+
       <tbody>
         <tr>
           <td class="field">Actions</td>
           <td class="desc">
             <!-- Modify Report -->
-            <button class="icon css-tooltip" data-css-tooltip="Modify Report Status" ng-click="ModerationCtrl.showSetStatus(ModerationCtrl.previewReport)" ng-disabled="!ModerationCtrl.actionAccess.reportControls.updatePostReport"><i class="fa fa-cog"></i></button>
+            <button class="icon css-tooltip" data-css-tooltip="Modify Report Status" ng-click="ModerationCtrl.showSetStatus(ModerationCtrl.previewReport)" ng-disabled="!ModerationCtrl.canUpdateUserReport()"><i class="fa fa-cog"></i></button>
 
             <!-- Warn User -->
-            <button class="icon css-tooltip" data-css-tooltip="Warn User" ng-click="ModerationCtrl.showWarn({ id: ModerationCtrl.previewReport.offender_author_id, username: ModerationCtrl.previewReport.offender_author_username })" ng-disabled="!ModerationCtrl.actionAccess.messageControls.createConversations"><i class="fa fa-exclamation-circle"></i></button>
+            <button class="icon css-tooltip" data-css-tooltip="Warn User" ng-click="ModerationCtrl.showWarn({ id: ModerationCtrl.previewReport.offender_author_id, username: ModerationCtrl.previewReport.offender_author_username })" ng-disabled="!ModerationCtrl.canCreateConversation()"><i class="fa fa-exclamation-circle"></i></button>
 
             <!-- Ban/Unban User -->
-            <button class="icon css-tooltip" data-css-tooltip="Manage Bans" ng-click="ModerationCtrl.showManageBans({ id: ModerationCtrl.previewReport.offender_author_id, username: ModerationCtrl.previewReport.offender_author_username, email: ModerationCtrl.previewReport.offender_author_email, created_at: ModerationCtrl.previewReport.offender_author_created_at, ban_expiration: ModerationCtrl.previewReport.offender_ban_expiration })" ng-disabled="!ModerationCtrl.actionAccess.userControls.privilegedBan && !ModerationCtrl.actionAccess.userControls.privilegedBanFromBoards"><i class="fa fa-ban"></i></button>
+            <button class="icon css-tooltip" data-css-tooltip="Manage Bans" ng-click="ModerationCtrl.showManageBans({ id: ModerationCtrl.previewReport.offender_author_id, username: ModerationCtrl.previewReport.offender_author_username, email: ModerationCtrl.previewReport.offender_author_email, created_at: ModerationCtrl.previewReport.offender_author_created_at, ban_expiration: ModerationCtrl.previewReport.offender_ban_expiration })" ng-disabled="!ModerationCtrl.canBanUser()"><i class="fa fa-ban"></i></button>
 
             <!-- Edit Post -->
-            <button class="icon css-tooltip" data-css-tooltip="Edit Post" ng-disabled="!(ModerationCtrl.isGlobalModerator || ModerationCtrl.moderatesBoard(ModerationCtrl.previewReport.board_id)) || !ModerationCtrl.actionAccess.postControls.privilegedUpdate" ng-click="ModerationCtrl.loadEditor()" ><i class="fa fa-pencil"></i></a>
+            <button class="icon css-tooltip" data-css-tooltip="Edit Post" ng-disabled="!ModerationCtrl.canUpdatePost()" ng-click="ModerationCtrl.loadEditor()" >
+              <i class="fa fa-pencil"></i>
+            </button>
 
             <!-- Hide/Unhide Post -->
-            <button class="icon css-tooltip" data-css-tooltip="{{ ModerationCtrl.previewPost.deleted ? 'Unhide Post' : 'Hide Post' }}" ng-click="ModerationCtrl.previewPost.deleted ? ModerationCtrl.showPostConfirm({ postId: ModerationCtrl.previewReport.offender_post_id, undelete: true, label: 'Unhide' }) : ModerationCtrl.showPostConfirm({ postId: ModerationCtrl.previewReport.offender_post_id, delete: true, label: 'Hide' })" ng-disabled="ModerationCtrl.previewReport.offender_thread_starter || !(ModerationCtrl.isGlobalModerator || ModerationCtrl.moderatesBoard(ModerationCtrl.previewReport.board_id)) || !ModerationCtrl.actionAccess.postControls.privilegedDelete"><i ng-class="{ 'fa fa-eye':ModerationCtrl.previewPost.deleted, 'fa fa-eye-slash':!ModerationCtrl.previewPost.deleted }"></i></button>
+            <button class="icon css-tooltip" data-css-tooltip="{{ ModerationCtrl.previewPost.deleted ? 'Unhide Post' : 'Hide Post' }}" ng-click="ModerationCtrl.previewPost.deleted ? ModerationCtrl.showPostConfirm({ postId: ModerationCtrl.previewReport.offender_post_id, undelete: true, label: 'Unhide' }) : ModerationCtrl.showPostConfirm({ postId: ModerationCtrl.previewReport.offender_post_id, delete: true, label: 'Hide' })" ng-disabled="!ModerationCtrl.canDeletePost()">
+              <i ng-class="{ 'fa fa-eye':ModerationCtrl.previewPost.deleted, 'fa fa-eye-slash':!ModerationCtrl.previewPost.deleted }"></i>
+            </button>
 
             <!-- Purge Post -->
-            <button class="icon css-tooltip" data-css-tooltip="Purge Post" ng-disabled="ModerationCtrl.previewReport.offender_thread_starter || !(ModerationCtrl.isGlobalModerator || ModerationCtrl.moderatesBoard(ModerationCtrl.previewReport.board_id)) || !ModerationCtrl.actionAccess.postControls.privilegedPurge" ng-click="ModerationCtrl.showPostConfirm({ postId: ModerationCtrl.previewReport.offender_post_id, purge: true, label: 'Purge' })"><i class="fa fa-trash"></i></button>
+            <button class="icon css-tooltip" data-css-tooltip="Purge Post" ng-disabled="!ModerationCtrl.canPurgePost()" ng-click="ModerationCtrl.showPostConfirm({ postId: ModerationCtrl.previewReport.offender_post_id, purge: true, label: 'Purge' })"><i class="fa fa-trash"></i></button>
 
             <div ng-show="ModerationCtrl.previewReport.offender_thread_starter" class="note">First post in thread cannot be purged or hidden</div>
           </td>
@@ -343,7 +373,7 @@
       </tr>
     </table>
 
-    <div ng-if="ModerationCtrl.actionAccess.userControls.privilegedBan">
+    <div ng-if="ModerationCtrl.canGlobalBanUser()">
       <label for="banType">
         <strong>Ban Globally</strong>
         <a class="right" ng-click="ModerationCtrl.permanentBan = undefined; ModerationCtrl.banUntil = undefined;" ng-show="ModerationCtrl.permanentBan !== undefined">
@@ -369,7 +399,7 @@
     </label>
     <div class="board-bans-list">
       <script type="text/ng-template" id="board_renderer.html">
-        <input ng-init="(ModerationCtrl.hasGlobalModPerms && ModerationCtrl.allBoardIds.indexOf(board.id) < 0) ? ModerationCtrl.allBoardIds.push(board.id) : null" id="{{board.id}}" ng-checked="ModerationCtrl.boardBanList.indexOf(board.id) > -1" value="{{board.id}}" ng-click="ModerationCtrl.toggleBoardBan(board.id)" ng-disabled="ModerationCtrl.user.moderating.indexOf(board.id) < 0 && !ModerationCtrl.hasGlobalModPerms" type="checkbox" />
+        <input ng-init="ModerationCtrl.loadBoardBans(board.id)" id="{{board.id}}" ng-checked="ModerationCtrl.boardBanList.indexOf(board.id) > -1" value="{{board.id}}" ng-click="ModerationCtrl.toggleBoardBan(board.id)" ng-disabled="!ModerationCtrl.canBoardBanUser(board.id)" type="checkbox" />
         <label for="{{board.id}}" ng-bind-html="board.name"></label>
         <ul>
           <li ng-repeat="board in board.children track by board.id" ng-include="'board_renderer.html'"></li>

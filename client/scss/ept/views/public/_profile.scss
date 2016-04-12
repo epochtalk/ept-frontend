@@ -72,6 +72,7 @@
   }
 }
 .profile-posts table { word-break: break-all; }
+.more-posts { margin-bottom: 2rem; }
 
 @include media($mobile) {
   .profile-content {

@@ -5,22 +5,16 @@ var route = ['$stateProvider', function($stateProvider) {
     reloadOnSearch: false,
     views: {
       'content': {
-        controller: 'ProfileCtrl',
+        controller: ['user', '$location', '$state', function(user, $location, $state) {
+          this.user = user;
+          $state.go('profile.posts', $location.search(), { reload: 'profile.posts' });
+        } ],
         controllerAs: 'ProfileCtrl',
-        templateUrl: '/static/templates/users/profile/profile.html'
+        template: require('./profile.html')
       }
     },
     resolve: {
       $title: ['user', function(user) { return user.username; }],
-      loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
-        var deferred = $q.defer();
-        require.ensure([], function() {
-          var ctrl = require('./profile.controller');
-          $ocLazyLoad.load({ name: 'ept.profile.ctrl' });
-          deferred.resolve(ctrl);
-        });
-        return deferred.promise;
-      }],
       user: ['User', '$stateParams', function(User, $stateParams) {
         return User.get({ id: $stateParams.username }).$promise
         .then(function(user) { return user; });
