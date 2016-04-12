@@ -332,6 +332,18 @@
           <input id="adminBans-addAddresses" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminBans.addAddresses" ng-false-value="undefined" />
           Allow user to maunally ban addresses, used for admin banned addressess page
         </label>
+
+        <!-- Edit Banned Address -->
+        <label>
+          <input id="adminBans-editAddress" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminBans.editAddress" ng-false-value="undefined" />
+          Allow user to edit banned addresses, used for admin banned addressess page
+        </label>
+
+        <!-- Delete Banned Address -->
+        <label>
+          <input id="adminBans-deleteAddress" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminBans.deleteAddress" ng-false-value="undefined" />
+          Allow user to delete banned addresses, used for admin banned addressess page
+        </label>
       </div>
 
       <!-- Settings Tab -->

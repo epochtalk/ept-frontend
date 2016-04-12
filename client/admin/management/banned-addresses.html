@@ -23,6 +23,7 @@
       <th class="pointer" ng-click="AdminManagementCtrl.setSortField('decay')"><span ng-class="AdminManagementCtrl.getSortClass('decay')"></span>&nbsp;Decays</th>
       <th class="pointer" ng-click="AdminManagementCtrl.setSortField('updates')"><span ng-class="AdminManagementCtrl.getSortClass('updates')"></span>&nbsp;Last Updated</th>
       <th class="pointer" ng-click="AdminManagementCtrl.setSortField('update_count')"><span ng-class="AdminManagementCtrl.getSortClass('update_count')"></span>&nbsp;Update Count</th>
+      <th>Actions</th>
     </thead>
     <tbody>
       <tr ng-repeat="address in AdminManagementCtrl.addresses">
@@ -32,6 +33,14 @@
         <td ng-bind="address.decay ? 'YES' : 'NO'"></td>
         <td ng-bind="(address.updated_at | humanDate) || 'N/A'"></td>
         <td ng-bind="address.update_count || 0"></td>
+        <th>
+          <button ng-click="AdminManagementCtrl.showEditAddressModal(address)" class="icon css-tooltip" data-css-tooltip="Edit Address">
+            <i class="fa fa-pencil"></i>
+          </button>
+          <button ng-click="AdminManagementCtrl.showConfirmDeleteAddressModal(address)" class="icon css-tooltip" data-css-tooltip="Delete Address">
+            <i class="fa fa-trash"></i>
+          </button>
+        </th>
       </tr>
     </tbody>
   </table>
@@ -47,6 +56,37 @@
     <span ng-hide="AdminManagementCtrl.next">Next &#10095;</span>
   </div>
 </div>
+
+<modal show="AdminManagementCtrl.showEditAddress" on-close="AdminManagementCtrl.closeEditAddress()">
+  <form name="$parent.form" class="css-form">
+    <h3 class="thin-underline">Edit Banned Address</h3>
+    <p>Edit weight and decay properties of banned address: <strong ng-bind="AdminManagementCtrl.selectedAddress.hostname || AdminManagementCtrl.selectedAddress.ip"></strong></p>
+    <label for="addrWeight"><strong>Weight</strong></label>
+      <input type="number" id="addrWeight" name="addrWeight" ng-model="AdminManagementCtrl.selectedAddress.weight" ng-required />
+    <label for="addrDecay"><strong>Decays</strong></label>
+    <input type="radio" name="addrDecay" id="decayYes" ng-value="true" ng-model="AdminManagementCtrl.selectedAddress.decay" ng-required />
+    <label for="decayYes">Yes</label>
+      <input type="radio" name="addrDecay" id="decayNo" ng-value="false" ng-model="AdminManagementCtrl.selectedAddress.decay" ng-required />
+    <label for="decayNo">No</label>
+    <div class="clear">
+      <button class="fill-row" ng-click="AdminManagementCtrl.editAddress()"
+        ng-disabled="$parent.form.$invalid || $parent.form.$errors || AdminManagementCtrl.editAddressSubmitted" ng-bind="AdminManagementCtrl.editAddressBtnLabel"></button>
+    </div>
+  </form>
+</modal>
+
+<modal show="AdminManagementCtrl.showConfirmDeleteAddress" on-close="AdminManagementCtrl.closeConfirmDeleteAddress()">
+  <form name="$parent.form" class="css-form">
+    <h3 class="thin-underline">Confirm Deletion of Banned Address</h3>
+    <p>
+      Are you sure you want to delete the address <strong ng-bind="AdminManagementCtrl.selectedAddress.hostname || AdminManagementCtrl.selectedAddress.ip"></strong>?
+    </p>
+    <div class="clear">
+      <button class="fill-row" ng-click="AdminManagementCtrl.deleteAddress()"
+        ng-disabled="$parent.form.$invalid || $parent.form.$errors || AdminManagementCtrl.deleteAddressSubmitted" ng-bind="AdminManagementCtrl.deleteAddressBtnLabel"></button>
+    </div>
+  </form>
+</modal>
 
 <!-- Ban New Addresses Modal -->
 <modal show="AdminManagementCtrl.showBanAddresses" on-close="AdminManagementCtrl.closeBanAddresses()">

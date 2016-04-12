@@ -62,13 +62,91 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'S
     ctrl.searchStr = null;
   };
 
+  this.showEditAddress = false;
+  this.selectedAddress = null;
+  this.editAddressBtnLabel = 'Edit Address';
+  this.editAddressSubmitted = false;
+
+  this.showEditAddressModal = function(addrInfo) {
+    ctrl.selectedAddress = angular.copy(addrInfo);
+    ctrl.showEditAddress = true;
+  };
+
+  this.closeEditAddress = function() {
+    ctrl.showEditAddress = false;
+    ctrl.selectedAddress = null;
+  };
+
+  this.editAddress = function() {
+    ctrl.editAddressSubmitted = true;
+    ctrl.editAddressBtnLabel = 'Loading...';
+    var address = ctrl.selectedAddress.hostname || ctrl.selectedAddress.ip;
+    ctrl.selectedAddress.hostname = ctrl.selectedAddress.hostname ? ctrl.selectedAddress.hostname.replace(new RegExp('\\*', 'g'), '%') : undefined;
+    AdminBans.editAddress(ctrl.selectedAddress).$promise
+    .then(function() {
+      Alert.success('Sucessfully edited address ' + address);
+      ctrl.pullPage();
+    })
+    .catch(function() {
+      Alert.error('There was an error editing the address info for ' + address);
+    })
+    .finally(function() {
+      ctrl.closeEditAddress();
+      $timeout(function() {
+        ctrl.editAddressBtnLabel = 'Edit Address';
+        ctrl.editAddressSubmitted = false;
+        ctrl.selectedAddress = null;
+      }, 500);
+    });
+  };
+
+  this.showConfirmDeleteAddress = false;
+  this.deleteAddressBtnLabel = 'Confirm Delete';
+  this.deleteAddressSubmitted = false;
+
+  this.showConfirmDeleteAddressModal = function(addrInfo) {
+    ctrl.selectedAddress = angular.copy(addrInfo);
+    ctrl.showConfirmDeleteAddress = true;
+  };
+
+  this.closeConfirmDeleteAddress = function() {
+    ctrl.showConfirmDeleteAddress = false;
+    ctrl.selectedAddress = null;
+  };
+
+  this.deleteAddress = function() {
+    ctrl.deleteAddressSubmitted = true;
+    ctrl.deleteAddressBtnLabel = 'Loading...';
+
+    var address = ctrl.selectedAddress.hostname || ctrl.selectedAddress.ip;
+    var params = {
+      hostname: ctrl.selectedAddress.hostname ? ctrl.selectedAddress.hostname.replace(new RegExp('\\*', 'g'), '%') : undefined,
+      ip: ctrl.selectedAddress.ip
+    };
+    AdminBans.deleteAddress(params).$promise
+    .then(function() {
+      Alert.success('Sucessfully deleted address ' + address);
+      ctrl.pullPage();
+    })
+    .catch(function() {
+      Alert.error('There was an error deleting the address ' + address);
+    })
+    .finally(function() {
+      ctrl.closeConfirmDeleteAddress();
+      $timeout(function() {
+        ctrl.deleteAddressBtnLabel = 'Confirm Delete';
+        ctrl.deleteAddressSubmitted = false;
+        ctrl.selectedAddress = null;
+      }, 500);
+    });
+  };
+
   this.banAddressesBtnLabel = 'Ban Addresses';
   this.banAddressesSubmitted = false;
 
   this.closeBanAddresses = function() {
     ctrl.showBanAddresses = false;
     ctrl.addressesToBan = [{}];
-    ctrl.banAddressMsg = null;
   };
 
   this.checkAddresses = function() {
@@ -90,14 +168,16 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'S
       .then(function() {
         Alert.success('Sucessfully banned addresses');
         ctrl.pullPage();
+      })
+      .catch(function() {
+        Alert.error('There was an error banning addresses');
+      })
+      .finally(function() {
         ctrl.closeBanAddresses();
         $timeout(function() { // wait for modal to close
           ctrl.banAddressesBtnLabel = 'Ban Addresses';
           ctrl.banAddressesSubmitted = false;
         }, 500);
-      })
-      .catch(function() {
-        Alert.error('There was an error banning addresses');
       });
     }
   };
