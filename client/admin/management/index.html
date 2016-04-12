@@ -10,6 +10,9 @@
     <dd ng-if="AdminManagementCtrl.hasPermission('adminAccess.management.roles')" class="no-select" ng-class="{'active': AdminManagementCtrl.tab == 'roles'}">
       <a ui-sref=".roles" ng-click="AdminManagementCtrl.tab = 'roles'">Roles</a>
     </dd>
+    <dd ng-if="AdminManagementCtrl.hasPermission('adminAccess.management.bannedAddresses')" class="no-select" ng-class="{'active': AdminManagementCtrl.tab == 'bannedAddresses'}">
+      <a ui-sref=".banned-addresses" ng-click="AdminManagementCtrl.tab = 'bannedAddresses'">Banned Addresses</a>
+    </dd>
   </dl>
 </div>
 

@@ -13,6 +13,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
     if (Session.hasPermission('adminAccess.management.boards')) { $state.go('admin-management.boards'); }
     else if (Session.hasPermission('adminAccess.management.users')) { $state.go('admin-management.users'); }
     else if (Session.hasPermission('adminAccess.management.roles')) { $state.go('admin-management.roles'); }
+    else if (Session.hasPermission('adminAccess.management.bannedAddresses')) { $state.go('admin-management.banned-addresses'); }
     else { $state.go('admin'); }
   }];
 
@@ -178,6 +179,40 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
         };
         return AdminRoles.users(query).$promise
         .then(function(userData) { return userData; });
+      }]
+    }
+  })
+  .state('admin-management.banned-addresses', {
+    url: '/bannedaddresses?page&limit&field&desc&search',
+    reloadOnSearch: false,
+    views: {
+      'data@admin-management': {
+        controller: 'BannedAddressesCtrl',
+        controllerAs: 'AdminManagementCtrl',
+        templateUrl: '/static/templates/admin/management/banned-addresses.html'
+      }
+    },
+    resolve: {
+      userAccess: adminCheck('management.bannedAddresses'),
+      $title: function() { return 'Banned Addresses Management'; },
+      loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
+        var deferred = $q.defer();
+        require.ensure([], function() {
+          var ctrl = require('./banned-addresses.controller');
+          $ocLazyLoad.load({ name: 'ept.admin.management.bannedAddresses.ctrl' });
+          deferred.resolve(ctrl);
+        });
+        return deferred.promise;
+      }],
+      bannedAddresses: ['AdminBans', '$stateParams', function(AdminBans, $stateParams) {
+        var query = {
+          field: $stateParams.field,
+          desc: $stateParams.desc,
+          limit: Number($stateParams.limit) || 25,
+          page: Number($stateParams.page) || 1,
+          search: $stateParams.search
+        };
+        return AdminBans.pageBannedAddresses(query).$promise;
       }]
     }
   });

@@ -248,7 +248,6 @@ var ctrl = ['$q', '$rootScope', '$scope', '$location', '$timeout', '$anchorScrol
       ctrl.board = newBannedBoards.board;
       ctrl.bannedBoards = newBannedBoards.data;
       ctrl.search = newBannedBoards.search;
-      ctrl.searchActive = newBannedBoards.search ? true : false;
     });
   };
 }];

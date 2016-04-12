@@ -26,6 +26,9 @@ module.exports = ['$window', function($window) {
         username: storage.username,
         avatar: storage.avatar,
       };
+      if (storage.malicious_score) {
+        user.malicious_score = storage.malicious_score;
+      }
       if (storage.ban_expiration) {
         user.ban_expiration = storage.ban_expiration;
         // check if ban has expired remove if it has
@@ -42,6 +45,12 @@ module.exports = ['$window', function($window) {
       container.id = newUser.id;
       container.username = newUser.username;
       container.avatar = newUser.avatar || 'https://fakeimg.pl/400x400/ccc/444/?text=' + user.username;
+      if (newUser.malicious_score) {
+        container.malicious_score = newUser.malicious_score;
+      }
+      else if (container.malicious_score && !newUser.malicious_score) {
+        delete container.malicious_score;
+      }
       if (newUser.ban_expiration) {
         container.ban_expiration = newUser.ban_expiration;
         // check if ban has expired remove if it has
@@ -67,6 +76,7 @@ module.exports = ['$window', function($window) {
       delete container.id;
       delete container.username;
       delete container.avatar;
+      delete container.malicious_score;
       delete container.ban_expiration;
       delete container.roles;
       delete container.moderating;
