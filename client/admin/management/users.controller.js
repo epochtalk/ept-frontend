@@ -54,7 +54,7 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
   this.showEditUserModal = false;
 
   this.showEditUser = function(username) {
-    User.get({ username: username }).$promise
+    User.get({ id: username }).$promise
     .then(function(userData) {
       ctrl.selectedUser = userData;
       ctrl.selectedUser.dob = $filter('date')(ctrl.selectedUser.dob, 'longDate');
