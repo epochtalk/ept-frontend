@@ -1,8 +1,5 @@
-'use strict';
-/* jslint node: true */
-
-module.exports = ['$q', '$window', 'Session',
-  function ($q, $window, Session) {
+module.exports = ['$q', 'Session',
+  function ($q, Session) {
   return {
     request: function (config) {
       config.headers = config.headers || {};

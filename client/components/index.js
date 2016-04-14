@@ -23,4 +23,3 @@ app.directive('nestableCategories', require('./category_editor/nestable-categori
 app.directive('autocompleteUsername', require('./autocomplete_username/autocomplete-username.directive.js'));
 app.directive('autocompleteUserId', require('./autocomplete_user_id/autocomplete-user-id.directive.js'));
 app.directive('epochtalkEditor', require('./editor/editor.directive.js'));
-app.directive('profile', require('./profile/profile.directive.js'));

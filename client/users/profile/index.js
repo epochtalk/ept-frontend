@@ -15,6 +15,15 @@ var route = ['$stateProvider', function($stateProvider) {
     },
     resolve: {
       $title: ['user', function(user) { return user.username; }],
+      profileDirective: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
+        var deferred = $q.defer();
+        require.ensure([], function() {
+          var directive = require('../../components/profile/profile.directive.js');
+          $ocLazyLoad.load({ name: 'ept.profile.directive'});
+          deferred.resolve(directive);
+        });
+        return deferred.promise;
+      }],
       user: ['User', '$stateParams', function(User, $stateParams) {
         return User.get({ id: $stateParams.username }).$promise
         .then(function(user) { return user; });

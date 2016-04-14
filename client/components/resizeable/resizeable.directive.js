@@ -56,7 +56,7 @@ module.exports = ['$document',
           }
         };
 
-        var onUp = function(e) {
+        var onUp = function() {
           grabbed = false; // trigger off clicked
           newHeight = undefined; // clear newHeight
         };

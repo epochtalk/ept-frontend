@@ -71,6 +71,15 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
         });
         return deferred.promise;
       }],
+      profileDirective: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
+        var deferred = $q.defer();
+        require.ensure([], function() {
+          var directive = require('../../components/profile/profile.directive.js');
+          $ocLazyLoad.load({ name: 'ept.profile.directive'});
+          deferred.resolve(directive);
+        });
+        return deferred.promise;
+      }],
       reportId: ['$stateParams', function($stateParams) {
         return $stateParams.reportId;
       }],

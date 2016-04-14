@@ -1,4 +1,4 @@
-module.exports = ['User', 'Session', 'Alert', '$filter', '$state',
+var directive = ['User', 'Session', 'Alert', '$filter', '$state',
 function(User, Session, Alert, $filter, $state) {
   return {
     restrict: 'E',
@@ -197,3 +197,7 @@ function(User, Session, Alert, $filter, $state) {
     }]
   };
 }];
+
+module.exports = angular.module('ept.profile.directive', [])
+.directive('profile', directive)
+.name;
