@@ -198,6 +198,6 @@ function(User, Session, Alert, $filter, $state) {
   };
 }];
 
-module.exports = angular.module('ept.profile.directive', [])
+module.exports = angular.module('ept.directives.profile', [])
 .directive('profile', directive)
 .name;

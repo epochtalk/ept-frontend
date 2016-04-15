@@ -19,7 +19,7 @@ var route = ['$stateProvider', function($stateProvider) {
         var deferred = $q.defer();
         require.ensure([], function() {
           var directive = require('../../components/profile/profile.directive.js');
-          $ocLazyLoad.load({ name: 'ept.profile.directive'});
+          $ocLazyLoad.load({ name: 'ept.directives.profile'});
           deferred.resolve(directive);
         });
         return deferred.promise;
