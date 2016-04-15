@@ -15,11 +15,6 @@ app.directive('alert', require('./alert/alert.directive.js'));
 app.directive('imageUploader', require('./image_uploader/image_uploader.directive.js'));
 app.directive('pollViewer', require('./poll_viewer/poll_viewer.directive.js'));
 app.directive('pollCreator', require('./poll_creator/poll_creator.directive.js'));
-
-app.directive('categoryEditor', require('./category_editor/category-editor.directive.js'));
-app.directive('nestableBoards', require('./category_editor/nestable-boards.directive.js'));
-app.directive('nestableCategories', require('./category_editor/nestable-categories.directive.js'));
-
 app.directive('autocompleteUsername', require('./autocomplete_username/autocomplete-username.directive.js'));
 app.directive('autocompleteUserId', require('./autocomplete_user_id/autocomplete-user-id.directive.js'));
 app.directive('epochtalkEditor', require('./editor/editor.directive.js'));

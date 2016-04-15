@@ -1,7 +1,7 @@
 var remove = require('lodash/remove');
 var find = require('lodash/find');
 
-module.exports = ['$state', function($state) {
+var directive = ['$state', function($state) {
   return {
     restrict: 'E',
     template: require('./category-editor.html'),
@@ -279,3 +279,7 @@ module.exports = ['$state', function($state) {
     }]
   };
 }];
+
+module.exports = angular.module('ept.directives.category-editor', [])
+.directive('categoryEditor', directive)
+.name;

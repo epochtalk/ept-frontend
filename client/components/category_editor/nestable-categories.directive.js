@@ -1,6 +1,6 @@
 var sortBy = require('lodash/sortBy');
 
-module.exports = ['$compile', function($compile) {
+var directive = ['$compile', function($compile) {
   return {
     restrict: 'E',
     require: '^categoryEditor',
@@ -100,3 +100,6 @@ module.exports = ['$compile', function($compile) {
     }
   };
 }];
+
+module.exports = angular.module('ept.directives.nestable-categories', [])
+.directive('nestableCategories', directive);

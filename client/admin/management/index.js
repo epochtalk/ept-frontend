@@ -52,6 +52,33 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
     resolve: {
       userAccess: adminCheck('management.boards'),
       $title: function() { return 'Board Management'; },
+      catEditor: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
+        var deferred = $q.defer();
+        require.ensure([], function() {
+          var dir = require('../../components/category_editor/category-editor.directive');
+          $ocLazyLoad.load({ name: 'ept.directives.category-editor'});
+          deferred.resolve(dir);
+        });
+        return deferred.promise;
+      }],
+      nestBoards: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
+        var deferred = $q.defer();
+        require.ensure([], function() {
+          var dir = require('../../components/category_editor/nestable-boards.directive');
+          $ocLazyLoad.load({ name: 'ept.directives.nestable-boards'});
+          deferred.resolve(dir);
+        });
+        return deferred.promise;
+      }],
+      nestCats: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
+        var deferred = $q.defer();
+        require.ensure([], function() {
+          var dir = require('../../components/category_editor/nestable-categories.directive');
+          $ocLazyLoad.load({ name: 'ept.directives.nestable-categories'});
+          deferred.resolve(dir);
+        });
+        return deferred.promise;
+      }],
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
