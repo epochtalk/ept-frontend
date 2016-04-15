@@ -281,5 +281,4 @@ var directive = ['$state', function($state) {
 }];
 
 module.exports = angular.module('ept.directives.category-editor', [])
-.directive('categoryEditor', directive)
-.name;
+.directive('categoryEditor', directive);
