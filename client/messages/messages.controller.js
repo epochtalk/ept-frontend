@@ -296,6 +296,8 @@ var ctrl = [
   }
 ];
 
+// require autocomplete-user-id directive
+require('../components/autocomplete_user_id/autocomplete-user-id.directive');
+
 module.exports = angular.module('ept.messages.ctrl', [])
-.controller('MessagesCtrl', ctrl)
-.name;
+.controller('MessagesCtrl', ctrl);

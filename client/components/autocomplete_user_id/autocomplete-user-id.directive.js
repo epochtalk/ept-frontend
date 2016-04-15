@@ -1,4 +1,4 @@
-module.exports = ['Messages', function(Messages) {
+var directive = ['Messages', function(Messages) {
   return {
     restrict: 'E',
     template: require('./autocomplete-user-id.html'),
@@ -33,3 +33,6 @@ module.exports = ['Messages', function(Messages) {
     }]
   };
 }];
+
+module.exports = angular.module('ept.directives.autocomplete-user-id', [])
+.directive('autocompleteUserId', directive);

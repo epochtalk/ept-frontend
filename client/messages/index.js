@@ -14,9 +14,10 @@ var route = ['$stateProvider', function($stateProvider) {
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./messages.controller');
+          require('./messages.controller');
           $ocLazyLoad.load({ name: 'ept.messages.ctrl' });
-          deferred.resolve(ctrl);
+          $ocLazyLoad.load({ name: 'ept.directives.autocomplete-user-id' });
+          deferred.resolve();
         });
         return deferred.promise;
       }],
