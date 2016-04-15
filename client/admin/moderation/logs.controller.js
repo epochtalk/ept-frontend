@@ -85,12 +85,6 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'A
       value: 'users.update',
       desc: 'Updated User' },
     { group: 'User Actions',
-      value: 'adminUsers.ban',
-      desc: 'Banned User' },
-    { group: 'User Actions',
-      value: 'adminUsers.unban',
-      desc: 'Unbanned User' },
-    { group: 'User Actions',
       value: 'adminUsers.addRoles',
       desc: 'Added a Role to User' },
     { group: 'User Actions',
@@ -105,6 +99,14 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'A
     { group: 'User Actions',
       value: 'users.reactivate',
       desc: 'Reactivated User' },
+
+    { group: 'Banning Actions',
+      value: 'bans.ban',
+      desc: 'Banned User' },
+    { group: 'Banning Actions',
+      value: 'bans.unban',
+      desc: 'Unbanned User' },
+      //TODO: ADD ban from board and add ip/hostname ban
 
     { group: 'Board Actions',
       value: 'adminBoards.updateCategories',

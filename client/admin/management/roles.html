@@ -181,7 +181,7 @@
             Messages Moderation Tab
           </label>
           <label>
-            <input id="modAccess-boardBans" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.modAccess.boardBans" ng-change="AdminManagementCtrl.newRole.permissions.modAccess.boardBans ? AdminManagementCtrl.newRole.permissions.adminUsers.byBannedBoards = true : AdminManagementCtrl.newRole.permissions.adminUsers.byBannedBoards = undefined; AdminManagementCtrl.newRole.permissions.modAccess.boardBans ? AdminManagementCtrl.newRole.permissions.adminUsers.getBannedBoards = true : AdminManagementCtrl.newRole.permissions.adminUsers.getBannedBoards = undefined" ng-false-value="undefined" />
+            <input id="modAccess-boardBans" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.modAccess.boardBans" ng-change="AdminManagementCtrl.newRole.permissions.modAccess.boardBans ? AdminManagementCtrl.newRole.permissions.bans.byBannedBoards = true : AdminManagementCtrl.newRole.permissions.bans.byBannedBoards = undefined; AdminManagementCtrl.newRole.permissions.modAccess.boardBans ? AdminManagementCtrl.newRole.permissions.bans.getBannedBoards = true : AdminManagementCtrl.newRole.permissions.bans.getBannedBoards = undefined" ng-false-value="undefined" />
             Board Bans Moderation Tab
           </label>
           <label>
@@ -320,28 +320,68 @@
       <!-- Bans Tab -->
       <div ng-if="AdminManagementCtrl.selectedTab === 'bans'">
         <h4>Elevated Permissions</h4>
+        <!-- Ban/Unban User -->
+        <label>
+          <input id="adminUsers-privilegedBan" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.bans.ban" ng-change="AdminManagementCtrl.newRole.permissions.bans.ban ? AdminManagementCtrl.newRole.permissions.bans.privilegedBan.lowerPriority = true : AdminManagementCtrl.newRole.permissions.bans.privilegedBan = undefined; AdminManagementCtrl.newRole.permissions.bans.ban ? AdminManagementCtrl.newRole.permissions.bans.unban = true : AdminManagementCtrl.newRole.permissions.bans.unban = undefined" ng-false-value="undefined" />
+          Allow user to ban/unban other's accounts
+        </label>
+        <div class="indent">
+          <label ng-if="AdminManagementCtrl.newRole.permissions.bans.ban">
+            <input name="users-ban-priority" type="radio" ng-model="AdminManagementCtrl.newRole.permissions.bans.privilegedBan.samePriority" ng-click="AdminManagementCtrl.newRole.permissions.bans.privilegedBan.lowerPriority = undefined" ng-value="true" />
+            Users with the same or lesser role
+          </label>
+          <label ng-if="AdminManagementCtrl.newRole.permissions.bans.ban">
+            <input name="users-ban-priority" type="radio" ng-model="AdminManagementCtrl.newRole.permissions.bans.privilegedBan.lowerPriority" ng-click="AdminManagementCtrl.newRole.permissions.bans.privilegedBan.samePriority = undefined" ng-value="true" />
+            Only users with lesser roles
+          </label>
+        </div>
+
+        <!-- Board Ban/Unban User -->
+        <label>
+          <input id="bans-privilegedBanFromBoards" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.bans.banFromBoards" ng-change="AdminManagementCtrl.newRole.permissions.bans.banFromBoards ? AdminManagementCtrl.newRole.permissions.bans.privilegedBanFromBoards.lowerPriority = true : AdminManagementCtrl.newRole.permissions.bans.privilegedBanFromBoards = undefined;
+          AdminManagementCtrl.newRole.permissions.bans.banFromBoards ? AdminManagementCtrl.newRole.permissions.bans.privilegedBanFromBoards.some = true : AdminManagementCtrl.newRole.permissions.bans.privilegedBanFromBoards = undefined; AdminManagementCtrl.newRole.permissions.bans.banFromBoards ? AdminManagementCtrl.newRole.permissions.bans.unbanFromBoards = true : AdminManagementCtrl.newRole.permissions.bans.unbanFromBoards = undefined" ng-false-value="undefined" />
+          Allow user to ban/unban other's accounts from certain boards
+        </label>
+        <div class="indent">
+          <label ng-if="AdminManagementCtrl.newRole.permissions.bans.banFromBoards">
+            <input name="users-banFromBoards-priority" type="radio" ng-model="AdminManagementCtrl.newRole.permissions.bans.privilegedBanFromBoards.samePriority" ng-click="AdminManagementCtrl.newRole.permissions.bans.privilegedBanFromBoards.lowerPriority = undefined" ng-value="true" />
+            Users with the same or lesser role
+          </label>
+          <label ng-if="AdminManagementCtrl.newRole.permissions.bans.banFromBoards">
+            <input name="users-banFromBoards-priority" type="radio" ng-model="AdminManagementCtrl.newRole.permissions.bans.privilegedBanFromBoards.lowerPriority" ng-click="AdminManagementCtrl.newRole.permissions.bans.privilegedBanFromBoards.samePriority = undefined" ng-value="true" />
+            Only users with lesser roles
+          </label>
+          <label ng-if="AdminManagementCtrl.newRole.permissions.bans.banFromBoards">
+            <input name="users-banFromBoards-status" type="radio" ng-model="AdminManagementCtrl.newRole.permissions.bans.privilegedBanFromBoards.all" ng-click="AdminManagementCtrl.newRole.permissions.bans.privilegedBanFromBoards.some = undefined" ng-value="true" />
+            Ban/unban users from any board
+          </label>
+          <label ng-if="AdminManagementCtrl.newRole.permissions.bans.banFromBoards">
+            <input name="users-banFromBoards-status" type="radio" ng-model="AdminManagementCtrl.newRole.permissions.bans.privilegedBanFromBoards.some" ng-click="AdminManagementCtrl.newRole.permissions.bans.privilegedBanFromBoards.all = undefined" ng-value="true" />
+            Ban/unban users from boards this user moderates
+          </label>
+        </div>
 
         <!-- Page Banned Addresses -->
         <label>
-          <input id="adminBans-pageBannedAddresses" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminBans.pageBannedAddresses" ng-false-value="undefined" />
+          <input id="bans-pageBannedAddresses" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.bans.pageBannedAddresses" ng-false-value="undefined" />
           Allow user to page through banned addresses, used for admin banned addressess page
         </label>
 
         <!-- Add Banned Addresses -->
         <label>
-          <input id="adminBans-addAddresses" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminBans.addAddresses" ng-false-value="undefined" />
+          <input id="bans-addAddresses" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.bans.addAddresses" ng-false-value="undefined" />
           Allow user to maunally ban addresses, used for admin banned addressess page
         </label>
 
         <!-- Edit Banned Address -->
         <label>
-          <input id="adminBans-editAddress" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminBans.editAddress" ng-false-value="undefined" />
+          <input id="bans-editAddress" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.bans.editAddress" ng-false-value="undefined" />
           Allow user to edit banned addresses, used for admin banned addressess page
         </label>
 
         <!-- Delete Banned Address -->
         <label>
-          <input id="adminBans-deleteAddress" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminBans.deleteAddress" ng-false-value="undefined" />
+          <input id="bans-deleteAddress" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.bans.deleteAddress" ng-false-value="undefined" />
           Allow user to delete banned addresses, used for admin banned addressess page
         </label>
       </div>
@@ -1282,48 +1322,6 @@
               <input id="adminUsers-pageModerators" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminUsers.pageModerators" ng-change="AdminManagementCtrl.newRole.permissions.adminUsers.pageModerators ? AdminManagementCtrl.newRole.permissions.adminUsers.countModerators = true : AdminManagementCtrl.newRole.permissions.adminUsers.countModerators = undefined" ng-false-value="undefined" />
               Allow user to page through all forum moderators
             </label>
-
-            <!-- Ban/Unban User -->
-            <label>
-              <input id="adminUsers-privilegedBan" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminUsers.ban" ng-change="AdminManagementCtrl.newRole.permissions.adminUsers.ban ? AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBan.lowerPriority = true : AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBan = undefined; AdminManagementCtrl.newRole.permissions.adminUsers.ban ? AdminManagementCtrl.newRole.permissions.adminUsers.unban = true : AdminManagementCtrl.newRole.permissions.adminUsers.unban = undefined" ng-false-value="undefined" />
-              Allow user to ban/unban other's accounts
-            </label>
-            <div class="indent">
-              <label ng-if="AdminManagementCtrl.newRole.permissions.adminUsers.ban">
-                <input name="users-ban-priority" type="radio" ng-model="AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBan.samePriority" ng-click="AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBan.lowerPriority = undefined" ng-value="true" />
-                Users with the same or lesser role
-              </label>
-              <label ng-if="AdminManagementCtrl.newRole.permissions.adminUsers.ban">
-                <input name="users-ban-priority" type="radio" ng-model="AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBan.lowerPriority" ng-click="AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBan.samePriority = undefined" ng-value="true" />
-                Only users with lesser roles
-              </label>
-            </div>
-
-            <!-- Board Ban/Unban User -->
-            <label>
-              <input id="adminUsers-privilegedBanFromBoards" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminUsers.banFromBoards" ng-change="AdminManagementCtrl.newRole.permissions.adminUsers.banFromBoards ? AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBanFromBoards.lowerPriority = true : AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBanFromBoards = undefined;
-              AdminManagementCtrl.newRole.permissions.adminUsers.banFromBoards ? AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBanFromBoards.some = true : AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBanFromBoards = undefined; AdminManagementCtrl.newRole.permissions.adminUsers.banFromBoards ? AdminManagementCtrl.newRole.permissions.adminUsers.unbanFromBoards = true : AdminManagementCtrl.newRole.permissions.adminUsers.unbanFromBoards = undefined" ng-false-value="undefined" />
-              Allow user to ban/unban other's accounts from certain boards
-            </label>
-            <div class="indent">
-              <label ng-if="AdminManagementCtrl.newRole.permissions.adminUsers.banFromBoards">
-                <input name="users-banFromBoards-priority" type="radio" ng-model="AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBanFromBoards.samePriority" ng-click="AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBanFromBoards.lowerPriority = undefined" ng-value="true" />
-                Users with the same or lesser role
-              </label>
-              <label ng-if="AdminManagementCtrl.newRole.permissions.adminUsers.banFromBoards">
-                <input name="users-banFromBoards-priority" type="radio" ng-model="AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBanFromBoards.lowerPriority" ng-click="AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBanFromBoards.samePriority = undefined" ng-value="true" />
-                Only users with lesser roles
-              </label>
-              <label ng-if="AdminManagementCtrl.newRole.permissions.adminUsers.banFromBoards">
-                <input name="users-banFromBoards-status" type="radio" ng-model="AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBanFromBoards.all" ng-click="AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBanFromBoards.some = undefined" ng-value="true" />
-                Ban/unban users from any board
-              </label>
-              <label ng-if="AdminManagementCtrl.newRole.permissions.adminUsers.banFromBoards">
-                <input name="users-banFromBoards-status" type="radio" ng-model="AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBanFromBoards.some" ng-click="AdminManagementCtrl.newRole.permissions.adminUsers.privilegedBanFromBoards.all = undefined" ng-value="true" />
-                Ban/unban users from boards this user moderates
-              </label>
-            </div>
-
           </div>
 
           <div class="half-column">

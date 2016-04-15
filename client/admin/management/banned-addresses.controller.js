@@ -1,4 +1,4 @@
-var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'Session', 'Alert', 'AdminBans', 'bannedAddresses', function($rootScope, $scope, $location, $timeout, $anchorScroll, Session, Alert, AdminBans, bannedAddresses) {
+var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'Session', 'Alert', 'Bans', 'bannedAddresses', function($rootScope, $scope, $location, $timeout, $anchorScroll, Session, Alert, Bans, bannedAddresses) {
   var ctrl = this;
   this.parent = $scope.$parent.AdminManagementCtrl;
   this.parent.tab = 'bannedAddresses';
@@ -82,7 +82,7 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'S
     ctrl.editAddressBtnLabel = 'Loading...';
     var address = ctrl.selectedAddress.hostname || ctrl.selectedAddress.ip;
     ctrl.selectedAddress.hostname = ctrl.selectedAddress.hostname ? ctrl.selectedAddress.hostname.replace(new RegExp('\\*', 'g'), '%') : undefined;
-    AdminBans.editAddress(ctrl.selectedAddress).$promise
+    Bans.editAddress(ctrl.selectedAddress).$promise
     .then(function() {
       Alert.success('Sucessfully edited address ' + address);
       ctrl.pullPage();
@@ -123,7 +123,7 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'S
       hostname: ctrl.selectedAddress.hostname ? ctrl.selectedAddress.hostname.replace(new RegExp('\\*', 'g'), '%') : undefined,
       ip: ctrl.selectedAddress.ip
     };
-    AdminBans.deleteAddress(params).$promise
+    Bans.deleteAddress(params).$promise
     .then(function() {
       Alert.success('Sucessfully deleted address ' + address);
       ctrl.pullPage();
@@ -164,7 +164,7 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'S
     });
 
     if (addresses.length) {
-      AdminBans.addAddresses(addresses).$promise
+      Bans.addAddresses(addresses).$promise
       .then(function() {
         Alert.success('Sucessfully banned addresses');
         ctrl.pullPage();
@@ -233,7 +233,7 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'S
     };
 
     // replace current users with new users
-    AdminBans.pageBannedAddresses(query).$promise
+    Bans.pageBannedAddresses(query).$promise
     .then(function(updatedAddresses) {
       ctrl.addresses = updatedAddresses.data;
       ctrl.page = updatedAddresses.page;

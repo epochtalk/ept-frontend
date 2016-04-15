@@ -204,7 +204,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
         });
         return deferred.promise;
       }],
-      bannedAddresses: ['AdminBans', '$stateParams', function(AdminBans, $stateParams) {
+      bannedAddresses: ['Bans', '$stateParams', function(Bans, $stateParams) {
         var query = {
           field: $stateParams.field,
           desc: $stateParams.desc,
@@ -212,7 +212,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           page: Number($stateParams.page) || 1,
           search: $stateParams.search
         };
-        return AdminBans.pageBannedAddresses(query).$promise;
+        return Bans.pageBannedAddresses(query).$promise;
       }]
     }
   });

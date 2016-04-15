@@ -4,5 +4,4 @@ angular.module('ept')
   .factory('AdminSettings', require('./settings.js'))
   .factory('AdminRoles', require('./roles.js'))
   .factory('AdminModerators', require('./moderators.js'))
-  .factory('AdminUsers', require('./users.js'))
-  .factory('AdminBans', require('./bans.js'));
+  .factory('AdminUsers', require('./users.js'));

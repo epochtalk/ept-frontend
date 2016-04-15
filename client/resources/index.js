@@ -7,4 +7,5 @@ angular.module('ept')
   .factory('Messages', require('./messages.js'))
   .factory('Conversations', require('./conversations.js'))
   .factory('Watchlist', require('./watchlist.js'))
+  .factory('Bans', require('./bans.js'))
   .factory('Notifications', require('./notifications.js'));

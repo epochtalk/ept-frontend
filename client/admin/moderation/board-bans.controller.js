@@ -1,6 +1,6 @@
 var difference = require('lodash/difference');
 
-var ctrl = ['$q', '$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'Alert', 'Session', 'AdminUsers', 'bannedBoards', 'selectBoards', 'boards', function($q, $rootScope, $scope, $location, $timeout, $anchorScroll, Alert, Session, AdminUsers, bannedBoards, selectBoards, boards) {
+var ctrl = ['$q', '$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'Alert', 'Session', 'Bans', 'bannedBoards', 'selectBoards', 'boards', function($q, $rootScope, $scope, $location, $timeout, $anchorScroll, Alert, Session, Bans, bannedBoards, selectBoards, boards) {
   var ctrl = this;
   this.parent = $scope.$parent.ModerationCtrl;
   this.parent.tab = 'board-bans';
@@ -17,7 +17,7 @@ var ctrl = ['$q', '$rootScope', '$scope', '$location', '$timeout', '$anchorScrol
   this.boardFilter = this.board;
   this.bannedBoards = bannedBoards.data;
 
-  this.hasGlobalModPerms = Session.hasPermission('adminUsers.privilegedBanFromBoards.all');
+  this.hasGlobalModPerms = Session.hasPermission('bans.privilegedBanFromBoards.all');
 
   this.boards = boards;
   this.allBoards = selectBoards; // used to populate filter select
@@ -74,7 +74,7 @@ var ctrl = ['$q', '$rootScope', '$scope', '$location', '$timeout', '$anchorScrol
     ctrl.selectedUser = user;
     // Lookup users board bans
     // TODO: make sure user has permissions before doing this
-    AdminUsers.getBannedBoards({ username: user.username }).$promise
+    Bans.getBannedBoards({ username: user.username }).$promise
     .then(function(bannedBoards) {
       // Names of boards the user is currently banned from
       ctrl.selectedUser.banned_board_names = bannedBoards.map(function(board) { return board.name; });
@@ -148,7 +148,7 @@ var ctrl = ['$q', '$rootScope', '$scope', '$location', '$timeout', '$anchorScrol
 
     // User is being banned from new boards
     if (banBoardParams.board_ids.length) {
-      promises.push(AdminUsers.banFromBoards(banBoardParams).$promise
+      promises.push(Bans.banFromBoards(banBoardParams).$promise
         .then(function() {
           Alert.success(ctrl.selectedUser.username + ' has been banned from boards');
         })
@@ -163,7 +163,7 @@ var ctrl = ['$q', '$rootScope', '$scope', '$location', '$timeout', '$anchorScrol
     }
     // User is being unbanned from boards
     if (unbanBoardParams.board_ids.length) {
-      promises.push(AdminUsers.unbanFromBoards(unbanBoardParams).$promise
+      promises.push(Bans.unbanFromBoards(unbanBoardParams).$promise
         .then(function() {
           Alert.success(ctrl.selectedUser.username + ' has been unbanned from boards');
         })
@@ -238,7 +238,7 @@ var ctrl = ['$q', '$rootScope', '$scope', '$location', '$timeout', '$anchorScrol
       search: ctrl.search
     };
 
-    AdminUsers.byBannedBoards(query).$promise
+    Bans.byBannedBoards(query).$promise
     .then(function(newBannedBoards) {
       ctrl.page = newBannedBoards.page;
       ctrl.limit = newBannedBoards.limit;

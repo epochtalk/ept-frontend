@@ -13,7 +13,7 @@ function(User, Session, Alert, $filter, $state) {
       this.ban_expiration = function() {
         var result;
         var expiration = this.user.ban_expiration;
-        var canBan = Session.hasPermission('adminUsers.privilegedBan');
+        var canBan = Session.hasPermission('bans.privilegedBan');
 
         if (canBan && expiration && new Date(expiration) > new Date()) {
           result = $filter('humanDate')(expiration, true);
