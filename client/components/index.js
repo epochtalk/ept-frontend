@@ -3,7 +3,6 @@ app.directive('modal', require('./modal/modal.directive.js'));
 app.directive('slideToggle', require('./slide_toggle/slide-toggle.directive.js'));
 app.directive('autoFocus', require('./autofocus/autofocus.directive.js'));
 app.directive('addressValidator', require('./address_validator/address-validator.directive.js'));
-app.directive('colorValidator', require('./color_validator/color-validator.directive.js'));
 app.directive('uniqueUsername', require('./unique_username/unique-username.directive.js'));
 app.directive('uniqueEmail', require('./unique_email/unique-email.directive.js'));
 app.directive('scrollLock', require('./scroll_lock/scroll-lock.directive.js'));

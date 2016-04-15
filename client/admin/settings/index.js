@@ -130,6 +130,15 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           return theme;
         });
       }],
+      colorValidator: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
+        var deferred = $q.defer();
+        require.ensure([], function() {
+          var dir = require('../../components/color_validator/color-validator.directive');
+          $ocLazyLoad.load({ name: 'ept.directives.color-validator'});
+          deferred.resolve(dir);
+        });
+        return deferred.promise;
+      }],
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
