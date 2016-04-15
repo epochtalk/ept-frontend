@@ -1,4 +1,4 @@
-module.exports = ['$parse', function($parse) {
+var directive = ['$parse', function($parse) {
   return {
     require: 'ngModel',
     link: function(scope, element, attr, ngModel) {
@@ -35,3 +35,6 @@ module.exports = ['$parse', function($parse) {
     }
   };
 }];
+
+module.exports = angular.module('ept.directives.address-validator', [])
+.directive('addressValidator', directive);

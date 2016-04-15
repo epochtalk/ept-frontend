@@ -7,7 +7,7 @@ module.exports = ['$timeout', function($timeout) {
 
       // watch for changes
       $timeout(function() {
-        $scope.$watch($attr.slideToggle, function(newState, oldState) {
+        $scope.$watch($attr.slideToggle, function(newState) {
           var wrapperHeight = $element[0].querySelector('.slide-wrapper').clientHeight + 'px';
 
           if (newState) {

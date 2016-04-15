@@ -222,6 +222,15 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
     resolve: {
       userAccess: adminCheck('management.bannedAddresses'),
       $title: function() { return 'Banned Addresses Management'; },
+      addresValidator: ['$q', '$ocLazyLoad', function ($q, $ocLazyLoad) {
+        var deferred = $q.defer();
+        require.ensure([], function() {
+          var dir = require('../../components/address_validator/address-validator.directive');
+          $ocLazyLoad.load({ name: 'ept.directives.address-validator'});
+          deferred.resolve(dir);
+        });
+        return deferred.promise;
+      }],
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
