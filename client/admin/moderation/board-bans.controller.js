@@ -252,6 +252,8 @@ var ctrl = ['$q', '$rootScope', '$scope', '$location', '$timeout', '$anchorScrol
   };
 }];
 
+// include autocomplete username directive
+require('../../components/autocomplete_username/autocomplete-username.directive');
+
 module.exports = angular.module('ept.admin.moderation.boardBans.ctrl', [])
-.controller('ModBoardBansCtrl', ctrl)
-.name;
+.controller('ModBoardBansCtrl', ctrl);

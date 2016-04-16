@@ -205,9 +205,12 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./board-bans.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.moderation.boardBans.ctrl' });
-          deferred.resolve(ctrl);
+          require('./board-bans.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.admin.moderation.boardBans.ctrl' },
+            { name: 'ept.directives.autocomplete-username'}
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],

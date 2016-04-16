@@ -1,4 +1,4 @@
-module.exports = ['AdminUsers', 'User', function(AdminUsers, User) {
+var directive = ['AdminUsers', 'User', function(AdminUsers, User) {
   return {
     restrict: 'E',
     template: require('./autocomplete-username.html'),
@@ -40,3 +40,6 @@ module.exports = ['AdminUsers', 'User', function(AdminUsers, User) {
     }]
   };
 }];
+
+module.exports = angular.module('ept.directives.autocomplete-username', [])
+.directive('autocompleteUsername', directive);

@@ -1,7 +1,7 @@
 module.exports = ['$timeout', function($timeout) {
   return {
     restrict: 'CA',
-    link: function(scope, element, attributes) {
+    link: function(scope, element) {
       var numTries = 0;
       var src = element[0].src;
 
