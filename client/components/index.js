@@ -14,5 +14,3 @@ app.directive('epochtalkEditor', require('./editor/editor.directive.js'));
 app.directive('imageUploader', require('./image_uploader/image_uploader.directive.js'));
 app.directive('postProcessing', require('./post_processing/post-processing.directive.js'));
 app.directive('pollViewer', require('./poll_viewer/poll_viewer.directive.js'));
-
-app.directive('pollCreator', require('./poll_creator/poll_creator.directive.js'));

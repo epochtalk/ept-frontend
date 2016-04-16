@@ -459,6 +459,8 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
   }
 ];
 
+// include the poll creator directive
+require('../components/poll_creator/poll_creator.directive');
+
 module.exports = angular.module('ept.posts.parentCtrl', [])
-.controller('PostsParentCtrl', ctrl)
-.name;
+.controller('PostsParentCtrl', ctrl);

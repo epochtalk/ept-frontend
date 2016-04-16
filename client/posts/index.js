@@ -26,18 +26,21 @@ var route = ['$stateProvider', function($stateProvider) {
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./posts.controller');
+          require('./posts.controller');
           $ocLazyLoad.load({ name: 'ept.posts.ctrl' });
-          deferred.resolve(ctrl);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
       loadParentCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./parent.controller');
-          $ocLazyLoad.load({ name: 'ept.posts.parentCtrl' });
-          deferred.resolve(ctrl);
+          require('./parent.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.posts.parentCtrl' },
+            { name: 'ept.directives.poll-creator'},
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
