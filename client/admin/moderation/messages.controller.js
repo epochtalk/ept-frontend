@@ -676,5 +676,4 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
 }];
 
 module.exports = angular.module('ept.admin.moderation.messages.ctrl', [])
-.controller('ModMessagesCtrl', ctrl)
-.name;
+.controller('ModMessagesCtrl', ctrl);

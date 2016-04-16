@@ -248,6 +248,8 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'S
   };
 }];
 
+// include the address validator directive
+require('../../components/address_validator/address-validator.directive');
+
 module.exports = angular.module('ept.admin.management.bannedAddresses.ctrl', [])
-.controller('BannedAddressesCtrl', ctrl)
-.name;
+.controller('BannedAddressesCtrl', ctrl);

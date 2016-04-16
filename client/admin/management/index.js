@@ -52,39 +52,17 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
     resolve: {
       userAccess: adminCheck('management.boards'),
       $title: function() { return 'Board Management'; },
-      catEditor: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
-        var deferred = $q.defer();
-        require.ensure([], function() {
-          var dir = require('../../components/category_editor/category-editor.directive');
-          $ocLazyLoad.load({ name: 'ept.directives.category-editor'});
-          deferred.resolve(dir);
-        });
-        return deferred.promise;
-      }],
-      nestBoards: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
-        var deferred = $q.defer();
-        require.ensure([], function() {
-          var dir = require('../../components/category_editor/nestable-boards.directive');
-          $ocLazyLoad.load({ name: 'ept.directives.nestable-boards'});
-          deferred.resolve(dir);
-        });
-        return deferred.promise;
-      }],
-      nestCats: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
-        var deferred = $q.defer();
-        require.ensure([], function() {
-          var dir = require('../../components/category_editor/nestable-categories.directive');
-          $ocLazyLoad.load({ name: 'ept.directives.nestable-categories'});
-          deferred.resolve(dir);
-        });
-        return deferred.promise;
-      }],
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./boards.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.management.boards.ctrl' });
-          deferred.resolve(ctrl);
+          require('./boards.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.admin.management.boards.ctrl' },
+            { name: 'ept.directives.category-editor'},
+            { name: 'ept.directives.nestable-boards'},
+            { name: 'ept.directives.nestable-categories'}
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
@@ -109,9 +87,9 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./users.controller');
+          require('./users.controller');
           $ocLazyLoad.load({ name: 'ept.admin.management.users.ctrl' });
-          deferred.resolve(ctrl);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
@@ -175,9 +153,9 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./roles.controller');
+          require('./roles.controller');
           $ocLazyLoad.load({ name: 'ept.admin.management.roles.ctrl' });
-          deferred.resolve(ctrl);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
@@ -222,21 +200,15 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
     resolve: {
       userAccess: adminCheck('management.bannedAddresses'),
       $title: function() { return 'Banned Addresses Management'; },
-      addresValidator: ['$q', '$ocLazyLoad', function ($q, $ocLazyLoad) {
-        var deferred = $q.defer();
-        require.ensure([], function() {
-          var dir = require('../../components/address_validator/address-validator.directive');
-          $ocLazyLoad.load({ name: 'ept.directives.address-validator'});
-          deferred.resolve(dir);
-        });
-        return deferred.promise;
-      }],
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./banned-addresses.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.management.bannedAddresses.ctrl' });
-          deferred.resolve(ctrl);
+          require('./banned-addresses.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.admin.management.bannedAddresses.ctrl' },
+            { name: 'ept.directives.address-validator'}
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],

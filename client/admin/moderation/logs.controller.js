@@ -370,5 +370,4 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'A
 }];
 
 module.exports = angular.module('ept.admin.moderation.logs.ctrl', [])
-.controller('ModLogsCtrl', ctrl)
-.name;
+.controller('ModLogsCtrl', ctrl);

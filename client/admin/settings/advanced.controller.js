@@ -192,5 +192,4 @@ var ctrl = ['$scope', '$timeout', 'settings', 'blacklist', 'AdminSettings', 'Ale
 }];
 
 module.exports = angular.module('ept.admin.settings.advanced.ctrl', [])
-.controller('AdvancedSettingsCtrl', ctrl)
-.name;
+.controller('AdvancedSettingsCtrl', ctrl);

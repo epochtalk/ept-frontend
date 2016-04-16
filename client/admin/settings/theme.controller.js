@@ -88,6 +88,8 @@ var ctrl = ['$scope', '$state', '$timeout', 'theme', 'AdminSettings', 'Alert', '
   };
 }];
 
+// include the color validator directive
+require('../../components/color_validator/color-validator.directive');
+
 module.exports = angular.module('ept.admin.settings.theme.ctrl', [])
-.controller('ThemeSettingsCtrl', ctrl)
-.name;
+.controller('ThemeSettingsCtrl', ctrl);

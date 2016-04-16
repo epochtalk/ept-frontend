@@ -65,18 +65,12 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./users.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.moderation.users.ctrl' });
-          deferred.resolve(ctrl);
-        });
-        return deferred.promise;
-      }],
-      profileDirective: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
-        var deferred = $q.defer();
-        require.ensure([], function() {
-          var directive = require('../../components/profile/profile.directive.js');
-          $ocLazyLoad.load({ name: 'ept.directives.profile'});
-          deferred.resolve(directive);
+          require('./users.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.admin.moderation.users.ctrl' },
+            { name: 'ept.directives.profile'}
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
@@ -116,9 +110,9 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./posts.controller');
+          require('./posts.controller');
           $ocLazyLoad.load({ name: 'ept.admin.moderation.posts.ctrl' });
-          deferred.resolve(ctrl);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
@@ -163,9 +157,9 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./messages.controller');
+          require('./messages.controller');
           $ocLazyLoad.load({ name: 'ept.admin.moderation.messages.ctrl' });
-          deferred.resolve(ctrl);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
@@ -256,9 +250,9 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./logs.controller');
+          require('./logs.controller');
           $ocLazyLoad.load({ name: 'ept.admin.moderation.logs.ctrl' });
-          deferred.resolve(ctrl);
+          deferred.resolve();
         });
         return deferred.promise;
       }],

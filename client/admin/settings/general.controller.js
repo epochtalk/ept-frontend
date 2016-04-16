@@ -38,5 +38,4 @@ var ctrl = ['$scope', 'settings', 'AdminSettings', 'Alert', function($scope, set
 }];
 
 module.exports = angular.module('ept.admin.settings.general.ctrl', [])
-.controller('GeneralSettingsCtrl', ctrl)
-.name;
+.controller('GeneralSettingsCtrl', ctrl);

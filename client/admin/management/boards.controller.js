@@ -249,6 +249,10 @@ var ctrl = ['$timeout', '$location', '$stateParams', '$scope', '$q', '$anchorScr
   }
 ];
 
+// include the category editor directive
+require('../../components/category_editor/category-editor.directive');
+require('../../components/category_editor/nestable-boards.directive');
+require('../../components/category_editor/nestable-categories.directive');
+
 module.exports = angular.module('ept.admin.management.boards.ctrl', [])
-.controller('CategoriesCtrl', ctrl)
-.name;
+.controller('CategoriesCtrl', ctrl);

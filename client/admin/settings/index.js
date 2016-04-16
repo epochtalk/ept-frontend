@@ -65,9 +65,9 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./general.controller');
+          require('./general.controller');
           $ocLazyLoad.load({ name: 'ept.admin.settings.general.ctrl' });
-          deferred.resolve(ctrl);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
@@ -101,9 +101,9 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./advanced.controller');
+          require('./advanced.controller');
           $ocLazyLoad.load({ name: 'ept.admin.settings.advanced.ctrl' });
-          deferred.resolve(ctrl);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
@@ -130,21 +130,15 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           return theme;
         });
       }],
-      colorValidator: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
-        var deferred = $q.defer();
-        require.ensure([], function() {
-          var dir = require('../../components/color_validator/color-validator.directive');
-          $ocLazyLoad.load({ name: 'ept.directives.color-validator'});
-          deferred.resolve(dir);
-        });
-        return deferred.promise;
-      }],
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./theme.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.settings.theme.ctrl' });
-          deferred.resolve(ctrl);
+          require('./theme.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.admin.settings.theme.ctrl' },
+            { name: 'ept.directives.color-validator' }
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],

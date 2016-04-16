@@ -292,5 +292,4 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
 }];
 
 module.exports = angular.module('ept.admin.management.users.ctrl', [])
-.controller('UsersCtrl', ctrl)
-.name;
+.controller('UsersCtrl', ctrl);

@@ -836,5 +836,4 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
 }];
 
 module.exports = angular.module('ept.admin.moderation.posts.ctrl', [])
-.controller('ModPostsCtrl', ctrl)
-.name;
+.controller('ModPostsCtrl', ctrl);
