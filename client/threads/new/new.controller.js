@@ -74,6 +74,7 @@ var controller = ['$anchorScroll', '$stateParams', '$location', 'Session', 'Thre
 
 // include the poll-creator directive
 require('../../components/poll_creator/poll_creator.directive');
+require('../../components/editor/editor.directive');
 
 module.exports = angular.module('ept.newThread.ctrl', [])
 .controller('NewThreadCtrl', controller);

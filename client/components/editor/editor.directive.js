@@ -1,6 +1,6 @@
 var bbcodeParser = require('epochtalk-bbcode-parser');
 
-module.exports = ['$timeout', '$window', '$rootScope', '$filter', function($timeout, $window, $rootScope, $filter) {
+var directive = ['$timeout', '$window', '$rootScope', '$filter', function($timeout, $window, $rootScope, $filter) {
   return {
     restrict: 'E',
     scope: {
@@ -13,7 +13,7 @@ module.exports = ['$timeout', '$window', '$rootScope', '$filter', function($time
       dirty: '='
     },
     template: require('./editor.html'),
-    controller: ['$scope', '$element', function($scope, $element) {
+    controller: ['$scope', '$element', function($scope) {
       // quote insert
       $scope.$watch('quote', function(newQuote) {
         if (newQuote) { $scope.insertQuote(newQuote); }
@@ -166,3 +166,6 @@ module.exports = ['$timeout', '$window', '$rootScope', '$filter', function($time
     }
   };
 }];
+
+module.exports = angular.module('ept.directives.epochtalk-editor', [])
+.directive('epochtalkEditor', directive);

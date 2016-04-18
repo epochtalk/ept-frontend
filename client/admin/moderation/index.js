@@ -111,7 +111,10 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
         var deferred = $q.defer();
         require.ensure([], function() {
           require('./posts.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.moderation.posts.ctrl' });
+          $ocLazyLoad.load([
+            { name: 'ept.admin.moderation.posts.ctrl' },
+            { name: 'ept.directives.epochtalk-editor' }
+          ]);
           deferred.resolve();
         });
         return deferred.promise;

@@ -17,7 +17,8 @@ var route = ['$stateProvider', function($stateProvider) {
           require('./new.controller');
           $ocLazyLoad.load([
             { name: 'ept.newThread.ctrl' },
-            { name: 'ept.directives.poll-creator' }
+            { name: 'ept.directives.poll-creator' },
+            { name: 'ept.directives.epochtalk-editor' }
           ]);
           deferred.resolve();
         });

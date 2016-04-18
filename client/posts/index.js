@@ -39,7 +39,8 @@ var route = ['$stateProvider', function($stateProvider) {
           $ocLazyLoad.load([
             { name: 'ept.posts.parentCtrl' },
             { name: 'ept.directives.poll-creator'},
-            { name: 'ept.directives.poll-viewer'}
+            { name: 'ept.directives.poll-viewer'},
+            { name: 'ept.directives.epochtalk-editor' }
           ]);
           deferred.resolve();
         });
