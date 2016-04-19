@@ -68,6 +68,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           require('./users.controller');
           $ocLazyLoad.load([
             { name: 'ept.admin.moderation.users.ctrl' },
+            { name: 'ept.directives.image-uploader' },
             { name: 'ept.directives.profile'}
           ]);
           deferred.resolve();
@@ -114,6 +115,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           $ocLazyLoad.load([
             { name: 'ept.admin.moderation.posts.ctrl' },
             { name: 'ept.directives.epochtalk-editor' },
+            { name: 'ept.directives.image-uploader' },
             { name: 'ept.directives.resizeable' }
           ]);
           deferred.resolve();

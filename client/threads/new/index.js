@@ -18,6 +18,7 @@ var route = ['$stateProvider', function($stateProvider) {
           $ocLazyLoad.load([
             { name: 'ept.newThread.ctrl' },
             { name: 'ept.directives.poll-creator' },
+            { name: 'ept.directives.image-uploader' },
             { name: 'ept.directives.epochtalk-editor' }
           ]);
           deferred.resolve();

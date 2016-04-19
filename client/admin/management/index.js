@@ -88,7 +88,10 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
         var deferred = $q.defer();
         require.ensure([], function() {
           require('./users.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.management.users.ctrl' });
+          $ocLazyLoad.load([
+            { name: 'ept.admin.management.users.ctrl' },
+            { name: 'ept.directives.image-uploader' }
+          ]);
           deferred.resolve();
         });
         return deferred.promise;

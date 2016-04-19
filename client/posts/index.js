@@ -41,6 +41,7 @@ var route = ['$stateProvider', function($stateProvider) {
             { name: 'ept.directives.poll-creator'},
             { name: 'ept.directives.poll-viewer'},
             { name: 'ept.directives.epochtalk-editor' },
+            { name: 'ept.directives.image-uploader' },
             { name: 'ept.directives.resizeable' }
           ]);
           deferred.resolve();

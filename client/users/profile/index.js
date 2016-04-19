@@ -18,9 +18,13 @@ var route = ['$stateProvider', function($stateProvider) {
       profileDirective: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var directive = require('../../components/profile/profile.directive.js');
-          $ocLazyLoad.load({ name: 'ept.directives.profile'});
-          deferred.resolve(directive);
+          require('../../components/profile/profile.directive.js');
+          require('../../components/image_uploader/image_uploader.directive');
+          $ocLazyLoad.load([
+            { name: 'ept.directives.profile'},
+            { name: 'ept.directives.image-uploader' }
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
