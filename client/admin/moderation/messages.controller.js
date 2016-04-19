@@ -1,6 +1,6 @@
 var difference = require('lodash/difference');
 
-var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$anchorScroll', 'Alert', 'Session', 'Reports', 'AdminUsers', 'Messages', 'Conversations', 'messageReports', 'reportId', 'boards', function($rootScope, $scope, $q, $filter, $location, $timeout, $anchorScroll, Alert, Session, Reports, AdminUsers, Messages, Conversations, messageReports, reportId, boards) {
+var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$anchorScroll', 'Alert', 'Session', 'Reports', 'Bans', 'Messages', 'Conversations', 'messageReports', 'reportId', 'boards', function($rootScope, $scope, $q, $filter, $location, $timeout, $anchorScroll, Alert, Session, Reports, Bans, Messages, Conversations, messageReports, reportId, boards) {
   var ctrl = this;
   this.parent = $scope.$parent.ModerationCtrl;
   this.parent.tab = 'messages';
@@ -32,28 +32,28 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
 
   this.canBanUser = function() {
     var loggedIn = Session.isAuthenticated();
-    var banPermission = Session.hasPermission('adminUsers.privilegedBan');
-    var banBoardsPermission = Session.hasPermission('adminUsers.privilegedBanFromBoards');
+    var banPermission = Session.hasPermission('bans.privilegedBan');
+    var banBoardsPermission = Session.hasPermission('bans.privilegedBanFromBoards');
     if (loggedIn && banPermission && banBoardsPermission) { return true; }
     else { return false; }
   };
 
   this.canGlobalBanUser = function() {
     var loggedIn = Session.isAuthenticated();
-    var banPermission = Session.hasPermission('adminUsers.privilegedBan');
+    var banPermission = Session.hasPermission('bans.privilegedBan');
     if (loggedIn && banPermission) { return true; }
     else { return false; }
   };
 
   this.canBoardBanUser = function(boardId) {
     var moderatingBoard = ctrl.user.moderating.indexOf(boardId) >= 0;
-    var banAllBoardsPermission = Session.hasPermission('adminUsers.privilegedBanFromBoards.all');
+    var banAllBoardsPermission = Session.hasPermission('bans.privilegedBanFromBoards.all');
     if (moderatingBoard || banAllBoardsPermission) { return true; }
     else { return false; }
   };
 
   this.loadBoardBans = function(boardId) {
-    var banAllBoardsPermission = Session.hasPermission('adminUsers.privilegedBanFromBoards.all');
+    var banAllBoardsPermission = Session.hasPermission('bans.privilegedBanFromBoards.all');
     if (banAllBoardsPermission && ctrl.allBoardIds.indexOf(boardId) < 0) {
       ctrl.allBoardIds.push(boardId);
     }
@@ -219,7 +219,7 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
 
     // Lookup users board bans
     // TODO: make sure user has permissions before doing this
-    AdminUsers.getBannedBoards({ username: user.username }).$promise
+    Bans.getBannedBoards({ username: user.username }).$promise
     .then(function(bannedBoards) {
       // Names of boards the user is currently banned from
       ctrl.selectedUser.banned_board_names = bannedBoards.map(function(board) { return board.name; });
@@ -245,7 +245,7 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
   this.allBoardIds = []; // populated by init of inputs
 
   this.uncheckModBoards = function() {
-    var banBoardsPermission = Session.hasPermission('adminUsers.privilegedBanFromBoards.all');
+    var banBoardsPermission = Session.hasPermission('bans.privilegedBanFromBoards.all');
     if (banBoardsPermission) { ctrl.boardBanList = []; }
     else {
       ctrl.user.moderating.forEach(function(id) {
@@ -256,7 +256,7 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
   };
 
   this.checkModBoards = function() {
-    var banBoardsPermission = Session.hasPermission('adminUsers.privilegedBanFromBoards.all');
+    var banBoardsPermission = Session.hasPermission('bans.privilegedBanFromBoards.all');
     if (banBoardsPermission) { ctrl.boardBanList = ctrl.allBoardIds; }
     else {
       ctrl.user.moderating.forEach(function(id) {
@@ -331,7 +331,7 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
     var promises = [];
     // User is being banned globally either permanently or temporarily
     if (userBanned) {
-      promises.push(AdminUsers.ban(globalBanParams).$promise
+      promises.push(Bans.ban(globalBanParams).$promise
         .then(function(banInfo) {
           Alert.success(ctrl.selectedUser.username + ' has been globally banned ' + (ctrl.permanentBan ? 'permanently' : ' until ' + $filter('humanDate')(ctrl.banUntil, true)));
           results = banInfo;
@@ -346,7 +346,7 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
     }
     // User is being unbanned globally, ensure user is currently banned
     else if (userUnbanned) {
-      promises.push(AdminUsers.unban(globalBanParams).$promise
+      promises.push(Bans.unban(globalBanParams).$promise
         .then(function(unbanInfo) {
           Alert.success(ctrl.selectedUser.username + ' has been globally unbanned');
           results = unbanInfo;
@@ -361,7 +361,7 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
     }
     // User is being banned from new boards
     if (banBoardParams.board_ids.length) {
-      promises.push(AdminUsers.banFromBoards(banBoardParams).$promise
+      promises.push(Bans.banFromBoards(banBoardParams).$promise
         .then(function() {
           Alert.success(ctrl.selectedUser.username + ' has been banned from boards');
         })
@@ -375,7 +375,7 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
     }
     // User is being unbanned from boards
     if (unbanBoardParams.board_ids.length) {
-      promises.push(AdminUsers.unbanFromBoards(unbanBoardParams).$promise
+      promises.push(Bans.unbanFromBoards(unbanBoardParams).$promise
         .then(function() {
           Alert.success(ctrl.selectedUser.username + ' has been unbanned from boards');
         })

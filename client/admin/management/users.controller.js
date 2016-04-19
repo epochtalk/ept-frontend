@@ -1,4 +1,4 @@
-var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$filter', 'Session', 'Alert', 'AdminUsers', 'User', 'users', 'usersCount', 'page', 'limit', 'field', 'desc', 'filter', 'search', function($rootScope, $scope, $location, $timeout, $anchorScroll, $filter, Session, Alert, AdminUsers, User, users, usersCount, page, limit, field, desc, filter, search) {
+var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$filter', 'Session', 'Alert', 'AdminUsers', 'Bans', 'User', 'users', 'usersCount', 'page', 'limit', 'field', 'desc', 'filter', 'search', function($rootScope, $scope, $location, $timeout, $anchorScroll, $filter, Session, Alert, AdminUsers, Bans, User, users, usersCount, page, limit, field, desc, filter, search) {
   var ctrl = this;
   this.parent = $scope.$parent.AdminManagementCtrl;
   this.parent.tab = 'users';
@@ -109,7 +109,7 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
       expiration: ctrl.banUntil || undefined,
       ip_ban: ctrl.banType === 'ip' || undefined
     };
-    AdminUsers.ban(params).$promise
+    Bans.ban(params).$promise
     .then(function(ban) {
       if (ctrl.tableFilter === 0) { ctrl.pullPage(); }
       else { ctrl.selectedUser.ban_expiration = ban.expiration; }
@@ -146,7 +146,7 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
     var params = {
       user_id: ctrl.selectedUser.id,
     };
-    AdminUsers.unban(params).$promise
+    Bans.unban(params).$promise
     .then(function() {
       if (ctrl.tableFilter === 0) { ctrl.pullPage(); }
       else { ctrl.selectedUser.ban_expiration = null; }

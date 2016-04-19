@@ -211,7 +211,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
         });
         return deferred.promise;
       }],
-      bannedBoards: [ 'AdminUsers', '$stateParams', function(AdminUsers, $stateParams) {
+      bannedBoards: [ 'Bans', '$stateParams', function(Bans, $stateParams) {
         var query = {
           limit: Number($stateParams.limit) || undefined,
           page: Number($stateParams.page) || undefined,
@@ -219,7 +219,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           board: $stateParams.board,
           search: $stateParams.search
         };
-        return AdminUsers.byBannedBoards(query).$promise;
+        return Bans.byBannedBoards(query).$promise;
       }],
       selectBoards: ['AdminBoards', '$filter', function(AdminBoards, $filter) {
         return AdminBoards.moveBoards().$promise
