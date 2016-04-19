@@ -14,5 +14,4 @@ app.directive('autoFocus', require('./autofocus/autofocus.directive.js'));
 //
 
 app.directive('postProcessing', require('./post_processing/post-processing.directive.js'));
-app.directive('resizeable', require('./resizeable/resizeable.directive.js'));
 app.directive('imageUploader', require('./image_uploader/image_uploader.directive.js'));

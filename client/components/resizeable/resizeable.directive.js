@@ -1,4 +1,4 @@
-module.exports = ['$document',
+var directive = ['$document',
   function($document) {
     return {
       restrict: 'A',
@@ -76,3 +76,6 @@ module.exports = ['$document',
     };
   }
 ];
+
+module.exports = angular.module('ept.directives.resizeable', [])
+.directive('resizeable', directive);

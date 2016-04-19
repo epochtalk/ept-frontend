@@ -113,7 +113,8 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           require('./posts.controller');
           $ocLazyLoad.load([
             { name: 'ept.admin.moderation.posts.ctrl' },
-            { name: 'ept.directives.epochtalk-editor' }
+            { name: 'ept.directives.epochtalk-editor' },
+            { name: 'ept.directives.resizeable' }
           ]);
           deferred.resolve();
         });
