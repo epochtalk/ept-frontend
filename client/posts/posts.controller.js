@@ -24,7 +24,7 @@ var ctrl = [
 
     // Posts Permissions
     this.canPost = function() {
-      if (!ctrl.loggedIn()) { return false; }
+      if (!Session.isAuthenticated()) { return false; }
       if (BanSvc.banStatus().boards.length > 0) { return false; }
       if (!Session.hasPermission('posts.create.allow')) { return false; }
 
