@@ -64,10 +64,10 @@
           <strong>{{ message.sender_username}}</strong>
           <span class="date">{{ message.created_at | humanDate }}</span>
           <div class="right">
-            <a ng-if="MessagesCtrl.canDeleteMessage(message.sender_id)" ng-href="#" class="action css-tooltip" ng-click="MessagesCtrl.openDeleteModal(message.id)" data-css-tooltip="Delete">
+            <a ng-if="MessagesCtrl.canDeleteMessage(message.sender_id)" ng-href="#" class="action" ng-click="MessagesCtrl.openDeleteModal(message.id)" data-balloon="Delete">
               <i class="fa fa-trash"></i>
             </a>
-            <a ng-if="message.sender_id !== MessagesCtrl.currentUserId && MessagesCtrl.controlAccess.reportMessages" ng-href="#" class="action css-tooltip" ng-click="MessagesCtrl.openReportModal(message)" data-css-tooltip="Report">
+            <a ng-if="message.sender_id !== MessagesCtrl.currentUserId && MessagesCtrl.controlAccess.reportMessages" ng-href="#" class="action" ng-click="MessagesCtrl.openReportModal(message)" data-balloon="Report">
               <i class="icon-epoch-flag"></i>
             </a>
           </div>

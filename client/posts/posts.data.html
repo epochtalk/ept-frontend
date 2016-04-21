@@ -18,7 +18,7 @@
     <div class="post-content">
       <!-- Post Title -->
       <div class="post-title">
-        <a class="username css-tooltip" data-css-tooltip="{{post.user.role_name || 'User'}}" ui-sref="profile({ username: post.user.username})" ng-style="PostsCtrl.usernameHighlight(post.user.highlight_color)" ng-bind="::post.user.username"></a>
+        <a class="username" data-balloon="{{post.user.role_name || 'User'}}" ui-sref="profile({ username: post.user.username})" ng-style="PostsCtrl.usernameHighlight(post.user.highlight_color)" ng-bind="::post.user.username"></a>
         <div title="::post.user.name" ng-if="post.user.name" class="display-name">
           <span ng-bind-html="::post.user.name | truncate:33"></span>
           <span class="hide-mobile">&nbsp;&mdash;&nbsp;</span>
@@ -30,37 +30,37 @@
 
         <ul class="post-action">
           <li ng-if="PostsCtrl.canPurge() && $index !== 0">
-            <a ng-href="#" class="css-tooltip" data-css-tooltip="Purge" ng-click="PostsParentCtrl.openPurgeModal($index)">
+            <a ng-href="#" data-balloon="Purge" ng-click="PostsParentCtrl.openPurgeModal($index)">
               <i class="fa fa-trash"></i>
             </a>
           </li>
           <li ng-if="PostsCtrl.canDelete(post) && $index !== 0 && !post.deleted">
-            <a ng-href="#" class="css-tooltip" data-css-tooltip="Delete" ng-click="PostsParentCtrl.openDeleteModal($index)">
+            <a ng-href="#" data-balloon="Delete" ng-click="PostsParentCtrl.openDeleteModal($index)">
               <i class="fa fa-eye-slash"></i>
             </a>
           </li>
           <li ng-if="PostsCtrl.canDelete(post) && post.deleted">
-            <a ng-href="#" class="css-tooltip" data-css-tooltip="Undelete" ng-click="PostsParentCtrl.openUndeleteModal($index)">
+            <a ng-href="#" data-balloon="Undelete" ng-click="PostsParentCtrl.openUndeleteModal($index)">
               <i class="fa fa-eye"></i>
             </a>
           </li>
           <li ng-if="PostsParentCtrl.loggedIn() && post.user.id !== PostsCtrl.user.id && (PostsParentCtrl.reportControlAccess.reportPosts || PostsParentCtrl.reportControlAccess.reportUsers) && !PostsParentCtrl.bannedFromBoard">
-            <a ng-href="#" class="css-tooltip" data-css-tooltip="Report" ng-click="PostsCtrl.openReportModal(post)">
+            <a ng-href="#" data-balloon="Report" ng-click="PostsCtrl.openReportModal(post)">
               <i class="icon-epoch-flag"></i>
             </a>
           </li>
           <li ng-if="PostsCtrl.canUpdate(post)">
-            <a ng-href="#" class="css-tooltip" data-css-tooltip="Edit" ng-click="PostsCtrl.loadEditor($index)">
+            <a ng-href="#" data-balloon="Edit" ng-click="PostsCtrl.loadEditor($index)">
               <i class="icon-epoch-edit-pencil"></i>
             </a>
           </li>
           <li ng-if="PostsCtrl.canPost()">
-            <a ng-href="#" class="css-tooltip" data-css-tooltip="Quote" ng-click="PostsCtrl.addQuote($index)">
+            <a ng-href="#" data-balloon="Quote" ng-click="PostsCtrl.addQuote($index)">
               <i class="icon-epoch-quote"></i>
             </a>
           </li>
           <li>
-            <a ng-href="{{::PostsCtrl.rootUrl}}?start={{::post.position}}#{{::post.id}}" ng-click="PostsCtrl.highlightPost()" class="css-tooltip" data-css-tooltip="Permalink">
+            <a ng-href="{{::PostsCtrl.rootUrl}}?start={{::post.position}}#{{::post.id}}" ng-click="PostsCtrl.highlightPost()" data-balloon="Permalink">
               <i class="icon-epoch-link"></i>
             </a>
           </li>

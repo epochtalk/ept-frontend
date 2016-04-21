@@ -91,13 +91,13 @@
           <td class="hide-mobile"><div ng-bind="postReport.reporter_reason"></div></td>
           <td class="inline">
             <!-- Modify Report -->
-            <button class="icon css-tooltip" data-css-tooltip="Modify Report Status" ng-click="ModerationCtrl.showSetStatus(postReport)" ng-disabled="!ModerationCtrl.canUpdateUserReport()"><i class="fa fa-cog"></i></button>
+            <button class="icon" data-balloon="Modify Report Status" ng-click="ModerationCtrl.showSetStatus(postReport)" ng-disabled="!ModerationCtrl.canUpdateUserReport()"><i class="fa fa-cog"></i></button>
 
             <!-- Warn User -->
-            <button class="icon css-tooltip" data-css-tooltip="Warn User" ng-click="ModerationCtrl.showWarn({ id: postReport.offender_author_id, username: postReport.offender_author_username })" ng-disabled="!ModerationCtrl.canCreateConversation()"><i class="fa fa-exclamation-circle"></i></button>
+            <button class="icon" data-balloon="Warn User" ng-click="ModerationCtrl.showWarn({ id: postReport.offender_author_id, username: postReport.offender_author_username })" ng-disabled="!ModerationCtrl.canCreateConversation()"><i class="fa fa-exclamation-circle"></i></button>
 
             <!-- Ban User -->
-            <button class="icon css-tooltip" data-css-tooltip="Manage Bans" ng-click="ModerationCtrl.showManageBans({ id: postReport.offender_author_id, username: postReport.offender_author_username, email: postReport.offender_author_email, created_at: postReport.offender_author_created_at, ban_expiration: postReport.offender_ban_expiration })" ng-disabled="!ModerationCtrl.canBanUser()"><i class="fa fa-ban"></i></button>
+            <button class="icon" data-balloon="Manage Bans" ng-click="ModerationCtrl.showManageBans({ id: postReport.offender_author_id, username: postReport.offender_author_username, email: postReport.offender_author_email, created_at: postReport.offender_author_created_at, ban_expiration: postReport.offender_ban_expiration })" ng-disabled="!ModerationCtrl.canBanUser()"><i class="fa fa-ban"></i></button>
           </td>
         </tr>
       </tbody>
@@ -131,26 +131,26 @@
           <td class="field">Actions</td>
           <td class="desc">
             <!-- Modify Report -->
-            <button class="icon css-tooltip" data-css-tooltip="Modify Report Status" ng-click="ModerationCtrl.showSetStatus(ModerationCtrl.previewReport)" ng-disabled="!ModerationCtrl.canUpdateUserReport()"><i class="fa fa-cog"></i></button>
+            <button class="icon" data-balloon="Modify Report Status" ng-click="ModerationCtrl.showSetStatus(ModerationCtrl.previewReport)" ng-disabled="!ModerationCtrl.canUpdateUserReport()"><i class="fa fa-cog"></i></button>
 
             <!-- Warn User -->
-            <button class="icon css-tooltip" data-css-tooltip="Warn User" ng-click="ModerationCtrl.showWarn({ id: ModerationCtrl.previewReport.offender_author_id, username: ModerationCtrl.previewReport.offender_author_username })" ng-disabled="!ModerationCtrl.canCreateConversation()"><i class="fa fa-exclamation-circle"></i></button>
+            <button class="icon" data-balloon="Warn User" ng-click="ModerationCtrl.showWarn({ id: ModerationCtrl.previewReport.offender_author_id, username: ModerationCtrl.previewReport.offender_author_username })" ng-disabled="!ModerationCtrl.canCreateConversation()"><i class="fa fa-exclamation-circle"></i></button>
 
             <!-- Ban/Unban User -->
-            <button class="icon css-tooltip" data-css-tooltip="Manage Bans" ng-click="ModerationCtrl.showManageBans({ id: ModerationCtrl.previewReport.offender_author_id, username: ModerationCtrl.previewReport.offender_author_username, email: ModerationCtrl.previewReport.offender_author_email, created_at: ModerationCtrl.previewReport.offender_author_created_at, ban_expiration: ModerationCtrl.previewReport.offender_ban_expiration })" ng-disabled="!ModerationCtrl.canBanUser()"><i class="fa fa-ban"></i></button>
+            <button class="icon" data-balloon="Manage Bans" ng-click="ModerationCtrl.showManageBans({ id: ModerationCtrl.previewReport.offender_author_id, username: ModerationCtrl.previewReport.offender_author_username, email: ModerationCtrl.previewReport.offender_author_email, created_at: ModerationCtrl.previewReport.offender_author_created_at, ban_expiration: ModerationCtrl.previewReport.offender_ban_expiration })" ng-disabled="!ModerationCtrl.canBanUser()"><i class="fa fa-ban"></i></button>
 
             <!-- Edit Post -->
-            <button class="icon css-tooltip" data-css-tooltip="Edit Post" ng-disabled="!ModerationCtrl.canUpdatePost()" ng-click="ModerationCtrl.loadEditor()" >
+            <button class="icon" data-balloon="Edit Post" ng-disabled="!ModerationCtrl.canUpdatePost()" ng-click="ModerationCtrl.loadEditor()" >
               <i class="fa fa-pencil"></i>
             </button>
 
             <!-- Hide/Unhide Post -->
-            <button class="icon css-tooltip" data-css-tooltip="{{ ModerationCtrl.previewPost.deleted ? 'Unhide Post' : 'Hide Post' }}" ng-click="ModerationCtrl.previewPost.deleted ? ModerationCtrl.showPostConfirm({ postId: ModerationCtrl.previewReport.offender_post_id, undelete: true, label: 'Unhide' }) : ModerationCtrl.showPostConfirm({ postId: ModerationCtrl.previewReport.offender_post_id, delete: true, label: 'Hide' })" ng-disabled="!ModerationCtrl.canDeletePost()">
+            <button class="icon" data-balloon="{{ ModerationCtrl.previewPost.deleted ? 'Unhide Post' : 'Hide Post' }}" ng-click="ModerationCtrl.previewPost.deleted ? ModerationCtrl.showPostConfirm({ postId: ModerationCtrl.previewReport.offender_post_id, undelete: true, label: 'Unhide' }) : ModerationCtrl.showPostConfirm({ postId: ModerationCtrl.previewReport.offender_post_id, delete: true, label: 'Hide' })" ng-disabled="!ModerationCtrl.canDeletePost()">
               <i ng-class="{ 'fa fa-eye':ModerationCtrl.previewPost.deleted, 'fa fa-eye-slash':!ModerationCtrl.previewPost.deleted }"></i>
             </button>
 
             <!-- Purge Post -->
-            <button class="icon css-tooltip" data-css-tooltip="Purge Post" ng-disabled="!ModerationCtrl.canPurgePost()" ng-click="ModerationCtrl.showPostConfirm({ postId: ModerationCtrl.previewReport.offender_post_id, purge: true, label: 'Purge' })"><i class="fa fa-trash"></i></button>
+            <button class="icon" data-balloon="Purge Post" ng-disabled="!ModerationCtrl.canPurgePost()" ng-click="ModerationCtrl.showPostConfirm({ postId: ModerationCtrl.previewReport.offender_post_id, purge: true, label: 'Purge' })"><i class="fa fa-trash"></i></button>
 
             <div ng-show="ModerationCtrl.previewReport.offender_thread_starter" class="note">First post in thread cannot be purged or hidden</div>
           </td>

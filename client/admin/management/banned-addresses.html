@@ -34,10 +34,10 @@
         <td ng-bind="(address.updated_at | humanDate) || 'N/A'"></td>
         <td ng-bind="address.update_count || 0"></td>
         <th>
-          <button ng-click="AdminManagementCtrl.showEditAddressModal(address)" class="icon css-tooltip" data-css-tooltip="Edit Address">
+          <button ng-click="AdminManagementCtrl.showEditAddressModal(address)" class="icon" data-balloon="Edit Address">
             <i class="fa fa-pencil"></i>
           </button>
-          <button ng-click="AdminManagementCtrl.showConfirmDeleteAddressModal(address)" class="icon css-tooltip" data-css-tooltip="Delete Address">
+          <button ng-click="AdminManagementCtrl.showConfirmDeleteAddressModal(address)" class="icon" data-balloon="Delete Address">
             <i class="fa fa-trash"></i>
           </button>
         </th>

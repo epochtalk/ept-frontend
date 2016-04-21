@@ -4,7 +4,7 @@
     <!-- Logo Section -->
     <h3>
       <a ui-sref="boards" ng-if="$webConfigs.logo"><img ng-src="{{$webConfigs.logo}}" id="logo" /></a>
-      <a ui-sref="boards" id="logo-text" ng-bind="$webConfigs.title | decode">Epochtalk</a>
+      <a ui-sref="boards" ui-sref-opts="{ reload: true }" id="logo-text" ng-bind="$webConfigs.title | decode">Epochtalk</a>
     </h3>
 
     <!-- Login Section -->
@@ -19,39 +19,47 @@
 
     <!-- User Dropdown -->
     <ul ng-if="HeaderCtrl.loggedIn()">
-      <li class="search">
+      <!-- <li class="search">
         <form action="" autocomplete="off">
           <div>
             <input class="search-input" type="text" name="search" placeholder="Search" autocomplete="off" />
             <label for="search" class="icon-epoch-search"></label>
           </div>
         </form>
-      </li>
+      </li> -->
       <li id="notifications-tray">
-        <div class="tray-icon">
+        <!-- <div class="tray-icon">
           <i class="fa fa-at"></i>
           <div class="count" ng-if="HeaderCtrl.notifications.mentions" ng-bind-html="HeaderCtrl.notifications.mentions"></div>
-        </div>
-        <div class="tray-icon" ui-sref="messages" ui-sref-opts="{ reload: true }" ng-click="HeaderCtrl.dismissNotifications('message')">
+        </div> -->
+        <div class="tray-icon" ui-sref="messages" ui-sref-opts="{ reload: true }" ng-click="HeaderCtrl.dismissNotifications('message')" data-balloon="Messages" data-balloon-pos="down">
           <i class="fa fa-envelope"></i>
           <div class="count" ng-if="HeaderCtrl.notifications.messages" ng-bind-html="HeaderCtrl.notifications.messages"></div>
         </div>
-        <div class="tray-icon">
+        <!-- <div class="tray-icon">
           <i class="fa fa-globe"></i>
           <div class="count" ng-if="HeaderCtrl.notifications.other" ng-bind-html="HeaderCtrl.notifications.other"></div>
-        </div>
+        </div> -->
       </li>
       <li id="user-dropdown-wrap">
         <div>
-          <img ng-src="{{ HeaderCtrl.currentUser.avatar }}" class="avatar">
-          <a ui-sref="profile({ username: HeaderCtrl.currentUser.username })" ui-sref-opts="{ reload: true }" ng-bind-html="HeaderCtrl.currentUser.username"></a>
+          <a ui-sref="profile({ username: HeaderCtrl.currentUser.username })">
+            <img ng-src="{{ HeaderCtrl.currentUser.avatar }}" class="avatar">
+            <span ng-bind-html="HeaderCtrl.currentUser.username"></span>
+          </a>
         </div>
         <ul id="user-dropdown">
           <li ng-if="HeaderCtrl.hasPermission('adminAccess')">
-            <a ui-sref="^.admin" ui-sref-opts="{ reload: true }">Admin Panel</a>
+            <a ui-sref="^.admin">Admin Panel</a>
           </li>
           <li ng-if="HeaderCtrl.hasPermission('modAccess') && !HeaderCtrl.hasPermission('adminAccess')">
-            <a ui-sref="^.admin-moderation" ui-sref-opts="{ reload: true }">Mod Panel</a>
+            <a ui-sref="^.admin-moderation">Mod Panel</a>
+          </li>
+          <li>
+            <a ui-sref="profile({ username: HeaderCtrl.currentUser.username })">Profile</a>
+          </li>
+          <li>
+            <a ui-sref="messages">Messages</a>
           </li>
           <li>
             <a ui-sref="watchlist">Watchlist</a>
@@ -70,7 +78,7 @@
   <div id="breadcrumbs">
     <ul>
       <li ng-repeat="breadcrumb in HeaderCtrl.breadcrumbs()" ng-if="breadcrumb.label" ng-class="{ active: $last }">
-          <a ng-if="!$last && breadcrumb.state" title="{{breadcrumb.label}}" ui-sref="{{breadcrumb.state}}({{breadcrumb.opts}})" ng-bind-html="breadcrumb.label | truncate:30"></a>
+          <a ng-if="!$last && breadcrumb.state" title="{{breadcrumb.label}}" ui-sref="{{breadcrumb.state}}({{breadcrumb.opts}})" ui-sref-opts="{ reload: true }" ng-bind-html="breadcrumb.label | truncate:30"></a>
           <span ng-if="$last || !breadcrumb.state" title="{{breadcrumb.label}}" ng-bind-html="breadcrumb.label | truncate:30"></span>
       </li>
     </ul>

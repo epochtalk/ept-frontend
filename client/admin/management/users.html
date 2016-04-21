@@ -43,12 +43,18 @@
         <td class="hide-mobile" ng-bind="user.created_at | humanDate"></td>
         <td>
           <a ui-sref="users-posts({ username: user.username })" ui-sref-opts="{ reload: true }">
-            <button class="icon css-tooltip" data-css-tooltip="View Posts"><i class="fa fa-file-text-o"></i></button>
+            <button class="icon" data-balloon="View Posts">
+              <i class="fa fa-file-text-o"></i>
+            </button>
           </a>
 
-          <button class="icon css-tooltip" data-css-tooltip="Edit Profile" ng-click="AdminManagementCtrl.showEditUser(user.username)"><i class="fa fa-pencil"></i></button>
+          <button class="icon" data-balloon="Edit Profile" ng-click="AdminManagementCtrl.showEditUser(user.username)">
+            <i class="fa fa-pencil"></i>
+          </button>
 
-          <button class="icon css-tooltip" data-css-tooltip="{{ user.ban_expiration ? 'Unban User' : 'Ban User' }}" ng-click="user.ban_expiration ? AdminManagementCtrl.showUnbanConfirm(user) : AdminManagementCtrl.showBanConfirm(user)" ng-disabled="!AdminManagementCtrl.actionAccess.userControls.privilegedBan"><i ng-class="{ 'fa fa-user':user.ban_expiration, 'fa fa-user-times':!user.ban_expiration }"></i></button>
+          <button class="icon" data-balloon="{{ user.ban_expiration ? 'Unban User' : 'Ban User' }}" ng-click="user.ban_expiration ? AdminManagementCtrl.showUnbanConfirm(user) : AdminManagementCtrl.showBanConfirm(user)" ng-disabled="!AdminManagementCtrl.actionAccess.userControls.privilegedBan">
+            <i ng-class="{ 'fa fa-user':user.ban_expiration, 'fa fa-user-times':!user.ban_expiration }"></i>
+          </button>
         </td>
       </tr>
     </tbody>
