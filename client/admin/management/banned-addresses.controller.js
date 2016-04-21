@@ -7,6 +7,10 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'S
   this.searchStr = bannedAddresses.search;
   this.addressesToBan = [{}];
 
+  this.ipRegex = /(^\s*((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\s*$)/;
+
+  this.hostnameRegex = /(^\s*((?=.{1,255}$)[0-9A-Za-z\*](?:(?:[0-9A-Za-z\*]|\b-){0,61}[0-9A-Za-z\*])?(?:\.[0-9A-Za-z\*](?:(?:[0-9A-Za-z\*]|\b-){0,61}[0-9A-Za-z\*])?)*\.?)\s*$)/;
+
   // Models backing pagination of addresses
   this.search = bannedAddresses.search;
   this.page = bannedAddresses.page;
@@ -146,12 +150,12 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'S
 
   this.closeBanAddresses = function() {
     ctrl.showBanAddresses = false;
-    ctrl.addressesToBan = [{}];
+    ctrl.addressesToBan = [{ typeIp: true, decay:true, weight: 50 }];
   };
 
   this.checkAddresses = function() {
     return !ctrl.addressesToBan.filter(function(addr) {
-      if (addr.address && addr.weight) { return addr; }
+      if ((addr.ip || addr.hostname) && addr.weight) { return addr; }
     }).length;
   };
 
@@ -160,7 +164,11 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'S
     ctrl.banAddressesSubmitted = true;
 
     var addresses = ctrl.addressesToBan.filter(function(addr) {
-      if (addr.address && addr.weight) { return addr; }
+      if ((addr.ip || addr.hostname) && addr.weight) {
+        // replace * wildcard with % db wildcard
+        addr.hostname = addr.hostname ? addr.hostname.replace(new RegExp('\\*', 'g'), '%') : undefined;
+        return addr;
+      }
     });
 
     if (addresses.length) {
@@ -247,9 +255,6 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'S
     });
   };
 }];
-
-// include the address validator directive
-require('../../components/address_validator/address-validator.directive');
 
 module.exports = angular.module('ept.admin.management.bannedAddresses.ctrl', [])
 .controller('BannedAddressesCtrl', ctrl);

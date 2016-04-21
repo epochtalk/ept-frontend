@@ -207,10 +207,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
         var deferred = $q.defer();
         require.ensure([], function() {
           require('./banned-addresses.controller');
-          $ocLazyLoad.load([
-            { name: 'ept.admin.management.bannedAddresses.ctrl' },
-            { name: 'ept.directives.address-validator'}
-          ]);
+          $ocLazyLoad.load({ name: 'ept.admin.management.bannedAddresses.ctrl' });
           deferred.resolve();
         });
         return deferred.promise;

@@ -23,6 +23,7 @@
       <th class="pointer" ng-click="AdminManagementCtrl.setSortField('decay')"><span ng-class="AdminManagementCtrl.getSortClass('decay')"></span>&nbsp;Decays</th>
       <th class="pointer" ng-click="AdminManagementCtrl.setSortField('updates')"><span ng-class="AdminManagementCtrl.getSortClass('updates')"></span>&nbsp;Last Updated</th>
       <th class="pointer" ng-click="AdminManagementCtrl.setSortField('update_count')"><span ng-class="AdminManagementCtrl.getSortClass('update_count')"></span>&nbsp;Update Count</th>
+      <th class="pointer" ng-click="AdminManagementCtrl.setSortField('imported_at')"><span ng-class="AdminManagementCtrl.getSortClass('imported_at')"></span>&nbsp;Date Imported</th>
       <th>Actions</th>
     </thead>
     <tbody>
@@ -33,6 +34,7 @@
         <td ng-bind="address.decay ? 'YES' : 'NO'"></td>
         <td ng-bind="(address.updated_at | humanDate) || 'N/A'"></td>
         <td ng-bind="address.update_count || 0"></td>
+        <td ng-bind="(address.imported_at | humanDate) || 'N/A'"></td>
         <th>
           <button ng-click="AdminManagementCtrl.showEditAddressModal(address)" class="icon" data-balloon="Edit Address">
             <i class="fa fa-pencil"></i>
@@ -95,27 +97,33 @@
     <table class="striped" width="100%">
       <thead>
         <tr>
-          <th width="60%">Address</th>
-          <th>Decays</th>
-          <th width="30%">Weight</th>
+          <th>Type</th>
+          <th>Address</th>
+          <th width="5%">Decays</th>
+          <th width="20%">Weight</th>
         </tr>
       </thead>
       <tr ng-repeat="addr in AdminManagementCtrl.addressesToBan track by $index">
         <td>
-          <input ng-model="addr.address" ng-change="addr.weight ? null : addr.weight = 20" type="text" style="margin: 0; outline: none;" placeholder="IP or Hostname to ban" address-validator="addr" />
+          <select style="margin-bottom: 0;" ng-init="addr.typeIp = true" ng-model="addr.typeIp" ng-change="addr.typeIp ? addr.hostname = undefined : addr.ip = undefined" ng-options="o.v as o.n for o in [{ n: 'IP Address', v: true }, { n: 'Hostname', v: false }]">
+          </select>
+        </td>
+        <td ng-if="addr.typeIp">
+          <input ng-model="addr.ip" type="text" ng-pattern="AdminManagementCtrl.ipRegex" style="margin: 0; outline: none;" placeholder="IP Address to ban" />
+        </td>
+        <td ng-if="!addr.typeIp">
+          <input ng-model="addr.hostname" type="text" ng-pattern="AdminManagementCtrl.hostnameRegex" style="margin: 0; outline: none;" placeholder="Hostname to ban" />
         </td>
         <td>
-          <input ng-model="addr.decay" ng-change="addr.decay ? addr.weight = 50 : addr.weight = 20" style="margin: 0 auto; display: block" type="checkbox" />
+          <input ng-init="addr.decay = true" ng-model="addr.decay" style="margin: 0 auto; display: block" type="checkbox" />
         </td>
         <td>
-          <input ng-model="addr.weight" type="number" min="0" style="margin: 0; outline: none;" placeholder="Weight" ng-keydown="!$event.shiftKey && ($event.which === 9 || $event.which === 13) && AdminManagementCtrl.addressesToBan.length === ($index + 1) &&AdminManagementCtrl.addressesToBan.push({})" />
+          <input ng-init="addr.weight = 50" ng-model="addr.weight" type="number" min="0" style="margin: 0; outline: none;" placeholder="Weight" ng-keydown="!$event.shiftKey && ($event.which === 9 || $event.which === 13) && AdminManagementCtrl.addressesToBan.length === ($index + 1) &&AdminManagementCtrl.addressesToBan.push({})" />
         </td>
       </tr>
       <tfoot>
         <tr>
-          <td></td>
-          <td></td>
-          <td><a class="right" ng-click="AdminManagementCtrl.addressesToBan.push({})" href="#"><i class="fa fa-plus"></i>&nbsp;Add another address</a></td>
+          <td colspan="4"><a class="right" ng-click="AdminManagementCtrl.addressesToBan.push({})" href="#"><i class="fa fa-plus"></i>&nbsp;Add another address</a></td>
         </tr>
       </tfoot>
     </table>
