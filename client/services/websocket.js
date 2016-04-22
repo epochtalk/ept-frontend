@@ -5,7 +5,7 @@ module.exports = ['$window', 'Session',
   function($window, Session) {
     // Initiate the connection to the server
     // var socketcluster = require('socketcluster-client');
-    var socket = socketcluster.connect({
+    var socket = socketCluster.connect({
       rejectUnauthorized: false,
       secure: true,
       hostname: 'localhost',
