@@ -14,6 +14,7 @@ module.exports = ['$window', 'Session',
     })
     .on('error', function(err) {
       console.log('Websocket error:', err);
+      console.log('Websocket config:', forumData);
     });
     return socket;
   }
