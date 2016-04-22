@@ -8,7 +8,7 @@ module.exports = ['$window', 'Session',
     var socket = socketcluster.connect({
       rejectUnauthorized: false,
       secure: true,
-      hostname: '192.168.64.2',
+      hostname: 'localhost',
       port: 23958,
       autoReconnect: true
     })
