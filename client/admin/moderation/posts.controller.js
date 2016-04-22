@@ -101,6 +101,13 @@ var ctrl = ['$rootScope', '$scope', '$q', '$filter', '$location', '$timeout', '$
     else { return false; }
   };
 
+  this.canSave = function() {
+    var text = ctrl.posting.post.body;
+    text = text.replace(/(<([^>]+)>)/ig,'');
+    text = text.trim();
+    return text.length > 0;
+  };
+
   // Search Vars
   this.search = postReports.search;
   this.searchStr = postReports.search;

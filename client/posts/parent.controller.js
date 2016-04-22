@@ -150,6 +150,13 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
       return true;
     };
 
+    this.canSave = function() {
+      var text = ctrl.posting.post.body;
+      text = text.replace(/(<([^>]+)>)/ig,'');
+      text = text.trim();
+      return text.length > 0;
+    };
+
     // wait for board_id to be populated by child controller
     $scope.$watch(function() { return ctrl.board_id; }, function(boardId) {
       ctrl.getBoards(boardId); // get boards for mods and admins

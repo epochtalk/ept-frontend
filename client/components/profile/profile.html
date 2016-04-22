@@ -112,7 +112,7 @@
           Old password is required
         </div>
         <!-- old password input -->
-        <input type="password" name="oldPass" placeholder="Old Password" ng-model="vm.passData.old_password" auto-focus="$parent.focus" required>
+        <input type="password" name="oldPass" placeholder="Old Password" ng-model="vm.passData.old_password" auto-focus="$parent.focus" maxlength="255" required>
         <i ng-if="$parent.form.oldPass.$touched && !$parent.form.oldPass.$error.required" class="fa fa-check input-icon valid"></i>
         <i ng-if="$parent.form.oldPass.$touched && $parent.form.oldPass.$error.required" class="fa fa-times input-icon invalid"></i>
       </label>
@@ -127,7 +127,7 @@
         <div ng-if="$parent.form.pass.$touched && $parent.form.passConf.$touched && vm.passData.password !== vm.passData.confirmation && !$parent.form.pass.$error.required" class="input-error invalid right">
           Password and confirmation do not match
         </div>
-        <input type="password" name="pass" placeholder="New Password" ng-model="vm.passData.password" ng-class="{'ng-invalid-mismatch' : vm.passData.password !== vm.passData.confirmation }" required>
+        <input type="password" name="pass" placeholder="New Password" ng-model="vm.passData.password" ng-class="{'ng-invalid-mismatch' : vm.passData.password !== vm.passData.confirmation }" maxlength="255" required>
         <i ng-if="($parent.form.pass.$touched && !$parent.form.passConf.$touched && !$parent.form.pass.$error.required) || ($parent.form.pass.$touched && $parent.form.passConf.$touched && vm.passData.password === vm.passData.confirmation && !$parent.form.pass.$error.required)" class="fa fa-check input-icon valid"></i>
         <i ng-if="($parent.form.pass.$touched && $parent.form.pass.$error.required) || ($parent.form.pass.$touched && $parent.form.passConf.$touched && vm.passData.password !== vm.passData.confirmation)" class="fa fa-times input-icon invalid"></i>
       </label>
@@ -142,7 +142,7 @@
         <div ng-if="$parent.form.passConf.$touched && $parent.form.passConf.$touched && vm.passData.password !== vm.passData.confirmation && !$parent.form.passConf.$error.required" class="input-error invalid right">
           Password and confirmation do not match
         </div>
-        <input type="password" name="passConf" placeholder="Confirm New Password" ng-model="vm.passData.confirmation" ng-class="{'ng-invalid-mismatch' : vm.passData.password !== vm.passData.confirmation }" required>
+        <input type="password" name="passConf" placeholder="Confirm New Password" ng-model="vm.passData.confirmation" ng-class="{'ng-invalid-mismatch' : vm.passData.password !== vm.passData.confirmation }" maxlength="255" required>
         <i ng-if="($parent.form.passConf.$touched  && vm.passData.confirmation !== '' && !$parent.form.pass.$touched && !$parent.form.passConf.$error.required) || ($parent.form.pass.$touched && $parent.form.passConf.$touched && vm.passData.password === vm.passData.confirmation && !$parent.form.passConf.$error.required)" class="fa fa-check input-icon valid"></i>
         <i ng-if="($parent.form.passConf.$touched && $parent.form.passConf.$error.required) || ($parent.form.pass.$touched && $parent.form.passConf.$touched && vm.passData.password !== vm.passData.confirmation)" class="fa fa-times input-icon invalid"></i>
       </label>
@@ -174,11 +174,11 @@
         <div ng-if="$parent.form.username.$error.pattern" class="invalid right">
           Usernames may only contain A-Z, 0-9, -, _ and .
         </div>
-        <input type="text" name="username" ng-model="vm.editProfileUser.username" unique-username="{{vm.user.username}}" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }" placeholder="Username ( a-z, 0-9, -, _ and . )" ng-pattern=/^[a-zA-Z\d-_.]+$/ auto-focus="$parent.focus"/>
+        <input type="text" name="username" ng-model="vm.editProfileUser.username" unique-username="{{vm.user.username}}" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }" placeholder="Username ( a-z, 0-9, -, _ and . )" ng-pattern=/^[a-zA-Z\d-_.]+$/ maxlength="255" auto-focus="$parent.focus"/>
       </label>
 
       <label>Display Name
-        <input type="text" placeholder="Name" ng-model="vm.editProfileUser.name">
+        <input type="text" placeholder="Name" ng-model="vm.editProfileUser.name" maxlength="255">
       </label>
 
       <label>Email
@@ -199,25 +199,25 @@
       </label>
 
       <label>Bitcoin Address
-        <input type="text" placeholder="Bitcoin Address" ng-model="vm.editProfileUser.btcAddress">
+        <input type="text" placeholder="Bitcoin Address" ng-model="vm.editProfileUser.btcAddress" maxlength="255">
       </label>
     </div>
 
     <div class="half-column">
       <label>Gender
-        <input type="text" placeholder="Gender" ng-model="vm.editProfileUser.gender">
+        <input type="text" placeholder="Gender" ng-model="vm.editProfileUser.gender" maxlength="255">
       </label>
 
       <label>Date of Birth
-        <input type="text" placeholder="Date of Birth" ng-model="vm.editProfileUser.dob">
+        <input type="text" placeholder="Date of Birth" ng-model="vm.editProfileUser.dob" maxlength="255">
       </label>
 
       <label>Location
-        <input type="text" placeholder="Location" ng-model="vm.editProfileUser.location">
+        <input type="text" placeholder="Location" ng-model="vm.editProfileUser.location" maxlength="255">
       </label>
 
       <label>Language
-        <input type="text" placeholder="Language" ng-model="vm.editProfileUser.language">
+        <input type="text" placeholder="Language" ng-model="vm.editProfileUser.language" maxlength="255">
       </label>
     </div>
 
@@ -253,7 +253,7 @@
   <form name="$parent.form" class="css-form" novalidate>
     <h3 class="thin-underline">Edit Signature</h3>
     <label>Signature
-      <textarea type="text" rows="10" placeholder="Signature" ng-model="vm.editSigUser.raw_signature" auto-focus="$parent.focus" ></textarea>
+      <textarea type="text" rows="10" placeholder="Signature" ng-model="vm.editSigUser.raw_signature" auto-focus="$parent.focus" maxlength="5000"></textarea>
     </label>
     <!-- Save Button -->
     <div class="clear">

@@ -164,7 +164,7 @@
       <div ng-if="note.edit" class="note-details">
         <a class="right" ng-href="#" ng-click="ModerationCtrl.updateReportNote(note)">Save</a>
         <a class="right" ng-href="#" ng-click="note.edit = undefined; note.note = note.noteCopy; note.noteCopy = undefined">Cancel&nbsp;&nbsp;&nbsp;</a>
-        <textarea rows="3" ng-model="note.note"></textarea>
+        <textarea rows="3" ng-model="note.note" maxlength="255"></textarea>
       </div>
       <div class="thin-underline"></div>
     </div>
@@ -178,7 +178,7 @@
       </div>
     </div>
     <form name="$parent.form" class="css-form">
-      <textarea name="reportNote" ng-model="ModerationCtrl.reportNote" ng-disabled="ModerationCtrl.noteSubmitted" placeholder="Leave a note on this report..." rows="3" required></textarea>
+      <textarea name="reportNote" ng-model="ModerationCtrl.reportNote" ng-disabled="ModerationCtrl.noteSubmitted" placeholder="Leave a note on this report..." rows="3" required maxlength="255"></textarea>
       <div class="clear">
         <button class="fill-row" ng-click="ModerationCtrl.submitReportNote(); $parent.form.$setUntouched()"
           ng-disabled="$parent.form.$invalid || $parent.form.$errors || ModerationCtrl.noteSubmitted" ng-bind="ModerationCtrl.submitBtnLabel"></button>
@@ -306,7 +306,7 @@
     <input ng-if="ModerationCtrl.selectedMessageReport.status !== 'Ignored'" type="radio" name="newStatus" ng-model="ModerationCtrl.selectedStatus" value="Ignored" id="ignored" ng-disabled="ModerationCtrl.setStatusSubmitted" required><label ng-if="ModerationCtrl.selectedMessageReport.status !== 'Ignored'" for="ignored">Ignored</label>
     <input ng-if="ModerationCtrl.selectedMessageReport.status !== 'Bad Report'" type="radio" name="newStatus" ng-model="ModerationCtrl.selectedStatus" value="Bad Report" id="badReport" ng-disabled="ModerationCtrl.setStatusSubmitted" required><label ng-if="ModerationCtrl.selectedMessageReport.status !== 'Bad Report'" for="badReport">Bad Report</label>
     <label for="statusReportNote">Leave a note (optional):</label>
-    <textarea name="statusReportNote" ng-model="ModerationCtrl.statusReportNote" ng-disabled="ModerationCtrl.noteSubmitted" placeholder="Leave a note on this report..." rows="3"></textarea>
+    <textarea name="statusReportNote" ng-model="ModerationCtrl.statusReportNote" ng-disabled="ModerationCtrl.noteSubmitted" placeholder="Leave a note on this report..." rows="3" maxlength="255"></textarea>
     <div class="clear">
       <button class="fill-row" ng-click="ModerationCtrl.setStatus()"
         ng-disabled="$parent.statusForm.$invalid || $parent.statusForm.$errors || ModerationCtrl.setStatusSubmitted || ModerationCtrl.selectedStatus === ModerationCtrl.selectedMessageReport.status" ng-bind="ModerationCtrl.setStatusBtnLabel"></button>
@@ -323,7 +323,7 @@
     </label>
 
     <label>Warning Message
-      <textarea type="text" rows="10" ng-model="ModerationCtrl.newConversation.body"></textarea>
+      <textarea type="text" rows="10" ng-model="ModerationCtrl.newConversation.body" maxlength="5000"></textarea>
     </label>
 
     <div class="clear">

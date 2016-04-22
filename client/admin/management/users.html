@@ -141,11 +141,11 @@
         <div ng-if="$parent.form.username.$error.pattern" class="invalid right">
           Usernames may only contain A-Z, 0-9, -, _ and .
         </div>
-        <input type="text" class="input-text" name="username" ng-model="AdminManagementCtrl.selectedUser.username" unique-username="{{::AdminManagementCtrl.selectedUser.username}}" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }" placeholder="Username ( a-z, 0-9, -, _ and . )" ng-pattern=/^[a-zA-Z\d-_.]+$/ auto-focus="$parent.focus"/>
+        <input type="text" class="input-text" name="username" ng-model="AdminManagementCtrl.selectedUser.username" unique-username="{{::AdminManagementCtrl.selectedUser.username}}" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }" placeholder="Username ( a-z, 0-9, -, _ and . )" ng-pattern=/^[a-zA-Z\d-_.]+$/ auto-focus="$parent.focus" maxlength="255"/>
       </label>
 
       <label>Display Name
-        <input type="text" class="input-text" placeholder="Name" ng-model="AdminManagementCtrl.selectedUser.name">
+        <input type="text" class="input-text" placeholder="Name" ng-model="AdminManagementCtrl.selectedUser.name" maxlength="255">
       </label>
 
       <label>Email
@@ -162,7 +162,7 @@
       </label>
 
       <label>New Password
-        <input type="password" placeholder="New Password" ng-model="AdminManagementCtrl.selectedUser.password">
+        <input type="password" placeholder="New Password" ng-model="AdminManagementCtrl.selectedUser.password" maxlength="255">
       </label>
 
       <label>Avatar
@@ -171,7 +171,7 @@
       </label>
 
       <label>Signature
-        <textarea type="text" rows="5" placeholder="Signature" ng-model="AdminManagementCtrl.selectedUser.raw_signature"></textarea>
+        <textarea type="text" rows="5" placeholder="Signature" ng-model="AdminManagementCtrl.selectedUser.raw_signature" maxlength="5000"></textarea>
       </label>
     </div>
 
@@ -181,23 +181,23 @@
       </label>
 
       <label>Bitcoin Address
-        <input type="text" class="input-text" placeholder="Bitcoin Address" ng-model="AdminManagementCtrl.selectedUser.btcAddress">
+        <input type="text" class="input-text" placeholder="Bitcoin Address" ng-model="AdminManagementCtrl.selectedUser.btcAddress" maxlength="255">
       </label>
 
       <label>Gender
-        <input type="text" class="input-text" placeholder="Gender" ng-model="AdminManagementCtrl.selectedUser.gender">
+        <input type="text" class="input-text" placeholder="Gender" ng-model="AdminManagementCtrl.selectedUser.gender" maxlength="255">
       </label>
 
       <label>Date of Birth
-        <input type="text" class="input-text" placeholder="Date of Birth" ng-model="AdminManagementCtrl.selectedUser.dob">
+        <input type="text" class="input-text" placeholder="Date of Birth" ng-model="AdminManagementCtrl.selectedUser.dob" maxlength="255">
       </label>
 
       <label>Location
-        <input type="text" class="input-text" placeholder="Location" ng-model="AdminManagementCtrl.selectedUser.location">
+        <input type="text" class="input-text" placeholder="Location" ng-model="AdminManagementCtrl.selectedUser.location" maxlength="255">
       </label>
 
       <label>Language
-        <input type="text" class="input-text" placeholder="Language" ng-model="AdminManagementCtrl.selectedUser.language">
+        <input type="text" class="input-text" placeholder="Language" ng-model="AdminManagementCtrl.selectedUser.language" maxlength="255">
       </label>
     </div>
 
