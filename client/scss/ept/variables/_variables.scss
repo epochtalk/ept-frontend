@@ -25,15 +25,15 @@ $light-text-default: rgb(255,255,255);
 @import 'preview-variables';
 
 // Placeholder text color
+$placeholder-text-color: lighten($header-bg-color, 20%);
 @if (lightness($header-bg-color) > 50) { $placeholder-text-color: darken($header-bg-color, 20%); }
-@else { $placeholder-text-color: lighten($header-bg-color, 20%); }
 
 // Spacing Calculated
 $base-grid-padding: 1rem;
 
 // Primary Layout Colors Calculated
+$color-primary-alt: lighten($color-primary, 30%);
 @if (lightness($color-primary) > 50) { $color-primary-alt: darken($color-primary, 15%); }
-@else { $color-primary-alt: lighten($color-primary, 30%); }
 // transparent version
 $color-primary-transparent: rgba($color-primary, 0.4);
 
