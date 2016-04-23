@@ -39,24 +39,20 @@ $color-primary-transparent: rgba($color-primary, 0.4);
 
 // Fonts Calculated
 $button-text-color: color-contrast($color-primary);
+$secondary-font-color-dark: lighten($secondary-font-color, 15%);
+$secondary-font-color-light: darken($secondary-font-color, 20%);
 @if (lightness($base-background-color) > 50) {
   $secondary-font-color-dark: darken($secondary-font-color, 15%);
   $secondary-font-color-light: lighten($secondary-font-color, 20%);
 }
-@else {
-  $secondary-font-color-dark: lighten($secondary-font-color, 15%);
-  $secondary-font-color-light: darken($secondary-font-color, 20%);
-}
 
 // Components Calculated
 $color-highlighted: HSL(60, 100%, 95%);
+$border-color-alt: darken($border-color, 30%);
+$code-block-bg-color: $dark-text-default;
 @if (lightness($base-background-color) > 50) {
   $border-color-alt: lighten($border-color, 10%);
   $code-block-bg-color: #f8f8f8;
-}
-@else {
-  $border-color-alt: darken($border-color, 30%);
-  $code-block-bg-color: $dark-text-default;
 }
 
 //Header Colors Calculated
