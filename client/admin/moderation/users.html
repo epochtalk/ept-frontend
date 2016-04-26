@@ -205,6 +205,11 @@
   <div class="preview-wrap">
     <h5 class="thin-underline">Reported User {{ModerationCtrl.selectedUsername}}</h5>
     <profile user="ModerationCtrl.currentUser"></profile>
+    <div class="more-posts centered-text">
+      <a ui-sref="users-posts({ username: ModerationCtrl.selectedUsername })" ui-sref-opts="{ reload: true }">
+        View posts page for {{ModerationCtrl.selectedUsername}}
+      </a>
+    </div>
   </div>
 </div>
 

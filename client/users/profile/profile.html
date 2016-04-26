@@ -1,9 +1,3 @@
 <profile user="ProfileCtrl.user"></profile>
 
 <div class="profile-posts" ui-view="posts"></div>
-
-<div class="more-posts centered-text">
-  <a ui-sref="users-posts({ username: ProfileCtrl.user.username })" ui-sref-opts="{ reload: true }">
-    View posts page for {{ ProfileCtrl.user.username }}
-  </a>
-</div>

@@ -94,7 +94,7 @@
 <modal show="AdminManagementCtrl.showBanAddresses" on-close="AdminManagementCtrl.closeBanAddresses()">
   <form name="$parent.form" class="css-form">
     <h3 class="thin-underline">Manually Ban Addresses</h3>
-    <table class="striped" width="100%">
+    <table class="striped ban-addresses" width="100%">
       <thead>
         <tr>
           <th>Type</th>
@@ -105,20 +105,20 @@
       </thead>
       <tr ng-repeat="addr in AdminManagementCtrl.addressesToBan track by $index">
         <td>
-          <select style="margin-bottom: 0;" ng-init="addr.typeIp = true" ng-model="addr.typeIp" ng-change="addr.typeIp ? addr.hostname = undefined : addr.ip = undefined" ng-options="o.v as o.n for o in [{ n: 'IP Address', v: true }, { n: 'Hostname', v: false }]">
+          <select class="type" ng-init="addr.typeIp = true" ng-model="addr.typeIp" ng-change="addr.typeIp ? addr.hostname = undefined : addr.ip = undefined" ng-options="o.v as o.n for o in [{ n: 'IP Address', v: true }, { n: 'Hostname', v: false }]">
           </select>
         </td>
         <td ng-if="addr.typeIp">
-          <input ng-model="addr.ip" type="text" ng-pattern="AdminManagementCtrl.ipRegex" style="margin: 0; outline: none;" placeholder="IP Address to ban" />
+          <input ng-model="addr.ip" type="text" ng-pattern="AdminManagementCtrl.ipRegex" class="address" placeholder="IP Address to ban" />
         </td>
         <td ng-if="!addr.typeIp">
-          <input ng-model="addr.hostname" type="text" ng-pattern="AdminManagementCtrl.hostnameRegex" style="margin: 0; outline: none;" placeholder="Hostname to ban" />
+          <input ng-model="addr.hostname" type="text" ng-pattern="AdminManagementCtrl.hostnameRegex" class="address" placeholder="Hostname to ban" />
         </td>
         <td>
-          <input ng-init="addr.decay = true" ng-model="addr.decay" style="margin: 0 auto; display: block" type="checkbox" />
+          <input ng-init="addr.decay = true" ng-model="addr.decay" class="decay" type="checkbox" />
         </td>
         <td>
-          <input ng-init="addr.weight = 50" ng-model="addr.weight" type="number" min="0" style="margin: 0; outline: none;" placeholder="Weight" ng-keydown="!$event.shiftKey && ($event.which === 9 || $event.which === 13) && AdminManagementCtrl.addressesToBan.length === ($index + 1) &&AdminManagementCtrl.addressesToBan.push({})" />
+          <input ng-init="addr.weight = 50" ng-model="addr.weight" type="number" min="0" class="weight" placeholder="Weight" ng-keydown="!$event.shiftKey && ($event.which === 9 || $event.which === 13) && AdminManagementCtrl.addressesToBan.length === ($index + 1) &&AdminManagementCtrl.addressesToBan.push({})" />
         </td>
       </tr>
       <tfoot>
