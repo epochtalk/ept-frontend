@@ -28,6 +28,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.bannedFromBoard) { return false; }
       if (!Session.hasPermission('threads.title.allow')) { return false; }
+      if (!ctrl.writeAccess) { return false; }
 
       var title = false;
       if (ctrl.thread.user.id === Session.user.id) { title = true; }
@@ -44,6 +45,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.bannedFromBoard) { return false; }
       if (!Session.hasPermission('threads.lock.allow')) { return false; }
+      if (!ctrl.writeAccess) { return false; }
 
       var lock = false;
       if (ctrl.thread.user.id === Session.user.id) { lock = true; }
@@ -59,6 +61,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     this.canSticky = function() {
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.bannedFromBoard) { return false; }
+      if (!ctrl.writeAccess) { return false; }
       if (!Session.hasPermission('threads.sticky.allow')) { return false; }
 
       var sticky = false;
@@ -72,6 +75,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     this.canPurge = function() {
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.bannedFromBoard) { return false; }
+      if (!ctrl.writeAccess) { return false; }
       if (!Session.hasPermission('threads.purge.allow')) { return false; }
 
       var purge = false;
@@ -85,6 +89,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     this.canMove = function() {
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.bannedFromBoard) { return false; }
+      if (!ctrl.writeAccess) { return false; }
       if (!Session.hasPermission('threads.move.allow')) { return false; }
 
       var move = false;
@@ -119,6 +124,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     this.canCreatePoll = function() {
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.thread.poll) { return false; }
+      if (!ctrl.writeAccess) { return false; }
       if (ctrl.bannedFromBoard) { return false; }
       if (!Session.hasPermission('threads.createPoll.allow')) { return false; }
 
@@ -137,6 +143,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     this.canPost = function() {
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.bannedFromBoard) { return false; }
+      if (!ctrl.writeAccess) { return false; }
       if (!Session.hasPermission('posts.create.allow')) { return false; }
 
       if (ctrl.thread.locked) {
