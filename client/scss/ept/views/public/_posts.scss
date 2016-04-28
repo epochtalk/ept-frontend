@@ -127,6 +127,8 @@
   }
 }
 
+#post-spacer { min-height: 175px; }
+
 // Posts Layout Mobile
 @include media($mobile-portrait) {
   .thread-data .post-block .post-content .display-name { float: none; width: 100%; }

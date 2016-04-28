@@ -26,6 +26,7 @@ var directive = ['$compile', function($compile) {
             name: board.name,
             description: board.description,
             viewable_by: board.viewable_by,
+            postable_by: board.postable_by,
             children: board.children || [],
             moderators: board.moderators || []
           };
@@ -53,7 +54,8 @@ var directive = ['$compile', function($compile) {
         var board = {
           name: $('#newBoardName').val() || '',
           description: $('#newBoardDesc').val() || '',
-          viewable_by: $('#newBoardViewable').val() || undefined
+          viewable_by: $('#newBoardViewable').val() || undefined,
+          postable_by: $('#newBoardPostable').val() || undefined
         };
 
         if (board.name !== '') {
@@ -64,6 +66,7 @@ var directive = ['$compile', function($compile) {
             name: board.name,
             description: board.description,
             viewable_by: board.viewable_by,
+            postable_by: board.postable_by,
             children: board.children || [],
             moderators: board.moderators || []
           };
@@ -93,6 +96,7 @@ var directive = ['$compile', function($compile) {
         $('#newBoardName').val('');
         $('#newBoardDesc').val('');
         $('#newBoardViewable').val('');
+        $('#newBoardPostable').val('');
       };
 
     }

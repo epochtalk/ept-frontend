@@ -37,8 +37,14 @@
   <label>Board Description
     <textarea rows="5" id="newBoardDesc" placeholder="Board Description" maxlength="255"></textarea>
   </label>
-  <label>Board Viewable By:
+  <label>Board Read Access:
     <select id="newBoardViewable">
+      <option value="">Minimum role level</option>
+      <option value="{{::role.priority}}" ng-repeat="role in roles | orderBy: 'priority'">{{::role.name}}</option>
+    </select>
+  </label>
+  <label>Board Write Access:
+    <select id="newBoardPostable">
       <option value="">Minimum role level</option>
       <option value="{{::role.priority}}" ng-repeat="role in roles | orderBy: 'priority'">{{::role.name}}</option>
     </select>
@@ -56,8 +62,14 @@
   <label>Board Description
     <textarea rows="5" id="editBoardDesc" ng-model="editBoardDesc" placeholder="Board Description" maxlength="255"></textarea>
   </label>
-  <label>Board Viewable By:
+  <label>Board Read Access:
     <select id="editBoardViewable">
+      <option value="">Minimum role level</option>
+      <option value="{{::role.priority}}" ng-repeat="role in roles | orderBy: 'priority'">{{::role.name}}</option>
+    </select>
+  </label>
+  <label>Board Write Access:
+    <select id="editBoardPostable">
       <option value="">Minimum role level</option>
       <option value="{{::role.priority}}" ng-repeat="role in roles | orderBy: 'priority'">{{::role.name}}</option>
     </select>
@@ -85,8 +97,14 @@
   <label>Category Name
     <input type="text" class="input-text" id="editCatName" placeholder="Category Name" maxlength="255"/>
   </label>
-  <label>Board Viewable By:
+  <label>Category Read Access:
     <select id="editCatViewable">
+      <option value="">Minimum role level</option>
+      <option value="{{::role.priority}}" ng-repeat="role in roles | orderBy: 'priority'">{{::role.name}}</option>
+    </select>
+  </label>
+  <label>Category Write Access:
+    <select id="editCatPostable">
       <option value="">Minimum role level</option>
       <option value="{{::role.priority}}" ng-repeat="role in roles | orderBy: 'priority'">{{::role.name}}</option>
     </select>

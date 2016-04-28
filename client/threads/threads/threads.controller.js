@@ -15,10 +15,12 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll', '$location', '$timeout', 'A
     this.parent.pageCount = Math.ceil(this.board.thread_count / this.limit);
     // TODO: This will not be here once actual boards are stored in this array
     this.parent.bannedFromBoard = BanSvc.banStatus().boards.length > 0;
+
     this.parent.canCreate = function() {
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.parent.bannedFromBoard) { return false; }
       if (!Session.hasPermission('threads.create.allow')) { return false; }
+      if (!pageData.writeAccess) { return false; }
       return true;
     };
 
