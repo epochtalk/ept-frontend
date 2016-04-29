@@ -30,8 +30,11 @@
     <div class="profile-row centered-text" ng-if="vm.canUpdate()">
       <a ng-href="#" ng-click="vm.openEditProfile()">Edit Profile</a>
     </div>
-    <div class="profile-row centered-text" ng-if="vm.canUpdatePassword()">
+    <div class="profile-row centered-text" ng-if="vm.canUpdatePrivate()">
       <a ng-href="#" ng-click="vm.openEditPassword()">Edit Password</a>
+    </div>
+    <div class="profile-row centered-text" ng-if="vm.canUpdatePrivate()">
+      <a ng-href="#" ng-click="vm.openEditEmail()">Edit Email</a>
     </div>
     <div class="profile-row centered-text" ng-if="vm.canDeactivate()">
       <a ng-href="#" ng-click="vm.showDeactivate = true">Deactivate Account</a>
@@ -158,6 +161,46 @@
   </form>
 </modal>
 
+<!-- Edit Email Modal -->
+<modal show="vm.editEmail">
+  <form name="$parent.form" class="css-form" novalidate>
+    <h3 class="thin-underline">Change Email</h3>
+
+    <!-- Email -->
+    <div class='input-section'>
+      <label>Email
+        <div ng-if="$parent.form.email.$error.email" class="invalid right">
+          Email is not valid
+        </div>
+        <div ng-if="$parent.form.email.$error.unique" class="invalid right">
+          Email already taken
+        </div>
+        <div ng-if="$parent.form.email.$touched && $parent.form.email.$error.required" class="invalid right">
+          Email is required
+        </div>
+        <input type="email" name="email" ng-model="vm.emailData.email" unique-email="{{vm.user.email}}" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }" ng-disabled="!vm.pageOwner" required />
+      </label>
+    </div>
+
+    <!-- Password -->
+    <div class='input-section'>
+      <label>Password
+        <div ng-if="$parent.form.pass.$touched && $parent.form.pass.$error.required" class="input-error invalid right">
+          Password is required
+        </div>
+        <input type="password" name="pass" ng-model="vm.emailData.emailPassword" maxlength="255" required />
+      </label>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="clear">
+      <button class="fill-row" ng-click="vm.saveEmail(); $parent.form.$setPristine(); $parent.form.$setUntouched()" ng-disabled="$parent.form.$invalid || $parent.form.$errors">
+        Confirm
+      </button>
+    </div>
+  </form>
+</modal>
+
 <!-- Edit Profile Modal -->
 <modal class="medium" show="vm.editProfile">
   <h3 class="thin-underline">Edit Profile</h3>
@@ -179,19 +222,6 @@
 
       <label>Display Name
         <input type="text" placeholder="Name" ng-model="vm.editProfileUser.name" maxlength="255">
-      </label>
-
-      <label>Email
-        <div ng-if="$parent.form.email.$error.email" class="invalid right">
-          Email is not valid
-        </div>
-        <div ng-if="vm.editProfileUser.email.length === 0" class="right">
-          Email will not be changed
-        </div>
-        <div ng-if="$parent.form.email.$error.unique" class="invalid right">
-          Email already taken
-        </div>
-        <input type="email" name="email" ng-model="vm.editProfileUser.email" unique-email="{{vm.user.email}}" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }" ng-disabled="!vm.pageOwner" />
       </label>
 
       <label>Website
