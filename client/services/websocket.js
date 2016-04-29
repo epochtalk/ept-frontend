@@ -7,7 +7,7 @@ module.exports = ['$window', 'Session',
     var socketcluster = require('socketcluster-client');
     var socket = socketcluster.connect({
       rejectUnauthorized: false,
-      secure: Boolean(forumData.websocket_secure),
+      secure: JSON.parse(forumData.websocket_secure),
       hostname: forumData.websocket_host,
       port: forumData.websocket_port,
       autoReconnect: true
