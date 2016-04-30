@@ -25,7 +25,7 @@ var ctrl = [
 
     // Posts Permissions
     this.canPost = function() {
-      if (!pageData.writeAcces) { return false; }
+      if (!pageData.writeAccess) { return false; }
       if (!Session.isAuthenticated()) { return false; }
       if (BanSvc.banStatus().boards.length > 0) { return false; }
       if (!Session.hasPermission('posts.create.allow')) { return false; }
@@ -42,7 +42,7 @@ var ctrl = [
     };
 
     this.canUpdate = function(post) {
-      if (!pageData.writeAcces) { return false; }
+      if (!pageData.writeAccess) { return false; }
       if (!Session.isAuthenticated()) { return false; }
       if (BanSvc.banStatus().boards.length > 0) { return false; }
       if (!Session.hasPermission('posts.update.allow')) { return false; }
@@ -81,7 +81,7 @@ var ctrl = [
     };
 
     this.canDelete = function(post) {
-      if (!pageData.writeAcces) { return false; }
+      if (!pageData.writeAccess) { return false; }
       if (!Session.isAuthenticated()) { return false; }
       if (BanSvc.banStatus().boards.length > 0) { return false; }
       if (!Session.hasPermission('posts.delete.allow')) { return false; }
@@ -110,7 +110,7 @@ var ctrl = [
     };
 
     this.canPurge = function() {
-      if (!pageData.writeAcces) { return false; }
+      if (!pageData.writeAccess) { return false; }
       if (!Session.isAuthenticated()) { return false; }
       if (BanSvc.banStatus().boards.length > 0) { return false; }
       if (!Session.hasPermission('posts.purge.allow')) { return false; }
@@ -172,7 +172,7 @@ var ctrl = [
             post.avatar = 'https://fakeimg.pl/400x400/ccc/444/?text=' + post.user.username;
           }
         });
-        ctrl.posts = pageData.posts
+        ctrl.posts = pageData.posts;
         parent.writeAccess = pageData.writeAccess;
         parent.posts = pageData.posts;
         parent.thread.post_count = pageData.thread.post_count;
