@@ -50,7 +50,7 @@
   <!-- Thread Lock -->
   <div class="control" ng-if="PostsParentCtrl.canLock()">
     <a ng-href="#" id="lockThread" class="icon-epoch-lock" ng-class="{'clicked' : PostsParentCtrl.thread.locked }" ng-click="PostsParentCtrl.updateThreadLock()">
-      <label>Lock <span class="hide-mobile">Thread</span></label>
+      <label> <span ng-bind-html="PostsParentCtrl.thread.locked ? 'Unlock' : 'Lock'"></span> <span class="hide-mobile">Thread</span></label>
     </a>
   </div>
 
