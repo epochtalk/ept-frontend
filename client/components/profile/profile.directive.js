@@ -9,6 +9,10 @@ function(User, Session, Alert, $filter, $state) {
     controller: [function() {
       var ctrl = this;
 
+      this.canPageUserNotes = function() {
+        return Session.isAuthenticated() && Session.hasPermission('userNotes.page');
+      };
+
       // Check if user is banned
       this.ban_expiration = function() {
         var result;

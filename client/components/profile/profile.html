@@ -42,7 +42,7 @@
     <div class="profile-row centered-text" ng-if="vm.canDelete()">
       <a ng-href="#" ng-click="vm.showDelete = true">Delete Account</a>
     </div>
-    <div class="profile-row centered-text" ng-if="true">
+    <div class="profile-row centered-text" ng-if="vm.canPageUserNotes()">
       <a ng-href="#" ng-click="vm.showModNotes = true">View Moderation Notes</a>
     </div>
 

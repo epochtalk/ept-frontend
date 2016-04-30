@@ -69,7 +69,8 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           $ocLazyLoad.load([
             { name: 'ept.admin.moderation.users.ctrl' },
             { name: 'ept.directives.image-uploader' },
-            { name: 'ept.directives.profile'}
+            { name: 'ept.directives.profile'},
+            { name: 'ept.directives.usernotes'}
           ]);
           deferred.resolve();
         });

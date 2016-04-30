@@ -315,6 +315,48 @@
           </div>
 
         </section>
+
+        <!-- User Notes Permissions -->
+        <section class="permission">
+          <label>
+            <input type="checkbox"
+              id="userNotes-create"
+              ng-model="AdminManagementCtrl.newRole.permissions.userNotes.create"
+              ng-change="AdminManagementCtrl.newRole.permissions.userNotes.create ? AdminManagementCtrl.newRole.permissions.userNotes.page = true : null"
+              ng-false-value="undefined" />
+            <span class="permission-title">Create User Moderation Notes</span>
+          </label>
+        </section>
+        <section class="permission">
+          <label>
+            <input type="checkbox"
+              id="userNotes-update"
+              ng-model="AdminManagementCtrl.newRole.permissions.userNotes.update"
+              ng-change="AdminManagementCtrl.newRole.permissions.userNotes.update ? AdminManagementCtrl.newRole.permissions.userNotes.page = true : null"
+              ng-false-value="undefined" />
+            <span class="permission-title">Update User Moderation Notes</span>
+          </label>
+        </section>
+        <section class="permission">
+          <label>
+            <input type="checkbox"
+              id="userNotes-delete"
+              ng-model="AdminManagementCtrl.newRole.permissions.userNotes.delete"
+              ng-change="AdminManagementCtrl.newRole.permissions.userNotes.delete ? AdminManagementCtrl.newRole.permissions.userNotes.page = true : null"
+              ng-false-value="undefined" />
+            <span class="permission-title">Delete User Moderation Notes</span>
+          </label>
+        </section>
+        <section class="permission">
+          <label>
+            <input type="checkbox"
+              id="userNotes-page"
+              ng-model="AdminManagementCtrl.newRole.permissions.userNotes.page"
+              ng-change="AdminManagementCtrl.newRole.permissions.userNotes.page ? AdminManagementCtrl.newRole.permissions.userNotes.create = true : null"
+              ng-false-value="undefined" />
+            <span class="permission-title">Page User Moderation Notes</span>
+          </label>
+        </section>
       </div>
 
       <!-- Bans Tab -->

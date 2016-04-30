@@ -9,6 +9,8 @@ function(UserNotes, Session, Alert) {
     controller: ['$scope', function($scope) {
       var ctrl = this;
       this.authedUser = Session.user;
+
+      this.accessControl = Session.hasPermission('userNotes');
       this.userNote = null; // comment to be submitted
       this.noteSubmitted = false;
       this.submitBtnLabel = 'Leave Comment';
@@ -18,9 +20,9 @@ function(UserNotes, Session, Alert) {
       this.prev = null; // prev page
       this.page = null; // current page
 
-      // Loads initial comments
-      $scope.$watch(function() { return ctrl.userId; }, function() {
-        ctrl.pageUserNotes();
+      // Wait for userId to be populated
+      $scope.$watch(function() { return ctrl.userId; }, function(val) {
+        if (val && ctrl.accessControl.page) { ctrl.pageUserNotes(); }
       });
 
       // Page comments
