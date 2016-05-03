@@ -97,6 +97,7 @@ function(User, Session, Alert, $filter, $state) {
       this.editProfileUser = {};
       this.openEditProfile = function() {
         this.editProfileUser = angular.copy(this.user);
+        this.editProfileUser.dob = new Date(this.editProfileUser.dob);
         delete this.editProfileUser.email;
         delete this.editProfileUser.raw_signature;
         delete this.editProfileUser.signature;
@@ -112,7 +113,10 @@ function(User, Session, Alert, $filter, $state) {
             var params = { username: ctrl.user.username};
             $state.go('profile', params, { location: true, reload: false });
           }
-          else { angular.extend(ctrl.user, data); }
+          else {
+            angular.extend(ctrl.user, data);
+            ctrl.user.dob = data.dob;
+          }
         })
         .then(function() { Alert.success('Successfully saved profile'); })
         .catch(function() { Alert.error('Profile could not be updated'); })
