@@ -34,6 +34,7 @@ var directive = ['$state', function($state) {
         $('#newBoardName').val('');
         $('#newBoardDesc').val('');
         $('#newBoardViewable').val('');
+        $('#newBoardPostable').val('');
       };
 
       /* Edit Category */
@@ -42,6 +43,7 @@ var directive = ['$state', function($state) {
         editCatDataId = dataId;
         $('#editCatName').val(editCat.name);
         $('#editCatViewable').val(editCat.viewable_by);
+        $('#editCatPostable').val(editCat.postable_by);
         $scope.showEditCategory = true;
       };
 
@@ -60,11 +62,13 @@ var directive = ['$state', function($state) {
         var editCat = $scope.nestableMap[editCatDataId];
         editCat.name = $('#editCatName').val();
         editCat.viewable_by = $('#editCatViewable').val();
+        editCat.postable_by = $('#editCatPostable').val();
 
         // Reset and close
         editCatDataId = '';
         $('#editCatName').val('');
         $('#editCatViewable').val('');
+        $('#editCatPostable').val('');
         $scope.showEditCategory = false;
       };
 
@@ -80,6 +84,7 @@ var directive = ['$state', function($state) {
         $('#editBoardName').val(editBoard.name);
         $('#editBoardDesc').val(editBoard.description);
         $('#editBoardViewable').val(editBoard.viewable_by);
+        $('#editBoardPostable').val(editBoard.postable_by);
         $scope.showEditBoard = true;
       };
 
@@ -91,6 +96,7 @@ var directive = ['$state', function($state) {
               newBoard.name = $('#editBoardName').val();
               newBoard.description = $('#editBoardDesc').val();
               newBoard.viewable_by = $('#editBoardViewable').val();
+              newBoard.postable_by = $('#editBoardPostable').val();
             }
           });
         }
@@ -100,16 +106,18 @@ var directive = ['$state', function($state) {
             id: editBoardId,
             name: $('#editBoardName').val(),
             description: $('#editBoardDesc').val(),
-            viewable_by: $('#editBoardViewable').val() || null
+            viewable_by: $('#editBoardViewable').val() || null,
+            postable_by: $('#editBoardPostable').val() || null
           };
           // check if board already exists in editedBoards
           var foundBoard = find($scope.editedBoards, function(b) {
-            return b.id === editedBoard.id
+            return b.id === editedBoard.id;
           });
           if (foundBoard) {
             foundBoard.name = editedBoard.name;
             foundBoard.description = editedBoard.description;
             foundBoard.viewable_by = editedBoard.viewable_by;
+            foundBoard.postable_by = editedBoard.postable_by;
           }
           else { $scope.editedBoards.push(editedBoard); }
         }
@@ -127,6 +135,7 @@ var directive = ['$state', function($state) {
         board.name = $('#editBoardName').val();
         board.description = $('#editBoardDesc').val();
         board.viewable_by = $('#editBoardViewable').val();
+        board.postable_by = $('#editBoardPostable').val();
 
         // Reset scope params for editing board
         editBoardDataId = '';
@@ -134,6 +143,7 @@ var directive = ['$state', function($state) {
         $('#editBoardName').val('');
         $('#editBoardDesc').val('');
         $('#editBoardViewable').val('');
+        $('#editBoardPostable').val('');
         $scope.showEditBoard = false;
       };
 
@@ -235,8 +245,14 @@ var directive = ['$state', function($state) {
         catsArr.forEach(function(cat, index) {
           // add this cat as a row entry
           var catId = $scope.nestableMap[cat.id].id;
-          var catViewableBy = $scope.nestableMap[cat.id].viewable_by;
-          var row = { type: 'category', id: catId, name: cat.name, viewable_by: catViewableBy, view_order: index };
+          var row = {
+            type: 'category',
+            id: catId,
+            name: cat.name,
+            viewable_by: $scope.nestableMap[cat.id].viewable_by,
+            postable_by: $scope.nestableMap[cat.id].postable_by,
+            view_order: index
+          };
           boardMapping.push(row);
 
           // add children boards as entries recursively
@@ -244,12 +260,12 @@ var directive = ['$state', function($state) {
           cat.children.forEach(function(catBoard, index) {
             // add this cat board as a row entry
             var boardId = $scope.nestableMap[catBoard.id].id;
-            var boardViewableBy = $scope.nestableMap[catBoard.id].viewable_by;
             var boardRow = {
               type: 'board',
               id: boardId,
               category_id: catId,
-              viewable_by: boardViewableBy,
+              viewable_by: $scope.nestableMap[catBoard.id].viewable_by,
+              postable_by: $scope.nestableMap[catBoard.id].postable_by,
               view_order: index
             };
             boardMapping.push(boardRow);
@@ -267,7 +283,14 @@ var directive = ['$state', function($state) {
         currentBoards.forEach(function(board, index) {
           // add this board as a row entry
           var boardId = $scope.nestableMap[board.id].id;
-          var row = { type: 'board', id: boardId, parent_id: parentId, view_order: index };
+          var row = {
+            type: 'board',
+            id: boardId,
+            parent_id: parentId,
+            viewable_by: $scope.nestableMap[board.id].viewable_by,
+            postable_by: $scope.nestableMap[board.id].postable_by,
+            view_order: index
+          };
           boardMapping.push(row);
 
           // add any children boards as a row entry

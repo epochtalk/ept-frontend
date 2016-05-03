@@ -50,7 +50,7 @@ function(User, Session, Alert, $filter, $state) {
         return valid;
       };
 
-      this.canUpdatePassword = function() { return ctrl.canUpdate() && ctrl.pageOwner(); };
+      this.canUpdatePrivate = function() { return ctrl.canUpdate() && ctrl.pageOwner(); };
 
       this.canDeactivate = function() {
         if (!Session.isAuthenticated()) { return false; }
@@ -101,6 +101,11 @@ function(User, Session, Alert, $filter, $state) {
       this.editProfileUser = {};
       this.openEditProfile = function() {
         this.editProfileUser = angular.copy(this.user);
+        this.editProfileUser.dob = new Date(this.editProfileUser.dob);
+        delete this.editProfileUser.email;
+        delete this.editProfileUser.raw_signature;
+        delete this.editProfileUser.signature;
+        delete this.editProfileUser.avatar;
         this.editProfile = true;
       };
       this.saveProfile = function() {
@@ -112,7 +117,10 @@ function(User, Session, Alert, $filter, $state) {
             var params = { username: ctrl.user.username};
             $state.go('profile', params, { location: true, reload: false });
           }
-          else { angular.extend(ctrl.user, data); }
+          else {
+            angular.extend(ctrl.user, data);
+            ctrl.user.dob = data.dob;
+          }
         })
         .then(function() { Alert.success('Successfully saved profile'); })
         .catch(function() { Alert.error('Profile could not be updated'); })
@@ -171,6 +179,24 @@ function(User, Session, Alert, $filter, $state) {
         .then(function() { Alert.success('Sucessfully changed account password'); })
         .catch(function() { Alert.error('Error updating password'); })
         .finally(function() { ctrl.editPassword = false; });
+      };
+
+      // Edit Email
+      this.editEmail = false;
+      this.emailData = {};
+      this.openEditEmail = function() {
+        this.emailData = {
+          username: this.user.username,
+          email: this.user.email
+        };
+        this.editEmail = true;
+      };
+      this.saveEmail = function() {
+        User.update({ id: this.user.id }, this.emailData).$promise
+        .then(function(data) { ctrl.user.email = data.email; })
+        .then(function() { Alert.success('Sucessfully changed account email'); })
+        .catch(function() { Alert.error('Invalid Credentials'); })
+        .finally(function() { ctrl.editEmail = false; });
       };
 
       // Deactivate account

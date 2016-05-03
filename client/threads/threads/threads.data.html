@@ -38,7 +38,7 @@
         <a ng-if="childBoard.last_post_username" ui-sref="profile({ username: childBoard.last_post_username })" ng-bind="childBoard.last_post_username"></a>
       </div>
       <div ng-if="childBoard.last_thread_id">
-        in 
+        in
         <a ui-sref="posts.data({ threadId: childBoard.last_thread_id, start: childBoard.last_post_position })" ng-bind-html="childBoard.last_thread_title | decode | truncate:25" title="{{childBoard.last_thread_title | decode}}"></a>
       </div>
       <div ng-if="childBoard.last_thread_id">
@@ -147,7 +147,7 @@
       <span> Views</span>
       <br />
       <span>Last post by </span>
-      <span ng-if="thread.last_deleted || ">deleted</span>
+      <span ng-if="thread.last_deleted">deleted</span>
       <a ng-if="!thread.last_deleted" ui-sref="profile({ username: thread.last_post_username })" ng-bind="thread.last_post_username"></a>
       <em ng-bind="' (' + (thread.last_post_created_at | humanDate) + ')'"></em>
     </div>

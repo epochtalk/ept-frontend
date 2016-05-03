@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<div class="fill-row" ng-if="ProfilePostsCtrl.pageCount > 0">
+<div class="fill-row hide-mobile" ng-if="ProfilePostsCtrl.pageCount > 0">
   <table class="striped" width="100%">
     <thead>
       <th width="20%" class="pointer" ng-click="ProfilePostsCtrl.setSortField('thread_title')"><span ng-class="ProfilePostsCtrl.getSortClass('thread_title')"></span>&nbsp;Thread</th>
@@ -22,16 +22,33 @@
 
     <tbody>
       <tr ng-repeat="post in ProfilePostsCtrl.usersPosts track by post.id">
-        <td>
-          <span ng-if="post.hidden && !post._deleted"><i class="fa fa-eye-slash"></i></span>
-          <a ui-sref="posts.data({ threadId: post.thread_id, start: post.position, '#': post.id })" ng-bind-html="post.thread_title | truncate:50" ng-if="!post._deleted"></a>
-          <span ng-if="post._deleted">Deleted</span>
+        <td title="{{post.thread_title}}">
+          <div class="truncate-title">
+            <span ng-if="post.hidden && !post._deleted"><i class="fa fa-eye-slash"></i></span>
+            <a ui-sref="posts.data({ threadId: post.thread_id, start: post.position, '#': post.id })" ng-bind-html="post.thread_title" ng-if="!post._deleted"></a>
+            <span ng-if="post._deleted">Deleted</span>
+          </div>
         </td>
-        <td ng-bind="(post.raw_body || post.body) | truncate:250 | decode"></td>
+        <td ng-click="post.open = !post.open">
+          <!-- Post Content -->
+          <div class="post-body" ng-class="{ closed: !post.open }" post-processing="post.body" style-fix="true"></div>
+        </td>
         <td ng-bind="post.created_at | humanDate"></td>
       </tr>
     </tbody>
   </table>
+</div>
+
+<div class="fill-row show-mobile" ng-if="ProfilePostsCtrl.pageCount > 0">
+  <div class="mobile-post" ng-repeat="post in ProfilePostsCtrl.usersPosts track by post.id">
+    <div>
+      <div>
+        <a ui-sref="posts.data({ threadId: post.thread_id, start: post.position, '#': post.id })" ng-bind-html="post.thread_title" ng-if="!post._deleted"></a>
+      </div>
+      <div class="mobile-post-time"><small ng-bind="post.created_at | humanDate"></small></div>
+      <div class="post-body" post-processing="post.body" style-fix="true"></div>
+    </div>
+  </div>
 </div>
 
 <div class="fill-row" ng-if="ProfilePostsCtrl.pageCount > 0">

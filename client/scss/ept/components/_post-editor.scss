@@ -66,9 +66,20 @@
   height: 25px;
 
   div:first-child {
-    padding-right: 0;
-    padding-left: 2rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
     text-align: right;
+    .toolbar-title {
+      text-align: left;
+      width: 50%;
+      padding-top: 15px;
+      color: white;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      .underline { text-decoration: underline; }
+      a { color: white; }
+    }
   }
 
   button {
@@ -104,7 +115,7 @@
 
 .editor-form {
   position: absolute;
-  top: 20px;
+  top: 30px;
   bottom: 0;
   left: 0.9375rem;
   right: 0.9375rem;
@@ -117,7 +128,7 @@
   .editor-body {
     width: 100%;
     position: absolute;
-    top: 40px;
+    top: 35px;
     bottom: 65px;
 
     input[type],
@@ -197,7 +208,7 @@
     padding-top: 9px;
   }
 }
-.editor-form div label { margin-top: 15px; }
+.editor-form div label { margin-top: 10px; }
 .editor-form small {
   display: block;
   line-height: 1;

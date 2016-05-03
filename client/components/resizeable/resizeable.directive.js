@@ -8,16 +8,22 @@ var directive = ['$document',
         var body = doc[0].body;
         var destroyed = false;
         var grabbed = false; // user intends to resize
+        var bar;
+        var spacer;
+        var originalY;
+        var originalHeight;
         var newHeight;
-        var maxHeight = body.clientHeight;
+        var newSpacerHeight;
 
         function init() {
           destroyed = false;
-          element.prepend('<div class="editor-container-bar"><div class="bar"></div></div>');
-          animate();
-          doc.on('mousedown', onDown);
+          element.prepend('<div id="ec-bar" class="editor-container-bar"><div class="bar"></div></div>');
+          spacer = angular.element(doc[0].getElementById('post-spacer'));
           doc.on('mousemove', onMove);
           doc.on('mouseup', onUp);
+          bar = angular.element(doc[0].getElementById('ec-bar'));
+          bar.on('mousedown', onDown);
+          bar.on('mouseup', onUp);
         }
 
         function destroy() {
@@ -25,41 +31,44 @@ var directive = ['$document',
           doc.off('mousedown');
           doc.off('mousemove');
           doc.off('mouseup');
-          $('.editor-container-bar').remove();
+          bar.off('mousedown');
+          bar.off('mouseup');
+          angular.element(doc[0].getElementById('ec-bar')).remove();
         }
 
         var animate = function() {
           if (destroyed || !grabbed) { return; }
-          if (newHeight) { element[0].style.height = newHeight + 'px'; }
-        };
-
-        var elementHeight;
-        var verticalGap;
-        var onDown = function(e) {
-          // calculate max height
-          maxHeight = body.clientHeight;
-          elementHeight = element[0].clientHeight + 10; // box border
-          verticalGap = maxHeight - elementHeight;
-          verticalGap = verticalGap - e.clientY;
-          if (verticalGap > -25 && verticalGap <= 0) { grabbed = true; }
-          else { grabbed = false; }
-        };
-
-        var onMove = function(e) {
-          // change height of element
-          if (grabbed) {
-            e.preventDefault();
-            newHeight = maxHeight - e.clientY;
-            if (newHeight > maxHeight - 25) { newHeight = maxHeight; }
-            if (newHeight < 288) { newHeight = 288; }
-            requestAnimationFrame(animate);
+          if (newHeight) {
+            element[0].style.height = newHeight + 'px';
+            if (spacer[0]) { spacer[0].style.height = newSpacerHeight + 'px'; }
           }
         };
 
-        var onUp = function() {
+        function onDown(e) {
+          grabbed = true;
+          originalY = e.clientY;
+          originalHeight = element[0].clientHeight;
+        }
+
+        function onMove(e) {
+          // change height of element
+          if (grabbed) {
+            e.preventDefault();
+            var height = originalY - e.clientY;
+            height = originalHeight + height;
+            if (height > body.clientHeight - 25) { height = body.clientHeight; }
+            if (height < 288) { height = 288; }
+            newHeight = height;
+            newSpacerHeight = height - 113;
+            requestAnimationFrame(animate);
+          }
+        }
+
+        function onUp() {
           grabbed = false; // trigger off clicked
           newHeight = undefined; // clear newHeight
-        };
+          newSpacerHeight = undefined;
+        }
 
         scope.$on('$destroy', destroy);
         scope.$watch('resize', function(value) {

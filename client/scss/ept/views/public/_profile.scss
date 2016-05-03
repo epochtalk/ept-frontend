@@ -71,7 +71,20 @@
     }
   }
 }
-.profile-posts table { word-break: break-all; }
+.profile-posts table {
+  word-break: break-all;
+  .truncate-title { width: 185px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .post-body {
+    white-space: pre-wrap;
+    &.closed {
+      width: 545px;
+      max-height: 18px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
 .more-posts { margin-bottom: 2rem; }
 
 @include media($mobile) {
@@ -79,7 +92,6 @@
     .profile-right {
       border-top: 1px solid #ddd;
       padding-top: 1rem;
-      #myChart { height: 250px !important; }
       .stats .stat-text { font-size: 1rem; }
     }
     .profile-left, .profile-right { @include span-columns(8); @include omega; }
@@ -94,4 +106,8 @@
       text-align: center;
     }
   }
+  .mobile-post-time { color: $secondary-font-color; padding-bottom: 1rem; }
+  .mobile-post { padding: 1rem; }
+  .mobile-post:nth-child(even) { background: $sub-header-color; }
+  .mobile-post:last-child { border-bottom: 0px; }
 }

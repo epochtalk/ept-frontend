@@ -1,4 +1,4 @@
-<div id="{{::post.id}}" ng-repeat="post in PostsCtrl.posts track by post.id" class="post-block" ng-class="{ 'highlighted': post.highlighted, 'hidden': post.hidden, 'deleted': post._deleted }">
+<div id="{{::post.id}}" ng-repeat="post in PostsCtrl.posts track by post.id" class="post-block" ng-class="{ 'highlighted': post.highlighted, 'hidden': post.hidden, 'deleted': post._deleted, 'editing': post.id === PostsParentCtrl.posting.post.id }">
   <!-- Delete Post View -->
   <div class="deleted" ng-if="post._deleted">Post Deleted</div>
 
@@ -19,7 +19,7 @@
       <!-- Post Title -->
       <div class="post-title">
         <a class="username" data-balloon="{{post.user.role_name || 'User'}}" ui-sref="profile({ username: post.user.username})" ng-style="PostsCtrl.usernameHighlight(post.user.highlight_color)" ng-bind="::post.user.username"></a>
-        <div title="::post.user.name" ng-if="post.user.name" class="display-name">
+        <div title="{{post.user.name}}" ng-if="post.user.name" class="display-name">
           <span ng-bind-html="::post.user.name | truncate:33"></span>
           <span class="hide-mobile">&nbsp;&mdash;&nbsp;</span>
         </div>
@@ -50,12 +50,12 @@
             </a>
           </li>
           <li ng-if="PostsCtrl.canUpdate(post)">
-            <a ng-href="#" data-balloon="Edit" ng-click="PostsCtrl.loadEditor($index)">
+            <a ng-href="#" data-balloon="Edit" ng-click="PostsCtrl.loadEditor(post)">
               <i class="icon-epoch-edit-pencil"></i>
             </a>
           </li>
           <li ng-if="PostsCtrl.canPost()">
-            <a ng-href="#" data-balloon="Quote" ng-click="PostsCtrl.addQuote($index)">
+            <a ng-href="#" data-balloon="Quote" ng-click="PostsCtrl.addQuote(post)">
               <i class="icon-epoch-quote"></i>
             </a>
           </li>
