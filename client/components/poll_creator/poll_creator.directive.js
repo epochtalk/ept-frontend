@@ -1,9 +1,9 @@
-module.exports = ['Session', function(Session) {
+var directive = ['Session', function(Session) {
   return {
     restrict: 'E',
     scope: { poll: '=', valid: '=' },
     template: require('./poll_creator.html'),
-    link: function($scope, $element, $attr) {
+    link: function($scope) {
       $scope.user = Session.user;
       $scope.poll.question = $scope.poll.question || '';
       $scope.poll.answers = $scope.poll.answers || ['', ''];
@@ -59,3 +59,6 @@ module.exports = ['Session', function(Session) {
     }
   };
 }];
+
+module.exports = angular.module('ept.directives.poll-creator', [])
+.directive('pollCreator', directive);

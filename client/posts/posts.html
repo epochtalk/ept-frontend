@@ -19,7 +19,7 @@
   <!-- Edit Title -->
   <div ng-if="PostsParentCtrl.editThread">
     <form ng-submit="PostsParentCtrl.updateThreadTitle()">
-      <input type="text" ng-model="PostsParentCtrl.thread.title">
+      <input type="text" ng-model="PostsParentCtrl.thread.title" maxlength="255">
       <button type="submit" ng-disabled="PostsParentCtrl.thread.title.length === 0">Save</button>
       <button ng-click="PostsParentCtrl.closeEditThread()">Cancel</button>
     </form>
@@ -50,7 +50,7 @@
   <!-- Thread Lock -->
   <div class="control" ng-if="PostsParentCtrl.canLock()">
     <a ng-href="#" id="lockThread" class="icon-epoch-lock" ng-class="{'clicked' : PostsParentCtrl.thread.locked }" ng-click="PostsParentCtrl.updateThreadLock()">
-      <label>Lock <span class="hide-mobile">Thread</span></label>
+      <label> <span ng-bind-html="PostsParentCtrl.thread.locked ? 'Unlock' : 'Lock'"></span> <span class="hide-mobile">Thread</span></label>
     </a>
   </div>
 
@@ -91,6 +91,9 @@
   <pagination page-count="PostsParentCtrl.pageCount" page="PostsParentCtrl.page"></pagination>
 </div>
 
+<!-- spacer for editor -->
+<div id="post-spacer"></div>
+
 <!-- Editor -->
 <div ng-if="PostsParentCtrl.canPost()">
 
@@ -109,6 +112,16 @@
         <div class="buttons">
           <button ng-click="PostsParentCtrl.showFormatting = true"><i class="fa fa-code"></i>&nbsp;&nbsp;Format</button>
           <button ng-click="PostsParentCtrl.fullscreen()"><i class="fa" ng-class="{ 'fa-expand': PostsParentCtrl.isMinimized, 'fa-compress': !PostsParentCtrl.isMinimized }"></i>&nbsp;&nbsp;{{ PostsParentCtrl.isMinimized ? 'Fullscreen' : 'Minimize' }}</button>
+
+          <div class="left hide-mobile toolbar-title" title="Click to go to this post" ng-if="PostsParentCtrl.posting.post.id">
+            <a ui-sref="posts.data({ threadId: PostsParentCtrl.thread.id, page: PostsParentCtrl.posting.post.page, '#': PostsParentCtrl.posting.post.id })">
+              Editing: <span class="underline">{{ PostsParentCtrl.posting.post.id }}</span>
+            </a>
+          </div>
+
+          <div class="left hide-mobile toolbar-title" ng-if="!PostsParentCtrl.posting.post.id">
+            New Post in "{{ PostsParentCtrl.thread.title}}"
+          </div>
         </div>
 
         <div class="editor-formatting" ng-if="PostsParentCtrl.showFormatting">
@@ -193,7 +206,7 @@
         <button class="cancel" ng-click="PostsParentCtrl.cancelPost()">
           Cancel
         </button>
-        <button class="send" ng-click="PostsParentCtrl.savePost()" ng-disabled="form.title.$error.required || !PostsParentCtrl.posting.post.raw_body.length > 0">
+        <button class="send" ng-click="PostsParentCtrl.savePost()" ng-disabled="form.title.$error.required || !PostsParentCtrl.canSave()">
           Send
         </button>
 
@@ -213,7 +226,7 @@
     <input ng-if="PostsParentCtrl.reportControlAccess.reportUsers" type="radio" name="reportPost" ng-model="PostsParentCtrl.offendingId" ng-value="PostsParentCtrl.reportedPost.user.id" id="reportUser" ng-disabled="PostsParentCtrl.reportSubmitted" required><label ng-if="PostsParentCtrl.reportControlAccess.reportUsers" for="reportUser">{{PostsParentCtrl.reportedPost.user.username}}</label>
     <input ng-if="PostsParentCtrl.reportControlAccess.reportPosts" type="radio" name="reportPost" ng-model="PostsParentCtrl.offendingId" ng-value="PostsParentCtrl.reportedPost.id" id="reportPost" ng-disabled="PostsParentCtrl.reportSubmitted" required><label ng-if="PostsParentCtrl.reportControlAccess.reportPosts" for="reportPost">{{PostsParentCtrl.reportedPost.user.username}}'s Post</label>
     <label>Reason for Report</label>
-    <textarea name="reportReason" ng-model="PostsParentCtrl.reportReason" ng-disabled="PostsParentCtrl.reportSubmitted" placeholder="Give a brief reason for your report" rows="4" required></textarea>
+    <textarea name="reportReason" ng-model="PostsParentCtrl.reportReason" ng-disabled="PostsParentCtrl.reportSubmitted" placeholder="Give a brief reason for your report" rows="4" required maxlength="255"></textarea>
     <div class="clear">
       <button class="fill-row" ng-click="PostsParentCtrl.submitReport()"
         ng-disabled="$parent.form.$invalid || $parent.form.$errors || PostsParentCtrl.reportSubmitted" ng-bind="PostsParentCtrl.reportBtnLabel"></button>

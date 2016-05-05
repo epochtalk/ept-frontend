@@ -13,6 +13,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
     if (Session.hasPermission('adminAccess.management.boards')) { $state.go('admin-management.boards'); }
     else if (Session.hasPermission('adminAccess.management.users')) { $state.go('admin-management.users'); }
     else if (Session.hasPermission('adminAccess.management.roles')) { $state.go('admin-management.roles'); }
+    else if (Session.hasPermission('adminAccess.management.bannedAddresses')) { $state.go('admin-management.banned-addresses'); }
     else { $state.go('admin'); }
   }];
 
@@ -54,9 +55,14 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./boards.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.management.boards.ctrl' });
-          deferred.resolve(ctrl);
+          require('./boards.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.admin.management.boards.ctrl' },
+            { name: 'ept.directives.category-editor'},
+            { name: 'ept.directives.nestable-boards'},
+            { name: 'ept.directives.nestable-categories'}
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
@@ -81,9 +87,12 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./users.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.management.users.ctrl' });
-          deferred.resolve(ctrl);
+          require('./users.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.admin.management.users.ctrl' },
+            { name: 'ept.directives.image-uploader' }
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
@@ -147,9 +156,9 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./roles.controller');
+          require('./roles.controller');
           $ocLazyLoad.load({ name: 'ept.admin.management.roles.ctrl' });
-          deferred.resolve(ctrl);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
@@ -178,6 +187,40 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
         };
         return AdminRoles.users(query).$promise
         .then(function(userData) { return userData; });
+      }]
+    }
+  })
+  .state('admin-management.banned-addresses', {
+    url: '/bannedaddresses?page&limit&field&desc&search',
+    reloadOnSearch: false,
+    views: {
+      'data@admin-management': {
+        controller: 'BannedAddressesCtrl',
+        controllerAs: 'AdminManagementCtrl',
+        templateUrl: '/static/templates/admin/management/banned-addresses.html'
+      }
+    },
+    resolve: {
+      userAccess: adminCheck('management.bannedAddresses'),
+      $title: function() { return 'Banned Addresses Management'; },
+      loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
+        var deferred = $q.defer();
+        require.ensure([], function() {
+          require('./banned-addresses.controller');
+          $ocLazyLoad.load({ name: 'ept.admin.management.bannedAddresses.ctrl' });
+          deferred.resolve();
+        });
+        return deferred.promise;
+      }],
+      bannedAddresses: ['Bans', '$stateParams', function(Bans, $stateParams) {
+        var query = {
+          field: $stateParams.field,
+          desc: $stateParams.desc,
+          limit: Number($stateParams.limit) || 25,
+          page: Number($stateParams.page) || 1,
+          search: $stateParams.search
+        };
+        return Bans.pageBannedAddresses(query).$promise;
       }]
     }
   });

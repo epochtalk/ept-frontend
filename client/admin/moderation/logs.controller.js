@@ -20,33 +20,33 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'A
   // Action Types
   this.actionTypes =  [
     { group: 'User Report Actions',
-      value: 'adminReports.updateUserReport',
+      value: 'reports.updateUserReport',
       desc: 'Updated a User Report Status' },
     { group: 'User Report Actions',
-      value: 'adminReports.createUserReportNote',
+      value: 'reports.createUserReportNote',
       desc: 'Created a User Report Note' },
     { group: 'User Report Actions',
-      value: 'adminReports.updateUserReportNote',
+      value: 'reports.updateUserReportNote',
       desc: 'Updated a User Report Note' },
 
     { group: 'Post Report Actions',
-      value: 'adminReports.updatePostReport',
+      value: 'reports.updatePostReport',
       desc: 'Updated a Post Report Status' },
     { group: 'Post Report Actions',
-      value: 'adminReports.createPostReportNote',
+      value: 'reports.createPostReportNote',
       desc: 'Created a Post Report Note' },
     { group: 'Post Report Actions',
-      value: 'adminReports.updatePostReportNote',
+      value: 'reports.updatePostReportNote',
       desc: 'Updated a Post Report Note' },
 
     { group: 'Message Report Actions',
-      value: 'adminReports.updateMessageReport',
+      value: 'reports.updateMessageReport',
       desc: 'Updated a Message Report Status' },
     { group: 'Message Report Actions',
-      value: 'adminReports.createMessageReportNote',
+      value: 'reports.createMessageReportNote',
       desc: 'Created a Message Report Note' },
     { group: 'Message Report Actions',
-      value: 'adminReports.updateMessageReportNote',
+      value: 'reports.updateMessageReportNote',
       desc: 'Updated a Message Report Note' },
 
     { group: 'Role Actions',
@@ -85,12 +85,6 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'A
       value: 'users.update',
       desc: 'Updated User' },
     { group: 'User Actions',
-      value: 'adminUsers.ban',
-      desc: 'Banned User' },
-    { group: 'User Actions',
-      value: 'adminUsers.unban',
-      desc: 'Unbanned User' },
-    { group: 'User Actions',
       value: 'adminUsers.addRoles',
       desc: 'Added a Role to User' },
     { group: 'User Actions',
@@ -105,6 +99,23 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'A
     { group: 'User Actions',
       value: 'users.reactivate',
       desc: 'Reactivated User' },
+    { group: 'User Actions',
+      value: 'userNotes.create',
+      desc: 'Created User Moderation Note' },
+    { group: 'User Actions',
+      value: 'userNotes.update',
+      desc: 'Updated User Moderation Note' },
+    { group: 'User Actions',
+      value: 'userNotes.delete',
+      desc: 'Deleted User Moderation Note' },
+
+    { group: 'Banning Actions',
+      value: 'bans.ban',
+      desc: 'Banned User' },
+    { group: 'Banning Actions',
+      value: 'bans.unban',
+      desc: 'Unbanned User' },
+      //TODO: ADD ban from board and add ip/hostname ban
 
     { group: 'Board Actions',
       value: 'adminBoards.updateCategories',
@@ -370,5 +381,4 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', 'A
 }];
 
 module.exports = angular.module('ept.admin.moderation.logs.ctrl', [])
-.controller('ModLogsCtrl', ctrl)
-.name;
+.controller('ModLogsCtrl', ctrl);

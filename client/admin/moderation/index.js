@@ -65,16 +65,21 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./users.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.moderation.users.ctrl' });
-          deferred.resolve(ctrl);
+          require('./users.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.admin.moderation.users.ctrl' },
+            { name: 'ept.directives.image-uploader' },
+            { name: 'ept.directives.profile'},
+            { name: 'ept.directives.usernotes'}
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
       reportId: ['$stateParams', function($stateParams) {
         return $stateParams.reportId;
       }],
-      userReports: ['AdminReports', '$stateParams', function(AdminReports, $stateParams) {
+      userReports: ['Reports', '$stateParams', function(Reports, $stateParams) {
         var query = {
           field: $stateParams.field,
           desc: $stateParams.desc || true,
@@ -83,37 +88,11 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           page: Number($stateParams.page) || 1,
           search: $stateParams.search
         };
-        return AdminReports.pageUserReports(query).$promise;
+        return Reports.pageUserReports(query).$promise;
       }],
       boards: ['Boards', function(Boards) {
         return Boards.query({ stripped: true }).$promise
         .then(function(data) { return data.boards; });
-      }]
-    }
-  })
-  .state('admin-moderation.users.preview', {
-    reloadOnSearch: false,
-    params: { username: { value: undefined } },
-    views: {
-      'preview@admin-moderation.users': {
-        controller: 'ProfileCtrl',
-        controllerAs: 'ProfileCtrl',
-        templateUrl: '/static/templates/admin/moderation/profile.html'
-      }
-    },
-    resolve: {
-      $title: ['$stateParams', function($stateParams) { return $stateParams.username; }],
-      loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
-        var deferred = $q.defer();
-        require.ensure([], function() {
-          var ctrl = require('./profile.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.profile.ctrl' });
-          deferred.resolve(ctrl);
-        });
-        return deferred.promise;
-      }],
-      user: [ 'User', '$stateParams', function(User, $stateParams) {
-        return User.get({ id: $stateParams.username }).$promise;
       }]
     }
   })
@@ -133,9 +112,14 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./posts.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.moderation.posts.ctrl' });
-          deferred.resolve(ctrl);
+          require('./posts.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.admin.moderation.posts.ctrl' },
+            { name: 'ept.directives.epochtalk-editor' },
+            { name: 'ept.directives.image-uploader' },
+            { name: 'ept.directives.resizeable' }
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
@@ -145,7 +129,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       allReports: ['$stateParams', function($stateParams) {
         return $stateParams.allReports;
       }],
-      postReports: ['AdminReports', '$stateParams', 'Session', function(AdminReports, $stateParams, Session) {
+      postReports: ['Reports', '$stateParams', 'Session', function(Reports, $stateParams, Session) {
         var query = {
           field: $stateParams.field,
           desc: $stateParams.desc || true,
@@ -156,7 +140,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           mod_id: $stateParams.allReports === 'true' ? undefined : Session.user.id
         };
         if (Session.globalModeratorCheck()) { delete query.mod_id; } // default to all if global mod
-        return AdminReports.pagePostReports(query).$promise;
+        return Reports.pagePostReports(query).$promise;
       }],
       boards: ['Boards', function(Boards) {
         return Boards.query({ stripped: true }).$promise
@@ -180,16 +164,16 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./messages.controller');
+          require('./messages.controller');
           $ocLazyLoad.load({ name: 'ept.admin.moderation.messages.ctrl' });
-          deferred.resolve(ctrl);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
       reportId: ['$stateParams', function($stateParams) {
         return $stateParams.reportId;
       }],
-      messageReports: ['AdminReports', '$stateParams', function(AdminReports, $stateParams) {
+      messageReports: ['Reports', '$stateParams', function(Reports, $stateParams) {
         var query = {
           field: $stateParams.field,
           desc: $stateParams.desc || true,
@@ -198,7 +182,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           page: Number($stateParams.page) || 1,
           search: $stateParams.search
         };
-        return AdminReports.pageMessageReports(query).$promise;
+        return Reports.pageMessageReports(query).$promise;
       }],
       boards: ['Boards', function(Boards) {
         return Boards.query({ stripped: true }).$promise
@@ -222,13 +206,16 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./board-bans.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.moderation.boardBans.ctrl' });
-          deferred.resolve(ctrl);
+          require('./board-bans.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.admin.moderation.boardBans.ctrl' },
+            { name: 'ept.directives.autocomplete-username'}
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
-      bannedBoards: [ 'AdminUsers', '$stateParams', function(AdminUsers, $stateParams) {
+      bannedBoards: [ 'Bans', '$stateParams', function(Bans, $stateParams) {
         var query = {
           limit: Number($stateParams.limit) || undefined,
           page: Number($stateParams.page) || undefined,
@@ -236,7 +223,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           board: $stateParams.board,
           search: $stateParams.search
         };
-        return AdminUsers.byBannedBoards(query).$promise;
+        return Bans.byBannedBoards(query).$promise;
       }],
       selectBoards: ['AdminBoards', '$filter', function(AdminBoards, $filter) {
         return AdminBoards.moveBoards().$promise
@@ -270,9 +257,9 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./logs.controller');
+          require('./logs.controller');
           $ocLazyLoad.load({ name: 'ept.admin.moderation.logs.ctrl' });
-          deferred.resolve(ctrl);
+          deferred.resolve();
         });
         return deferred.promise;
       }],

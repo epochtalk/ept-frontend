@@ -5,19 +5,28 @@ var route = ['$stateProvider', function($stateProvider) {
     reloadOnSearch: false,
     views: {
       'content': {
-        controller: 'ProfileCtrl',
+        controller: ['user', '$location', '$state', function(user, $location, $state) {
+          this.user = user;
+          $state.go('profile.posts', $location.search(), { reload: 'profile.posts' });
+        } ],
         controllerAs: 'ProfileCtrl',
-        templateUrl: '/static/templates/users/profile/profile.html'
+        template: require('./profile.html')
       }
     },
     resolve: {
       $title: ['user', function(user) { return user.username; }],
-      loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
+      profileDirective: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./profile.controller');
-          $ocLazyLoad.load({ name: 'ept.profile.ctrl' });
-          deferred.resolve(ctrl);
+          require('../../components/profile/profile.directive.js');
+          require('../../components/usernotes/usernotes.directive.js');
+          require('../../components/image_uploader/image_uploader.directive');
+          $ocLazyLoad.load([
+            { name: 'ept.directives.profile'},
+            { name: 'ept.directives.usernotes'},
+            { name: 'ept.directives.image-uploader' }
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],

@@ -91,6 +91,7 @@ module.exports = ['$timeout', '$filter', '$compile', '$parse', function($timeout
 
       var process = function() {
         var postBody = $scope.postProcessing;
+        console.log(postBody);
         var processed = postBody || '';
         var doStyleFix = $scope.styleFix;
 
@@ -111,6 +112,9 @@ module.exports = ['$timeout', '$filter', '$compile', '$parse', function($timeout
         images.each(function(index, image) {
           $(image).addClass('image-loader');
         });
+
+        // noopener/noreferrer hack
+        $("a[target='_blank']").attr('rel', 'noopener noreferrer');
 
         // compile directives
         $compile($element.contents())($scope);

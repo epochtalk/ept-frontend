@@ -1,6 +1,6 @@
 var sortBy = require('lodash/sortBy');
 
-module.exports = ['$compile', function($compile) {
+var directive = ['$compile', function($compile) {
   return {
     restrict: 'E',
     require: '^categoryEditor',
@@ -29,6 +29,7 @@ module.exports = ['$compile', function($compile) {
             id: cat.id,
             name: cat.name,
             viewable_by: cat.viewable_by,
+            postable_by: cat.postable_by,
             children: catBoards
           };
           // Edit pencil and trash buttons
@@ -57,6 +58,7 @@ module.exports = ['$compile', function($compile) {
             name: board.name,
             description: board.description,
             viewable_by: board.viewable_by,
+            postable_by: board.postable_by,
             children: board.children || [],
             moderators: board.moderators || []
           };
@@ -100,3 +102,6 @@ module.exports = ['$compile', function($compile) {
     }
   };
 }];
+
+module.exports = angular.module('ept.directives.nestable-categories', [])
+.directive('nestableCategories', directive);

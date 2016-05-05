@@ -407,5 +407,4 @@ var ctrl = ['$rootScope', '$scope', '$location', 'Session', 'Alert', 'AdminRoles
 }];
 
 module.exports = angular.module('ept.admin.management.roles.ctrl', [])
-.controller('RolesCtrl', ctrl)
-.name;
+.controller('RolesCtrl', ctrl);

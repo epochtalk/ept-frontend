@@ -39,6 +39,15 @@ ul {
   @include media($mobile) { @include span-columns(8); @include omega; }
 }
 
+table.ban-addresses {
+  tr td {
+    select.type { margin-bottom: 0; }
+    input.address, input.weight { margin: 0; outline: none; }
+    input.decay { margin: 0 auto; display: block; }
+  }
+}
+.centered-checkbox { margin: 0 auto; display: block; }
+
 .permissions-modal {
   @include row;
   margin: 1rem 0;

@@ -1,12 +1,12 @@
 <div class="admin-table-header log-filter">
     <span>Show me</span>
-    <span class="css-tooltip" data-css-tooltip="Mod Username, IP or ID">
+    <span data-balloon="Mod Username, IP or ID">
       <input ng-model="ModerationCtrl.filter.mod" ng-keydown="$event.which === 13 && ModerationCtrl.filterResults()" type="text" placeholder="Any Moderator"/>
     </span>
 
     <span>who</span>
 
-    <span class="css-tooltip" data-css-tooltip="Mod Action Performed">
+    <span data-balloon="Mod Action Performed">
       <select ng-keydown="$event.which === 13 && ModerationCtrl.filterResults()" ng-model="ModerationCtrl.filter.action" ng-options="action.value as action.desc group by action.group for action in ModerationCtrl.actionTypes">
         <option value="">Did Anything</option>
       </select>
@@ -14,29 +14,29 @@
 
     <span>with</span>
 
-    <span class="css-tooltip" data-css-tooltip="Mod Action Keyword">
+    <span data-balloon="Mod Action Keyword">
       <input ng-keydown="$event.which === 13 && ModerationCtrl.filterResults()" type="text" ng-model="ModerationCtrl.filter.keyword" placeholder="Keyword" />
     </span>
-    <span class="css-tooltip" data-css-tooltip="Optional Date Range">
+    <span data-balloon="Optional Date Range">
       <select ng-model="ModerationCtrl.selectedDateFilterType" ng-options="k as v for (k, v) in ModerationCtrl.dateFilterTypes" ng-change="ModerationCtrl.filter.bdate = undefined;ModerationCtrl.filter.adate = undefined;ModerationCtrl.filter.sdate = undefined;ModerationCtrl.filter.edate = undefined;">
         <option value="">At Anytime</option>
       </select>
     </span>
 
-    <span ng-show="ModerationCtrl.selectedDateFilterType === 'after'" class="css-tooltip" data-css-tooltip="After Date">
+    <span ng-show="ModerationCtrl.selectedDateFilterType === 'after'" data-balloon="After Date">
       <input ng-keydown="$event.which === 13 && ModerationCtrl.filterResults()" ng-model="ModerationCtrl.filter.adate" type="date" />
     </span>
 
-    <span ng-show="ModerationCtrl.selectedDateFilterType === 'before'" class="css-tooltip" data-css-tooltip="Before Date">
+    <span ng-show="ModerationCtrl.selectedDateFilterType === 'before'" data-balloon="Before Date">
       <input ng-keydown="$event.which === 13 && ModerationCtrl.filterResults()" ng-model="ModerationCtrl.filter.bdate" type="date" />
     </span>
 
     <div class="inline-block" ng-show="ModerationCtrl.selectedDateFilterType === 'between'" >
-      <span class="css-tooltip" data-css-tooltip="Start Date">
+      <span data-balloon="Start Date">
         <input ng-model="ModerationCtrl.filter.sdate" type="date" />
       </span>
       <span>and</span>
-      <span class="css-tooltip" data-css-tooltip="End Date">
+      <span data-balloon="End Date">
         <input ng-keydown="$event.which === 13 && ModerationCtrl.filterResults()" ng-model="ModerationCtrl.filter.edate" type="date" />
       </span>
     </div>

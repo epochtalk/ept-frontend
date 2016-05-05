@@ -45,7 +45,10 @@ header {
           vertical-align: middle;
         }
         li { float: left; height: inherit; }
-        li a { color: $header-login-font-color; font-size: $header-login-font-size; padding-left: 1.25rem; }
+        li a {
+          color: $header-login-font-color;
+          font-size: $header-login-font-size;
+          padding-left: 1.25rem; }
         form, form div { height: inherit; }
         .search {
           position: relative;
@@ -108,7 +111,8 @@ header {
               width: 2.1875rem;
               border: 2px solid $header-logo-font-color;
             }
-            a { padding-left: 0.8rem; }
+            a { padding-left: 0; }
+            span { padding-left: 0.8rem; }
           }
           #user-dropdown {
             @include pad(0 1rem);

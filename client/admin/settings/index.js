@@ -65,9 +65,12 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./general.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.settings.general.ctrl' });
-          deferred.resolve(ctrl);
+          require('./general.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.admin.settings.general.ctrl' },
+            { name: 'ept.directives.image-uploader' }
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
@@ -101,9 +104,9 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./advanced.controller');
+          require('./advanced.controller');
           $ocLazyLoad.load({ name: 'ept.admin.settings.advanced.ctrl' });
-          deferred.resolve(ctrl);
+          deferred.resolve();
         });
         return deferred.promise;
       }],
@@ -133,9 +136,12 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./theme.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.settings.theme.ctrl' });
-          deferred.resolve(ctrl);
+          require('./theme.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.admin.settings.theme.ctrl' },
+            { name: 'ept.directives.color-validator' }
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],

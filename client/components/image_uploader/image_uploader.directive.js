@@ -1,4 +1,4 @@
-module.exports = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3ImageUpload, Alert) {
+var directive = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3ImageUpload, Alert) {
   return {
     restrict: 'E',
     scope: {
@@ -164,3 +164,6 @@ module.exports = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3Ima
     }
   };
 }];
+
+module.exports = angular.module('ept.directives.image-uploader', [])
+.directive('imageUploader', directive);

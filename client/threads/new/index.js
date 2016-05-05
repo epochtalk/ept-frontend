@@ -14,9 +14,14 @@ var route = ['$stateProvider', function($stateProvider) {
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./new.controller');
-          $ocLazyLoad.load({ name: 'ept.newThread.ctrl' });
-          deferred.resolve(ctrl);
+          require('./new.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.newThread.ctrl' },
+            { name: 'ept.directives.poll-creator' },
+            { name: 'ept.directives.image-uploader' },
+            { name: 'ept.directives.epochtalk-editor' }
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }]

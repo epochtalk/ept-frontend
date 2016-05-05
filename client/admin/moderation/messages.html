@@ -1,3 +1,4 @@
+<!-- Report Status Type Filtering -->
 <div class="admin-table-header">
   <div class="filter radio-button">
     <input type="radio" class="hide-radio" name="table-filter" value="0" id="messages-filter-0" ng-model="ModerationCtrl.tableFilter" ng-click="ModerationCtrl.setFilter()" />
@@ -28,15 +29,23 @@
     </div>
   </div>
 </div>
+
+<!-- no content warning -->
 <div class="fill-row centered-text" ng-if="!ModerationCtrl.search && ModerationCtrl.count < 1">
   <h4>No Message Reports to display in <strong>{{ModerationCtrl.filter ? ModerationCtrl.filter : 'All'}}</strong></h4>
 </div>
+
+<!-- Reports Table -->
 <div class="fill-row" ng-if="ModerationCtrl.count > 0 || ModerationCtrl.search">
+  <!-- Search output -->
   <div ng-if="ModerationCtrl.search">
     Displaying {{ModerationCtrl.count | number}} search result(s) for "<strong>{{ModerationCtrl.search}}</strong>" in <strong>{{ModerationCtrl.filter ? ModerationCtrl.filter : 'All'}}</strong>:<br /><br />
   </div>
+
+  <!-- Reports -->
   <div class="fill-row admin-content-selectable">
     <table class="underlined" width="100%">
+
       <thead>
         <th class="pointer hide-mobile" ng-click="ModerationCtrl.setSortField('reporter_username')"><span ng-class="ModerationCtrl.getSortClass('reporter_username')"></span>&nbsp;Reported By</th>
         <th class="pointer" ng-click="ModerationCtrl.setSortField('created_at')"><span ng-class="ModerationCtrl.getSortClass('created_at')"></span>&nbsp;Reported Date</th>
@@ -47,36 +56,46 @@
         <th class="reason hide-mobile">Reason</th>
         <th class="mod-actions">Actions</th>
       </thead>
+
       <tbody>
         <tr ng-class="{ 'active-row' : ModerationCtrl.reportId === messageReport.id }" class="selectable-row pointer" ng-click="ModerationCtrl.selectReport(messageReport)" ng-repeat="messageReport in ModerationCtrl.messageReports track by messageReport.id">
-          <td class="hide-mobile"><a ui-sref="profile({ username: messageReport.reporter_username })" ng-bind="messageReport.reporter_username"></td>
+          <td class="hide-mobile">
+            <a ui-sref="profile({ username: messageReport.reporter_username })" ng-bind="messageReport.reporter_username"></a>
+          </td>
           <td ng-bind="messageReport.created_at | date:'MM/dd/yy @ h:mma'"></td>
           <td ng-bind="messageReport.status"></td>
           <td class="hide-mobile" ng-bind="messageReport.offender_created_at | date:'MM/dd/yy @ h:mma'"></td>
           <td>
             <i ng-show="messageReport.offender_ban_expiration || messageReport.offender_board_banned" class="fa fa-user-times"></i>
           </td>
-          <td><a ui-sref="profile({ username: messageReport.offender_author_username })" ng-bind="messageReport.offender_author_username"></a></td>
+          <td>
+            <a ui-sref="profile({ username: messageReport.offender_author_username })" ng-bind="messageReport.offender_author_username"></a>
+          </td>
           <td class="hide-mobile"><div ng-bind="messageReport.reporter_reason"></div></td>
           <td class="inline">
             <!-- Modify Report -->
-            <button class="icon css-tooltip" data-css-tooltip="Modify Report Status" ng-click="ModerationCtrl.showSetStatus(messageReport)" ng-disabled="!ModerationCtrl.actionAccess.reportControls.updateMessageReport"><i class="fa fa-cog"></i></button>
+            <button class="icon" data-balloon="Modify Report Status" ng-click="ModerationCtrl.showSetStatus(messageReport)" ng-disabled="!ModerationCtrl.canUpdateUserReport()"><i class="fa fa-cog"></i></button>
 
             <!-- Warn User -->
-            <button class="icon css-tooltip" data-css-tooltip="Warn User" ng-click="ModerationCtrl.showWarn({ id: messageReport.offender_author_id, username: messageReport.offender_author_username })" ng-disabled="!ModerationCtrl.actionAccess.messageControls.createConversations"><i class="fa fa-exclamation-circle"></i></button>
+            <button class="icon" data-balloon="Warn User" ng-click="ModerationCtrl.showWarn({ id: messageReport.offender_author_id, username: messageReport.offender_author_username })" ng-disabled="!ModerationCtrl.canCreateConversation()"><i class="fa fa-exclamation-circle"></i></button>
 
             <!-- Ban User -->
-            <button class="icon css-tooltip" data-css-tooltip="Manage Bans" ng-click="ModerationCtrl.showManageBans({ id: messageReport.offender_author_id, username: messageReport.offender_author_username, email: messageReport.offender_author_email, created_at: messageReport.offender_author_created_at, ban_expiration: messageReport.offender_ban_expiration })" ng-disabled="!ModerationCtrl.actionAccess.userControls.privilegedBan && !ModerationCtrl.actionAccess.userControls.privilegedBanFromBoards"><i class="fa fa-ban"></i></button>
+            <button class="icon" data-balloon="Manage Bans" ng-click="ModerationCtrl.showManageBans({ id: messageReport.offender_author_id, username: messageReport.offender_author_username, email: messageReport.offender_author_email, created_at: messageReport.offender_author_created_at, ban_expiration: messageReport.offender_ban_expiration })" ng-disabled="!ModerationCtrl.canBanUser()"><i class="fa fa-ban"></i></button>
           </td>
         </tr>
       </tbody>
+
     </table>
+
     <div class="pagination-wrap">
       <pagination page-count="ModerationCtrl.pageCount" page="ModerationCtrl.page" query-params="ModerationCtrl.queryParams"></pagination>
     </div>
   </div>
 </div>
+
 <br />
+
+<!-- Report Viewer -->
 <div ng-show="ModerationCtrl.previewReport !== null">
   <div class="report-details-wrap">
     <h5 class="thin-underline">Report Details</h5>
@@ -86,15 +105,15 @@
           <td class="field">Actions</td>
           <td class="desc">
           <!-- Modify Report -->
-          <button class="icon css-tooltip" data-css-tooltip="Modify Report Status" ng-click="ModerationCtrl.showSetStatus(ModerationCtrl.previewReport)" ng-disabled="!ModerationCtrl.actionAccess.reportControls.updateMessageReport"><i class="fa fa-cog"></i></button>
+          <button class="icon" data-balloon="Modify Report Status" ng-click="ModerationCtrl.showSetStatus(ModerationCtrl.previewReport)" ng-disabled="!ModerationCtrl.canUpdateUserReport()"><i class="fa fa-cog"></i></button>
 
           <!-- Warn User -->
-          <button class="icon css-tooltip" data-css-tooltip="Warn User" ng-click="ModerationCtrl.showWarn({ id: ModerationCtrl.previewReport.offender_author_id, username: ModerationCtrl.previewReport.offender_author_username })" ng-disabled="!ModerationCtrl.actionAccess.messageControls.createConversations"><i class="fa fa-exclamation-circle"></i></button>
+          <button class="icon" data-balloon="Warn User" ng-click="ModerationCtrl.showWarn({ id: ModerationCtrl.previewReport.offender_author_id, username: ModerationCtrl.previewReport.offender_author_username })" ng-disabled="!ModerationCtrl.canCreateConversation()"><i class="fa fa-exclamation-circle"></i></button>
 
           <!-- Ban User -->
-            <button class="icon css-tooltip" data-css-tooltip="Manage Bans" ng-click="ModerationCtrl.showManageBans({ id: ModerationCtrl.previewReport.offender_author_id, username: ModerationCtrl.previewReport.offender_author_username, email: ModerationCtrl.previewReport.offender_author_email, created_at: ModerationCtrl.previewReport.offender_author_created_at, ban_expiration: ModerationCtrl.previewReport.offender_ban_expiration })" ng-disabled="!ModerationCtrl.actionAccess.userControls.privilegedBan && !ModerationCtrl.actionAccess.userControls.privilegedBanFromBoards"><i class="fa fa-ban"></i></button>
+          <button class="icon" data-balloon="Manage Bans" ng-click="ModerationCtrl.showManageBans({ id: ModerationCtrl.previewReport.offender_author_id, username: ModerationCtrl.previewReport.offender_author_username, email: ModerationCtrl.previewReport.offender_author_email, created_at: ModerationCtrl.previewReport.offender_author_created_at, ban_expiration: ModerationCtrl.previewReport.offender_ban_expiration })" ng-disabled="!ModerationCtrl.canBanUser()"><i class="fa fa-ban"></i></button>
 
-          <button class="icon css-tooltip" data-css-tooltip="Purge Message" ng-click="ModerationCtrl.showConfirmPurge(ModerationCtrl.previewReport.offender_message_id)" ng-disabled="!ModerationCtrl.actionAccess.messageControls.privilegedDelete"><i class="fa fa-trash"></i></button>
+          <button class="icon" data-balloon="Purge Message" ng-click="ModerationCtrl.showConfirmPurge(ModerationCtrl.previewReport.offender_message_id)" ng-disabled="!ModerationCtrl.canDeleteMessage()"><i class="fa fa-trash"></i></button>
           </td>
         </tr>
         <tr>
@@ -145,7 +164,7 @@
       <div ng-if="note.edit" class="note-details">
         <a class="right" ng-href="#" ng-click="ModerationCtrl.updateReportNote(note)">Save</a>
         <a class="right" ng-href="#" ng-click="note.edit = undefined; note.note = note.noteCopy; note.noteCopy = undefined">Cancel&nbsp;&nbsp;&nbsp;</a>
-        <textarea rows="3" ng-model="note.note"></textarea>
+        <textarea rows="3" ng-model="note.note" maxlength="255"></textarea>
       </div>
       <div class="thin-underline"></div>
     </div>
@@ -159,13 +178,14 @@
       </div>
     </div>
     <form name="$parent.form" class="css-form">
-      <textarea name="reportNote" ng-model="ModerationCtrl.reportNote" ng-disabled="ModerationCtrl.noteSubmitted" placeholder="Leave a note on this report..." rows="3" required></textarea>
+      <textarea name="reportNote" ng-model="ModerationCtrl.reportNote" ng-disabled="ModerationCtrl.noteSubmitted" placeholder="Leave a note on this report..." rows="3" required maxlength="255"></textarea>
       <div class="clear">
         <button class="fill-row" ng-click="ModerationCtrl.submitReportNote(); $parent.form.$setUntouched()"
           ng-disabled="$parent.form.$invalid || $parent.form.$errors || ModerationCtrl.noteSubmitted" ng-bind="ModerationCtrl.submitBtnLabel"></button>
       </div>
     </form>
   </div>
+
   <!-- Message Body Section -->
   <div class="preview-wrap">
     <h5 class="thin-underline">Reported Message</h5>
@@ -205,7 +225,7 @@
       </tr>
     </table>
 
-    <div ng-if="ModerationCtrl.actionAccess.userControls.privilegedBan">
+    <div ng-if="ModerationCtrl.canGlobalBanUser()">
       <label for="banType">
         <strong>Ban Globally</strong>
         <a class="right" ng-click="ModerationCtrl.permanentBan = undefined; ModerationCtrl.banUntil = undefined;" ng-show="ModerationCtrl.permanentBan !== undefined">
@@ -219,6 +239,10 @@
         <label for="banUntil">Enter Ban Expiration Date:</label>
         <input type="date" ng-model="ModerationCtrl.banUntil" min="{{ModerationCtrl.minDate()}}" name="banUntil" ng-required="ModerationCtrl.permanentBan === false" />
       </div>
+
+      <div ng-show="ModerationCtrl.showIpBan && ModerationCtrl.permanentBan === true">
+        <input type="checkbox" ng-model="ModerationCtrl.banUserIp" ng-disabled="ModerationCtrl.banSubmitted" name="ipBan" id="ipBan" /><label for="ipBan">Ban all of {{ModerationCtrl.selectedUser.username}}'s known IP addresses</label>
+      </div>
     </div>
 
     <label>
@@ -231,7 +255,7 @@
     </label>
     <div class="board-bans-list">
       <script type="text/ng-template" id="board_renderer.html">
-        <input ng-init="(ModerationCtrl.hasGlobalModPerms && ModerationCtrl.allBoardIds.indexOf(board.id) < 0) ? ModerationCtrl.allBoardIds.push(board.id) : null" id="{{board.id}}" ng-checked="ModerationCtrl.boardBanList.indexOf(board.id) > -1" value="{{board.id}}" ng-click="ModerationCtrl.toggleBoardBan(board.id)" ng-disabled="ModerationCtrl.user.moderating.indexOf(board.id) < 0 && !ModerationCtrl.hasGlobalModPerms" type="checkbox" />
+        <input ng-init="ModerationCtrl.loadBoardBans(board.id)" id="{{board.id}}" ng-checked="ModerationCtrl.boardBanList.indexOf(board.id) > -1" value="{{board.id}}" ng-click="ModerationCtrl.toggleBoardBan(board.id)" ng-disabled="!ModerationCtrl.canBoardBanUser(board.id)" type="checkbox" />
         <label for="{{board.id}}" ng-bind-html="board.name"></label>
         <ul>
           <li ng-repeat="board in board.children track by board.id" ng-include="'board_renderer.html'"></li>
@@ -282,7 +306,7 @@
     <input ng-if="ModerationCtrl.selectedMessageReport.status !== 'Ignored'" type="radio" name="newStatus" ng-model="ModerationCtrl.selectedStatus" value="Ignored" id="ignored" ng-disabled="ModerationCtrl.setStatusSubmitted" required><label ng-if="ModerationCtrl.selectedMessageReport.status !== 'Ignored'" for="ignored">Ignored</label>
     <input ng-if="ModerationCtrl.selectedMessageReport.status !== 'Bad Report'" type="radio" name="newStatus" ng-model="ModerationCtrl.selectedStatus" value="Bad Report" id="badReport" ng-disabled="ModerationCtrl.setStatusSubmitted" required><label ng-if="ModerationCtrl.selectedMessageReport.status !== 'Bad Report'" for="badReport">Bad Report</label>
     <label for="statusReportNote">Leave a note (optional):</label>
-    <textarea name="statusReportNote" ng-model="ModerationCtrl.statusReportNote" ng-disabled="ModerationCtrl.noteSubmitted" placeholder="Leave a note on this report..." rows="3"></textarea>
+    <textarea name="statusReportNote" ng-model="ModerationCtrl.statusReportNote" ng-disabled="ModerationCtrl.noteSubmitted" placeholder="Leave a note on this report..." rows="3" maxlength="255"></textarea>
     <div class="clear">
       <button class="fill-row" ng-click="ModerationCtrl.setStatus()"
         ng-disabled="$parent.statusForm.$invalid || $parent.statusForm.$errors || ModerationCtrl.setStatusSubmitted || ModerationCtrl.selectedStatus === ModerationCtrl.selectedMessageReport.status" ng-bind="ModerationCtrl.setStatusBtnLabel"></button>
@@ -299,7 +323,7 @@
     </label>
 
     <label>Warning Message
-      <textarea type="text" rows="10" ng-model="ModerationCtrl.newConversation.body"></textarea>
+      <textarea type="text" rows="10" ng-model="ModerationCtrl.newConversation.body" maxlength="5000"></textarea>
     </label>
 
     <div class="clear">

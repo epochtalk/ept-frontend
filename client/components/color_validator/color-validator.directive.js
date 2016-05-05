@@ -1,4 +1,4 @@
-module.exports = [function() {
+var directive = [function() {
   return {
     require: 'ngModel',
     link: function(scope, element, attr, ngModel) {
@@ -48,3 +48,6 @@ module.exports = [function() {
     }
   };
 }];
+
+module.exports = angular.module('ept.directives.color-validator', [])
+.directive('colorValidator', directive);

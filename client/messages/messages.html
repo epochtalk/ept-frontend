@@ -43,7 +43,7 @@
     </label>
     <!-- Message Body and Send button-->
     <label>Message ( <a ng-click="MessagesCtrl.newMessage.preview = !MessagesCtrl.newMessage.preview">Toggle Preview</a> )
-      <textarea ng-model="MessagesCtrl.newMessage.body" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"></textarea>
+      <textarea ng-model="MessagesCtrl.newMessage.body" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }" maxlength="5000"></textarea>
       <label ng-show="MessagesCtrl.newMessage.preview">Preview</label>
       <div class="preview" ng-show="MessagesCtrl.newMessage.preview" post-processing="MessagesCtrl.newMessage.previewBody"></div>
     </label>
@@ -64,10 +64,10 @@
           <strong>{{ message.sender_username}}</strong>
           <span class="date">{{ message.created_at | humanDate }}</span>
           <div class="right">
-            <a ng-if="MessagesCtrl.canDeleteMessage(message.sender_id)" ng-href="#" class="action css-tooltip" ng-click="MessagesCtrl.openDeleteModal(message.id)" data-css-tooltip="Delete">
+            <a ng-if="MessagesCtrl.canDeleteMessage(message.sender_id)" ng-href="#" class="action" ng-click="MessagesCtrl.openDeleteModal(message.id)" data-balloon="Delete">
               <i class="fa fa-trash"></i>
             </a>
-            <a ng-if="message.sender_id !== MessagesCtrl.currentUserId && MessagesCtrl.controlAccess.reportMessages" ng-href="#" class="action css-tooltip" ng-click="MessagesCtrl.openReportModal(message)" data-css-tooltip="Report">
+            <a ng-if="message.sender_id !== MessagesCtrl.currentUserId && MessagesCtrl.controlAccess.reportMessages" ng-href="#" class="action" ng-click="MessagesCtrl.openReportModal(message)" data-balloon="Report">
               <i class="icon-epoch-flag"></i>
             </a>
           </div>
@@ -100,7 +100,7 @@
 
     <!-- Message Body -->
     <label>Message:
-      <textarea type="text" rows="10" ng-model="MessagesCtrl.newConversation.body"></textarea>
+      <textarea type="text" rows="10" ng-model="MessagesCtrl.newConversation.body" maxlength="5000"></textarea>
     </label>
 
     <!-- Save Button -->
@@ -132,7 +132,7 @@
   <form name="$parent.form" class="css-form" novalidate>
     <h3 class="thin-underline">Report Message</h3>
     <label for="reportReason">Reason for Report</label>
-    <textarea name="reportReason" ng-model="MessagesCtrl.reportReason" ng-disabled="MessagesCtrl.reportSubmitted" placeholder="Give a brief reason for your report" rows="4" required></textarea>
+    <textarea name="reportReason" ng-model="MessagesCtrl.reportReason" ng-disabled="MessagesCtrl.reportSubmitted" placeholder="Give a brief reason for your report" rows="4" required maxlength="255"></textarea>
     <div class="clear">
       <button class="fill-row" ng-click="MessagesCtrl.submitReport()"
         ng-disabled="$parent.form.$invalid || $parent.form.$errors || MessagesCtrl.reportSubmitted" ng-bind="MessagesCtrl.reportBtnLabel"></button>

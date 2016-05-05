@@ -37,6 +37,7 @@ var ctrl = ['$scope', 'settings', 'AdminSettings', 'Alert', function($scope, set
   };
 }];
 
+require('../../components/image_uploader/image_uploader.directive');
+
 module.exports = angular.module('ept.admin.settings.general.ctrl', [])
-.controller('GeneralSettingsCtrl', ctrl)
-.name;
+.controller('GeneralSettingsCtrl', ctrl);

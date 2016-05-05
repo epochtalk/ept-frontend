@@ -20,42 +20,39 @@ $light-text-default: rgb(255,255,255);
   }
 }
 
+@import 'default-variables';
 @import '../../../../content/sass/_custom-variables';
 @import 'preview-variables';
 
 // Placeholder text color
+$placeholder-text-color: lighten($header-bg-color, 20%);
 @if (lightness($header-bg-color) > 50) { $placeholder-text-color: darken($header-bg-color, 20%); }
-@else { $placeholder-text-color: lighten($header-bg-color, 20%); }
 
 // Spacing Calculated
 $base-grid-padding: 1rem;
 
 // Primary Layout Colors Calculated
+$color-primary-alt: lighten($color-primary, 30%);
 @if (lightness($color-primary) > 50) { $color-primary-alt: darken($color-primary, 15%); }
-@else { $color-primary-alt: lighten($color-primary, 30%); }
 // transparent version
 $color-primary-transparent: rgba($color-primary, 0.4);
 
 // Fonts Calculated
 $button-text-color: color-contrast($color-primary);
+$secondary-font-color-dark: lighten($secondary-font-color, 15%);
+$secondary-font-color-light: darken($secondary-font-color, 20%);
 @if (lightness($base-background-color) > 50) {
   $secondary-font-color-dark: darken($secondary-font-color, 15%);
   $secondary-font-color-light: lighten($secondary-font-color, 20%);
 }
-@else {
-  $secondary-font-color-dark: lighten($secondary-font-color, 15%);
-  $secondary-font-color-light: darken($secondary-font-color, 20%);
-}
 
 // Components Calculated
 $color-highlighted: HSL(60, 100%, 95%);
+$border-color-alt: darken($border-color, 30%);
+$code-block-bg-color: $dark-text-default;
 @if (lightness($base-background-color) > 50) {
   $border-color-alt: lighten($border-color, 10%);
   $code-block-bg-color: #f8f8f8;
-}
-@else {
-  $border-color-alt: darken($border-color, 30%);
-  $code-block-bg-color: $dark-text-default;
 }
 
 //Header Colors Calculated

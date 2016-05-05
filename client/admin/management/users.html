@@ -43,12 +43,18 @@
         <td class="hide-mobile" ng-bind="user.created_at | humanDate"></td>
         <td>
           <a ui-sref="users-posts({ username: user.username })" ui-sref-opts="{ reload: true }">
-            <button class="icon css-tooltip" data-css-tooltip="View Posts"><i class="fa fa-file-text-o"></i></button>
+            <button class="icon" data-balloon="View Posts">
+              <i class="fa fa-file-text-o"></i>
+            </button>
           </a>
 
-          <button class="icon css-tooltip" data-css-tooltip="Edit Profile" ng-click="AdminManagementCtrl.showEditUser(user.username)"><i class="fa fa-pencil"></i></button>
+          <button class="icon" data-balloon="Edit Profile" ng-click="AdminManagementCtrl.showEditUser(user.username)">
+            <i class="fa fa-pencil"></i>
+          </button>
 
-          <button class="icon css-tooltip" data-css-tooltip="{{ user.ban_expiration ? 'Unban User' : 'Ban User' }}" ng-click="user.ban_expiration ? AdminManagementCtrl.showUnbanConfirm(user) : AdminManagementCtrl.showBanConfirm(user)" ng-disabled="!AdminManagementCtrl.actionAccess.userControls.privilegedBan"><i ng-class="{ 'fa fa-user':user.ban_expiration, 'fa fa-user-times':!user.ban_expiration }"></i></button>
+          <button class="icon" data-balloon="{{ user.ban_expiration ? 'Unban User' : 'Ban User' }}" ng-click="user.ban_expiration ? AdminManagementCtrl.showUnbanConfirm(user) : AdminManagementCtrl.showBanConfirm(user)" ng-disabled="!AdminManagementCtrl.actionAccess.userControls.privilegedBan">
+            <i ng-class="{ 'fa fa-user':user.ban_expiration, 'fa fa-user-times':!user.ban_expiration }"></i>
+          </button>
         </td>
       </tr>
     </tbody>
@@ -77,13 +83,14 @@
         <td ng-bind="AdminManagementCtrl.selectedUser.created_at | humanDate"></td>
       </tr>
     </table>
-
     <label for="banType">Select Ban Type:</label>
-    <input type="radio" name="banType" ng-model="AdminManagementCtrl.permanentBan" ng-value="true" id="permanent" ng-disabled="AdminManagementCtrl.banSubmitted" required><label for="permanent">Permanent</label>
-    <input type="radio" name="banType" ng-model="AdminManagementCtrl.permanentBan" ng-value="false" id="temporary" ng-disabled="AdminManagementCtrl.banSubmitted" required><label for="temporary">Temporary</label><br /><br />
-    <div ng-show="AdminManagementCtrl.permanentBan === false">
+    <input type="radio" name="banType" ng-model="AdminManagementCtrl.banType" value="perm" id="permanent" ng-disabled="AdminManagementCtrl.banSubmitted" required><label for="permanent">Permanent</label>
+    <input type="radio" name="banType" ng-model="AdminManagementCtrl.banType" value="temp" id="temporary" ng-disabled="AdminManagementCtrl.banSubmitted" required><label for="temporary">Temporary</label>
+    <input type="radio" name="banType" ng-model="AdminManagementCtrl.banType" value="ip" id="ip" ng-disabled="AdminManagementCtrl.banSubmitted" required><label for="ip">IP</label>
+    <br /><br />
+    <div ng-show="AdminManagementCtrl.banType === 'temp'">
       <label for="banUntil">Enter Ban Expiration Date:</label>
-      <input type="date" ng-model="AdminManagementCtrl.banUntil" min="{{AdminManagementCtrl.minDate()}}" name="banUntil" ng-required="AdminManagementCtrl.permanentBan === false" />
+      <input type="date" ng-model="AdminManagementCtrl.banUntil" min="{{AdminManagementCtrl.minDate()}}" name="banUntil" ng-required="AdminManagementCtrl.banType === 'temp'" />
     </div>
     <div class="clear">
       <button class="fill-row" ng-click="AdminManagementCtrl.banUser()"
@@ -134,11 +141,11 @@
         <div ng-if="$parent.form.username.$error.pattern" class="invalid right">
           Usernames may only contain A-Z, 0-9, -, _ and .
         </div>
-        <input type="text" class="input-text" name="username" ng-model="AdminManagementCtrl.selectedUser.username" unique-username="{{::AdminManagementCtrl.selectedUser.username}}" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }" placeholder="Username ( a-z, 0-9, -, _ and . )" ng-pattern=/^[a-zA-Z\d-_.]+$/ auto-focus="$parent.focus"/>
+        <input type="text" class="input-text" name="username" ng-model="AdminManagementCtrl.selectedUser.username" unique-username="{{::AdminManagementCtrl.selectedUser.username}}" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }" placeholder="Username ( a-z, 0-9, -, _ and . )" ng-pattern=/^[a-zA-Z\d-_.]+$/ auto-focus="$parent.focus" maxlength="255"/>
       </label>
 
       <label>Display Name
-        <input type="text" class="input-text" placeholder="Name" ng-model="AdminManagementCtrl.selectedUser.name">
+        <input type="text" class="input-text" placeholder="Name" ng-model="AdminManagementCtrl.selectedUser.name" maxlength="255">
       </label>
 
       <label>Email
@@ -155,7 +162,7 @@
       </label>
 
       <label>New Password
-        <input type="password" placeholder="New Password" ng-model="AdminManagementCtrl.selectedUser.password">
+        <input type="password" placeholder="New Password" ng-model="AdminManagementCtrl.selectedUser.password" maxlength="255">
       </label>
 
       <label>Avatar
@@ -164,7 +171,7 @@
       </label>
 
       <label>Signature
-        <textarea type="text" rows="5" placeholder="Signature" ng-model="AdminManagementCtrl.selectedUser.raw_signature"></textarea>
+        <textarea type="text" rows="5" placeholder="Signature" ng-model="AdminManagementCtrl.selectedUser.raw_signature" maxlength="5000"></textarea>
       </label>
     </div>
 
@@ -174,23 +181,23 @@
       </label>
 
       <label>Bitcoin Address
-        <input type="text" class="input-text" placeholder="Bitcoin Address" ng-model="AdminManagementCtrl.selectedUser.btcAddress">
+        <input type="text" class="input-text" placeholder="Bitcoin Address" ng-model="AdminManagementCtrl.selectedUser.btcAddress" maxlength="255">
       </label>
 
       <label>Gender
-        <input type="text" class="input-text" placeholder="Gender" ng-model="AdminManagementCtrl.selectedUser.gender">
+        <input type="text" class="input-text" placeholder="Gender" ng-model="AdminManagementCtrl.selectedUser.gender" maxlength="255">
       </label>
 
       <label>Date of Birth
-        <input type="text" class="input-text" placeholder="Date of Birth" ng-model="AdminManagementCtrl.selectedUser.dob">
+        <input type="date" class="input-text" placeholder="Date of Birth" ng-model="AdminManagementCtrl.selectedUser.dob">
       </label>
 
       <label>Location
-        <input type="text" class="input-text" placeholder="Location" ng-model="AdminManagementCtrl.selectedUser.location">
+        <input type="text" class="input-text" placeholder="Location" ng-model="AdminManagementCtrl.selectedUser.location" maxlength="255">
       </label>
 
       <label>Language
-        <input type="text" class="input-text" placeholder="Language" ng-model="AdminManagementCtrl.selectedUser.language">
+        <input type="text" class="input-text" placeholder="Language" ng-model="AdminManagementCtrl.selectedUser.language" maxlength="255">
       </label>
     </div>
 

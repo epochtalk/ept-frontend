@@ -20,7 +20,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     // Report Permission
     this.reportControlAccess = {
       reportPosts: Session.hasPermission('reports.createPostReport'),
-      reportUsers: Session.hasPermission('reports.createUsersReport')
+      reportUsers: Session.hasPermission('reports.createUserReport')
     };
 
     // Thread Permissions
@@ -28,6 +28,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.bannedFromBoard) { return false; }
       if (!Session.hasPermission('threads.title.allow')) { return false; }
+      if (!ctrl.writeAccess) { return false; }
 
       var title = false;
       if (ctrl.thread.user.id === Session.user.id) { title = true; }
@@ -44,6 +45,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.bannedFromBoard) { return false; }
       if (!Session.hasPermission('threads.lock.allow')) { return false; }
+      if (!ctrl.writeAccess) { return false; }
 
       var lock = false;
       if (ctrl.thread.user.id === Session.user.id) { lock = true; }
@@ -59,6 +61,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     this.canSticky = function() {
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.bannedFromBoard) { return false; }
+      if (!ctrl.writeAccess) { return false; }
       if (!Session.hasPermission('threads.sticky.allow')) { return false; }
 
       var sticky = false;
@@ -72,6 +75,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     this.canPurge = function() {
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.bannedFromBoard) { return false; }
+      if (!ctrl.writeAccess) { return false; }
       if (!Session.hasPermission('threads.purge.allow')) { return false; }
 
       var purge = false;
@@ -85,6 +89,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     this.canMove = function() {
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.bannedFromBoard) { return false; }
+      if (!ctrl.writeAccess) { return false; }
       if (!Session.hasPermission('threads.move.allow')) { return false; }
 
       var move = false;
@@ -119,6 +124,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     this.canCreatePoll = function() {
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.thread.poll) { return false; }
+      if (!ctrl.writeAccess) { return false; }
       if (ctrl.bannedFromBoard) { return false; }
       if (!Session.hasPermission('threads.createPoll.allow')) { return false; }
 
@@ -137,6 +143,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     this.canPost = function() {
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.bannedFromBoard) { return false; }
+      if (!ctrl.writeAccess) { return false; }
       if (!Session.hasPermission('posts.create.allow')) { return false; }
 
       if (ctrl.thread.locked) {
@@ -148,6 +155,13 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
       }
 
       return true;
+    };
+
+    this.canSave = function() {
+      var text = ctrl.posting.post.body;
+      text = text.replace(/(<([^>]+)>)/ig,'');
+      text = text.trim();
+      return text.length > 0;
     };
 
     // wait for board_id to be populated by child controller
@@ -261,13 +275,16 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     };
 
     function closeEditor() {
-      ctrl.posting.post.raw_body = '';
+      ctrl.posting.post.id = '';
+      ctrl.posting.post.title = '';
       ctrl.posting.post.body = '';
+      ctrl.posting.post.raw_body = '';
+      ctrl.posting.page = '';
       ctrl.resetEditor = true;
       ctrl.showEditor = false;
     }
 
-    this.addQuote = function(index) {
+    this.addQuote = function(post) {
       var timeDuration = 0;
       if (ctrl.showEditor === false) {
         ctrl.showEditor = true;
@@ -275,7 +292,6 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
       }
 
       $timeout(function() {
-        var post = ctrl.posts && ctrl.posts[index] || '';
         if (post) {
           ctrl.quote = {
             username: post.user.username,
@@ -289,15 +305,15 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
       }, timeDuration);
     };
 
-    this.loadEditor = function(index) {
+    this.loadEditor = function(post) {
+      post = post || {};
       if (discardAlert()) {
-        var post = (ctrl.posts && ctrl.posts[index]) || {};
-        ctrl.posting.index = index;
         var editorPost = ctrl.posting.post;
         editorPost.id = post.id || '';
         editorPost.title = post.title || '';
         editorPost.body = post.body || '';
         editorPost.raw_body = post.raw_body || '';
+        editorPost.page = ctrl.page || 1;
         ctrl.resetEditor = true;
         ctrl.showEditor = true;
         ctrl.focusEditor = true;
@@ -325,7 +341,8 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
           if (ctrl.page === lastPage) { ctrl.pullPage(); }
         }
         else if (type === 'update') {
-          var editPost = ctrl.posts[ctrl.posting.index];
+          var filtered = ctrl.posts.filter(function(p) { return p.id === data.id; });
+          var editPost = filtered.length > 0 && filtered[0] || {};
           editPost.body = data.body;
           editPost.raw_body = data.raw_body;
           editPost.updated_at = data.updated_at;
@@ -459,6 +476,12 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
   }
 ];
 
+// include the poll creator directive
+require('../components/poll_creator/poll_creator.directive');
+require('../components/poll_viewer/poll_viewer.directive');
+require('../components/editor/editor.directive');
+require('../components/resizeable/resizeable.directive');
+require('../components/image_uploader/image_uploader.directive');
+
 module.exports = angular.module('ept.posts.parentCtrl', [])
-.controller('PostsParentCtrl', ctrl)
-.name;
+.controller('PostsParentCtrl', ctrl);

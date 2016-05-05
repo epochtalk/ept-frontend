@@ -1,9 +1,9 @@
-module.exports = ['Session', 'BanSvc', 'Alert', 'Threads', '$timeout', function(Session, BanSvc, Alert, Threads, $timeout) {
+var directive = ['Session', 'BanSvc', 'Alert', 'Threads', '$timeout', function(Session, BanSvc, Alert, Threads, $timeout) {
   return {
     restrict: 'E',
     scope: { thread: '=', reset: '=' },
     template: require('./poll_viewer.html'),
-    link: function($scope, $element, $attr) {
+    link: function($scope) {
       // poll selected answers
       $scope.pollAnswers = [];
       $scope.user = Session.user;
@@ -238,3 +238,6 @@ module.exports = ['Session', 'BanSvc', 'Alert', 'Threads', '$timeout', function(
     }
   };
 }];
+
+module.exports = angular.module('ept.directives.poll-viewer', [])
+.directive('pollViewer', directive);

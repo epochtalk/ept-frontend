@@ -20,6 +20,7 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll', '$location', '$timeout', 'A
       if (!ctrl.loggedIn()) { return false; }
       if (ctrl.parent.bannedFromBoard) { return false; }
       if (!Session.hasPermission('threads.create.allow')) { return false; }
+      if (!pageData.writeAccess) { return false; }
       return true;
     };
 
@@ -72,7 +73,6 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll', '$location', '$timeout', 'A
     // page count for each thread
     function threadPageCount(thread) {
       // user based UI
-      if (thread.has_new_post) { thread.title_class = 'bold'; }
       thread.page_count = Math.ceil(thread.post_count / ctrl.limit);
       ctrl.getPageKeysForThread(thread);
     }
