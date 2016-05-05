@@ -57,8 +57,20 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
     $scope.$watch(function() { return Session.getToken(); }, function(token) {
       if (token) {
         Websocket.authenticate(token);
-        Websocket.subscribe('/u/' + Session.user.id, {waitForAuth: true}).watch(function() {
-          ctrl.refreshNotificationsCounts();
+        // subscribe to user channel
+        Websocket.subscribe('/u/' + Session.user.id, {waitForAuth: true}).watch(function(data) {
+          if (data.action === 'reauthenticate') {
+            Auth.authenticate();
+          }
+          else {
+            ctrl.refreshNotificationsCounts();
+          }
+        });
+        // subscribe to roles channels
+        Session.user.roles.forEach(function(role) {
+          Websocket.subscribe('/r/' + role, {waitForAuth: true}).watch(function(data) {
+            Auth.authenticate();
+          });
         });
         ctrl.refreshNotificationsCounts();
       }
