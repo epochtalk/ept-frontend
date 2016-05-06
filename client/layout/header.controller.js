@@ -58,7 +58,7 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
       if (token) {
         Websocket.authenticate(token);
         // subscribe to user channel
-        Websocket.subscribe('/u/' + Session.user.id, {waitForAuth: true}).watch(function(data) {
+        Websocket.subscribe({ type: 'user', userId: Session.user.id }, {waitForAuth: true}).watch(function(data) {
           if (data.action === 'reauthenticate') {
             Auth.authenticate();
           }
