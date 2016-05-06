@@ -174,7 +174,7 @@ var ctrl = [
     };
 
     // Messages
-    Websocket.subscribe({ type: 'user', id: Session.user.id }, { waitForAuth: true })
+    Websocket.subscribe(JSON.stringify({ type: 'user', id: Session.user.id }), { waitForAuth: true })
     .watch(function() {
       ctrl.loadRecentMessages(ctrl.page, ctrl.limit);
       if (ctrl.selectedConversationId) {

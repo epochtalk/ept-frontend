@@ -58,7 +58,7 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
       if (token) {
         Websocket.authenticate(token);
         // subscribe to user channel
-        Websocket.subscribe({ type: 'user', id: Session.user.id }, {waitForAuth: true}).watch(function(data) {
+        Websocket.subscribe(JSON.stringify({ type: 'user', id: Session.user.id }), {waitForAuth: true}).watch(function(data) {
           if (data.action === 'reauthenticate') {
             Auth.authenticate();
           }
@@ -68,7 +68,7 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
         });
         // subscribe to roles channels
         Session.user.roles.forEach(function(role) {
-          Websocket.subscribe({ type: 'role', id: role }, {waitForAuth: true}).watch(function(data) {
+          Websocket.subscribe(JSON.stringify({ type: 'role', id: role }), {waitForAuth: true}).watch(function(data) {
             Auth.authenticate();
           });
         });
