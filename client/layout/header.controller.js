@@ -68,7 +68,7 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
         });
         // subscribe to roles channels
         Session.user.roles.forEach(function(role) {
-          Websocket.subscribe('/r/' + role, {waitForAuth: true}).watch(function(data) {
+          Websocket.subscribe({ type: 'role', id: role }, {waitForAuth: true}).watch(function(data) {
             Auth.authenticate();
           });
         });
