@@ -72,6 +72,9 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
           if (data.action === 'reauthenticate') {
             Auth.authenticate();
           }
+          else if (data.action === 'logout') {
+            Session.clearUser();
+          }
           else {
             ctrl.refreshNotificationsCounts();
           }
