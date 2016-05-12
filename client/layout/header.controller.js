@@ -84,7 +84,12 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
         });
         ctrl.refreshNotificationsCounts();
       }
-      else { Websocket.deauthenticate(); }
+      else {
+        Websocket.subscriptions().forEach(function(channel) {
+          Websocket.unsubscribe(channel);
+        });
+        Websocket.deauthenticate();
+      }
     });
 
     // Login/LogOut
