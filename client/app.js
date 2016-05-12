@@ -42,6 +42,7 @@ var ngDeps = [
   // posts
   require('./posts'),
   require('./messages'),
+  require('./patrol'),
   require('./admin')
 ].concat(moduleNames);
 var app = angular.module('ept', ngDeps);
@@ -57,6 +58,7 @@ require('./users/resource');
 require('./boards/resource');
 require('./threads/resource');
 require('./posts/resource');
+require('./patrol/resource');
 
 // Set Angular Configs
 app
