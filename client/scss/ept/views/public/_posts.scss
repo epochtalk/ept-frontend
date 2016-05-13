@@ -58,9 +58,12 @@
       .user-role {
         padding-top: 0.625rem;
         color: $secondary-font-color;
-        font-size: 0.8125em;
+        font-size: 0.625em;
+        overflow: hidden;
+        white-space: nowrap;
         text-align: center;
         text-transform: uppercase;
+        text-overflow: ellipsis;
         width: 100%;
       }
     }
