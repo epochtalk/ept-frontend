@@ -34,6 +34,16 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
       return pathArr[0].toLowerCase() === 'admin' && pathArr[1].toLowerCase() === route;
     };
 
+    // Patrol
+    this.isPatroller = function() {
+      var patrol = false;
+      this.currentUser.roles.map(function(role) {
+        if (role === 'patroller') { patrol = true; }
+      });
+      return patrol;
+    };
+
+
     // Notifications
     this.notifications = {
       messages: 0,

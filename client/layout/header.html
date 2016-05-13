@@ -55,6 +55,9 @@
           <li ng-if="HeaderCtrl.hasPermission('modAccess') && !HeaderCtrl.hasPermission('adminAccess')">
             <a ui-sref="^.admin-moderation">Mod Panel</a>
           </li>
+          <li ng-if="HeaderCtrl.isPatroller()">
+            <a ui-sref="patrol.data">Patrol</a>
+          </li>
           <li>
             <a ui-sref="profile({ username: HeaderCtrl.currentUser.username })">Profile</a>
           </li>
