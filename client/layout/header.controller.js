@@ -72,6 +72,11 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
           if (data.action === 'reauthenticate') {
             Auth.authenticate();
           }
+          else if (data.action === 'logout') {
+            Session.clearUser();
+            $scope.$apply();
+            Alert.warning('You have been logged out from another window.');
+          }
           else {
             ctrl.refreshNotificationsCounts();
           }
@@ -84,7 +89,12 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
         });
         ctrl.refreshNotificationsCounts();
       }
-      else { Websocket.deauthenticate(); }
+      else {
+        Websocket.subscriptions().forEach(function(channel) {
+          Websocket.unsubscribe(channel);
+        });
+        Websocket.deauthenticate();
+      }
     });
 
     // Login/LogOut
