@@ -74,6 +74,8 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
           }
           else if (data.action === 'logout') {
             Session.clearUser();
+            $scope.$apply();
+            Alert.warning('You have been logged out Lol!');
           }
           else {
             ctrl.refreshNotificationsCounts();
