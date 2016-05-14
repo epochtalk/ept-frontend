@@ -43,7 +43,6 @@ var directive = ['$state', function($state) {
         editCatDataId = dataId;
         $('#editCatName').val(editCat.name);
         $('#editCatViewable').val(editCat.viewable_by);
-        $('#editCatPostable').val(editCat.postable_by);
         $scope.showEditCategory = true;
       };
 
@@ -62,13 +61,11 @@ var directive = ['$state', function($state) {
         var editCat = $scope.nestableMap[editCatDataId];
         editCat.name = $('#editCatName').val();
         editCat.viewable_by = $('#editCatViewable').val();
-        editCat.postable_by = $('#editCatPostable').val();
 
         // Reset and close
         editCatDataId = '';
         $('#editCatName').val('');
         $('#editCatViewable').val('');
-        $('#editCatPostable').val('');
         $scope.showEditCategory = false;
       };
 
@@ -250,7 +247,6 @@ var directive = ['$state', function($state) {
             id: catId,
             name: cat.name,
             viewable_by: $scope.nestableMap[cat.id].viewable_by,
-            postable_by: $scope.nestableMap[cat.id].postable_by,
             view_order: index
           };
           boardMapping.push(row);
