@@ -49,6 +49,8 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
       messages: 0,
       mentions: 0
     };
+    // Online users
+    this.onlineUsers;
 
     this.refreshNotificationsCounts = function() {
       return Notifications.counts().$promise
@@ -67,6 +69,10 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
     $scope.$watch(function() { return Session.getToken(); }, function(token) {
       if (token) {
         Websocket.authenticate(token);
+        // subscribe to public channel
+        Websocket.subscribe(JSON.stringify({ type: 'public' }), {waitForAuth: true}).watch(function(data) {
+          ctrl.onlineUsers = data;
+        });
         // subscribe to user channel
         Websocket.subscribe(JSON.stringify({ type: 'user', id: Session.user.id }), {waitForAuth: true}).watch(function(data) {
           if (data.action === 'reauthenticate') {
