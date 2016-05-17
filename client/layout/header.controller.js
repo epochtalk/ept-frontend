@@ -49,6 +49,8 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
       messages: 0,
       mentions: 0
     };
+    // Online users
+    this.onlineUsers;
 
     this.refreshNotificationsCounts = function() {
       return Notifications.counts().$promise
@@ -67,25 +69,42 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
     $scope.$watch(function() { return Session.getToken(); }, function(token) {
       if (token) {
         Websocket.authenticate(token);
-        // subscribe to user channel
-        Websocket.subscribe(JSON.stringify({ type: 'user', id: Session.user.id }), {waitForAuth: true}).watch(function(data) {
-          if (data.action === 'reauthenticate') {
-            Auth.authenticate();
-          }
-          else if (data.action === 'logout') {
-            Session.clearUser();
-            $scope.$apply();
-            Alert.warning('You have been logged out from another window.');
-          }
-          else {
-            ctrl.refreshNotificationsCounts();
-          }
-        });
-        // subscribe to roles channels
-        Session.user.roles.forEach(function(role) {
-          Websocket.subscribe(JSON.stringify({ type: 'role', id: role }), {waitForAuth: true}).watch(function(data) {
-            Auth.authenticate();
+        Websocket.on('authenticate', function() {
+          // subscribe to public channel
+          Websocket.subscribe(JSON.stringify({ type: 'public' }), {waitForAuth: true}).watch(function(data) {
+            ctrl.onlineUsers = data;
+            console.log(ctrl.onlineUsers);
           });
+          // subscribe to roles channels
+          Session.user.roles.forEach(function(role) {
+            Websocket.subscribe(JSON.stringify({ type: 'role', id: role }), {waitForAuth: true}).watch(function(data) {
+              Auth.authenticate();
+            });
+          });
+        });
+        Websocket.on('subscribe', function(channel) {
+          try {
+            channel = JSON.parse(channel);
+            if (channel.type === 'public') {
+              // subscribe to user channel
+              Websocket.subscribe(JSON.stringify({ type: 'user', id: Session.user.id }), {waitForAuth: true}).watch(function(data) {
+                if (data.action === 'reauthenticate') {
+                  Auth.authenticate();
+                }
+                else if (data.action === 'logout') {
+                  Session.clearUser();
+                  $scope.$apply();
+                  Alert.warning('You have been logged out from another window.');
+                }
+                else {
+                  ctrl.refreshNotificationsCounts();
+                }
+              });
+            }
+          }
+          catch (error) {
+            console.log('Websocket error:', error);
+          }
         });
         ctrl.refreshNotificationsCounts();
       }
