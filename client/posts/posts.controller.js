@@ -120,6 +120,30 @@ var ctrl = [
       return validBypass;
     };
 
+    this.canPostLock = function(post) {
+      if (!pageData.writeAccess) { return false; }
+      if (!Session.isAuthenticated()) { return false; }
+      if (BanSvc.banStatus().boards.length > 0) { return false; }
+      if (!Session.hasPermission('posts.lock.allow')) { return false; }
+
+      if (Session.hasPermission('posts.lock.bypass.lock.admin')) { return true; }
+      else if (Session.hasPermission('posts.lock.bypass.lock.mod')) {
+        if (Session.moderatesBoard(ctrl.thread.board_id)) { return true; }
+        else { return false; }
+      }
+      else if (Session.hasPermission('posts.lock.bypass.lock.priority')) {
+        if (Session.getPriority() < post.user.priority) { return true; }
+        else { return false; }
+      }
+      else { return false; }
+    };
+
+    parent.canPostLockQuick = function(index) {
+      var post = ctrl.posts && ctrl.posts[index] || '';
+      if (!post) { return false; }
+      else { return ctrl.canPostLock(post); }
+    };
+
     this.canPurge = function() {
       if (!pageData.writeAccess) { return false; }
       if (!Session.isAuthenticated()) { return false; }

@@ -101,6 +101,7 @@
               color: $secondary-font-color-light;
               &:hover { color: $color-primary; }
             }
+            .clicked { color: $color-primary; }
           }
           &:hover a { color: $secondary-font-color; }
         }

@@ -359,6 +359,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     this.cancelPost = function() { if (discardAlert()) { closeEditor(); } };
 
     this.deletePostIndex = -1;
+    this.deleteAndLock = true;
     this.showDeleteModal = false;
     this.openDeleteModal = function(index) {
       ctrl.deletePostIndex = index;
@@ -366,10 +367,11 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
     };
     this.deletePost = function() {
       ctrl.showDeleteModal = false;
+      var locked = ctrl.deleteAndLock;
       var index = ctrl.deletePostIndex;
       var post = ctrl.posts && ctrl.posts[index] || '';
       if (post) {
-        Posts.delete({id: post.id}).$promise
+        Posts.delete({id: post.id, locked: locked}).$promise
         .then(function() { $state.go($state.$current, null, {reload:true}); })
         .catch(function() { Alert.error('Failed to delete post'); });
       }
@@ -390,6 +392,20 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
         .then(function() { $state.go($state.$current, null, {reload:true}); })
         .catch(function() { Alert.error('Failed to Undelete Post'); });
       }
+    };
+
+    this.lockPost = function(post) {
+      Posts.lock({id: post.id}).$promise
+      .then(function() { post.locked = true; })
+      .then(function() { Alert.success('Post Locked'); })
+      .catch(function() { Alert.error('Failed to lock post'); });
+    };
+
+    this.unlockPost = function(post) {
+      Posts.unlock({id: post.id}).$promise
+      .then(function() { post.locked = false; })
+      .then(function() { Alert.success('Post Unlocked.'); })
+      .catch(function() { Alert.error('Failed to Undelete Post'); });
     };
 
     this.purgePostIndex = -1;
