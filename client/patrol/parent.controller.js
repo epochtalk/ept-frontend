@@ -52,7 +52,7 @@ var ctrl = ['$timeout', '$state', 'Session', 'Posts', 'Reports', 'Alert',
         editorPost.id = post.id || '';
         editorPost.title = post.title || '';
         editorPost.body = post.body || '';
-        editorPost.thread_id = post.thread_id || ''; 
+        editorPost.thread_id = post.thread_id || '';
         editorPost.raw_body = post.raw_body || '';
         editorPost.page = ctrl.page || 1;
         ctrl.resetEditor = true;
@@ -82,6 +82,7 @@ var ctrl = ['$timeout', '$state', 'Session', 'Posts', 'Reports', 'Alert',
     this.cancelPost = function() { if (discardAlert()) { closeEditor(); } };
 
     this.deletePostIndex = -1;
+    this.deleteAndLock = true;
     this.showDeleteModal = false;
     this.openDeleteModal = function(index) {
       ctrl.deletePostIndex = index;
@@ -89,10 +90,11 @@ var ctrl = ['$timeout', '$state', 'Session', 'Posts', 'Reports', 'Alert',
     };
     this.deletePost = function() {
       ctrl.showDeleteModal = false;
+      var locked = ctrl.deleteAndLock;
       var index = ctrl.deletePostIndex;
       var post = ctrl.posts && ctrl.posts[index] || '';
       if (post) {
-        Posts.delete({id: post.id}).$promise
+        Posts.delete({id: post.id, locked: locked}).$promise
         .then(function() { $state.go($state.$current, null, {reload:true}); })
         .catch(function() { Alert.error('Failed to delete post'); });
       }
@@ -131,6 +133,21 @@ var ctrl = ['$timeout', '$state', 'Session', 'Posts', 'Reports', 'Alert',
         .catch(function() { Alert.error('Failed to purge Post'); });
       }
     };
+
+    this.lockPost = function(post) {
+      Posts.lock({id: post.id}).$promise
+      .then(function() { post.locked = true; })
+      .then(function() { Alert.success('Post Locked'); })
+      .catch(function() { Alert.error('Failed to lock post'); });
+    };
+
+    this.unlockPost = function(post) {
+      Posts.unlock({id: post.id}).$promise
+      .then(function() { post.locked = false; })
+      .then(function() { Alert.success('Post Unlocked.'); })
+      .catch(function() { Alert.error('Failed to Undelete Post'); });
+    };
+
 
     this.isMinimized = true;
     this.fullscreen = function() {

@@ -67,6 +67,23 @@ var ctrl = [
       return validBypass;
     };
 
+    this.canPostLock = function(post) {
+      if (!Session.isAuthenticated()) { return false; }
+      if (!Session.hasPermission('posts.lock.allow')) { return false; }
+
+      if (Session.hasPermission('posts.lock.bypass.lock.priority')) {
+        if (Session.getPriority() < post.user.priority) { return true; }
+        else { return false; }
+      }
+      else { return false; }
+    };
+
+    parent.canPostLockQuick = function(index) {
+      var post = ctrl.posts && ctrl.posts[index] || '';
+      if (!post) { return false; }
+      else { return ctrl.canPostLock(post); }
+    };
+
     parent.changePage = function(increment) {
       var page = parent.page + increment;
       $location.search('page', page);
