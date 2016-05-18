@@ -29,30 +29,31 @@ var adminRoute = ['$stateProvider', '$urlRouterProvider', function($stateProvide
 
   var adminRedirect = ['$state', 'Session', function($state, Session) {
     if (Session.hasPermission('adminAccess.settings')) {
-      if (Session.hasPermission('adminAccess.settings.general')) { $state.go('admin-settings.general'); }
-      else if (Session.hasPermission('adminAccess.settings.advanced')) { $state.go('admin-settings.advanced'); }
-      else if (Session.hasPermission('adminAccess.settings.theme')) { $state.go('admin-settings.theme'); }
-      else { $state.go('boards'); }
+      if (Session.hasPermission('adminAccess.settings.general')) {
+        $state.go('admin-settings.general', {}, {location: 'replace'}); }
+      else if (Session.hasPermission('adminAccess.settings.advanced')) { $state.go('admin-settings.advanced', {}, {location: 'replace'}); }
+      else if (Session.hasPermission('adminAccess.settings.theme')) { $state.go('admin-settings.theme', {}, {location: 'replace'}); }
+      else { $state.go('boards', {}, {location: 'replace'}); }
     }
     else if (Session.hasPermission('adminAccess.management')) {
-      if (Session.hasPermission('adminAccess.management.boards')) { $state.go('admin-management.boards'); }
-      else if (Session.hasPermission('adminAccess.management.users')) { $state.go('admin-management.users'); }
-      else if (Session.hasPermission('adminAccess.management.roles')) { $state.go('admin-management.roles'); }
-      else { $state.go('boards'); }
+      if (Session.hasPermission('adminAccess.management.boards')) { $state.go('admin-management.boards', {}, {location: 'replace'}); }
+      else if (Session.hasPermission('adminAccess.management.users')) { $state.go('admin-management.users', {}, {location: 'replace'}); }
+      else if (Session.hasPermission('adminAccess.management.roles')) { $state.go('admin-management.roles', {}, {location: 'replace'}); }
+      else { $state.go('boards', {}, {location: 'replace'}); }
     }
     else if (Session.hasPermission('modAccess')) {
       if (Session.hasPermission('modAccess.users')) {
-        $state.go('admin-moderation.users', { filter: 'Pending'}, { location: true, reload: true });
+        $state.go('admin-moderation.users', { filter: 'Pending'}, { location: 'replace' });
       }
       else if (Session.hasPermission('modAccess.posts')) {
-        $state.go('admin-moderation.posts', { filter: 'Pending'}, { location: true, reload: true });
+        $state.go('admin-moderation.posts', { filter: 'Pending'}, { location: 'replace' });
       }
       else if (Session.hasPermission('modAccess.messages')) {
-        $state.go('admin-moderation.messages', { filter: 'Pending'}, { location: true, reload: true });
+        $state.go('admin-moderation.messages', { filter: 'Pending'}, { location: 'replace' });
       }
-      else { $state.go('boards'); }
+      else { $state.go('boards', {}, {location: 'replace'}); }
     }
-    else { $state.go('boards'); }
+    else { $state.go('boards', {}, {location: 'replace'}); }
   }];
 
   $urlRouterProvider.when('/admin', adminRedirect);
