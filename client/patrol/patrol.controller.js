@@ -91,8 +91,8 @@ var ctrl = [
 
     this.offLCS = $rootScope.$on('$locationChangeSuccess', function() {
       var params = $location.search();
-      var page = Number(params.page);
-      var limit = Number(params.limit);
+      var page = Number(params.page) || 1;
+      var limit = Number(params.limit) || 25;
       var pageChanged = false;
       var limitChanged = false;
 
