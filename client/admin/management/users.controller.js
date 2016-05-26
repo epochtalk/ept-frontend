@@ -1,4 +1,4 @@
-var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$filter', 'Session', 'Alert', 'AdminUsers', 'Bans', 'User', 'users', 'usersCount', 'page', 'limit', 'field', 'desc', 'filter', 'search', function($rootScope, $scope, $location, $timeout, $anchorScroll, $filter, Session, Alert, AdminUsers, Bans, User, users, usersCount, page, limit, field, desc, filter, search) {
+var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$filter', '$state', 'Session', 'Alert', 'AdminUsers', 'Bans', 'User', 'users', 'usersCount', 'page', 'limit', 'field', 'desc', 'filter', 'search', function($rootScope, $scope, $location, $timeout, $anchorScroll, $filter, $state, Session, Alert, AdminUsers, Bans, User, users, usersCount, page, limit, field, desc, filter, search) {
   var ctrl = this;
   this.parent = $scope.$parent.AdminManagementCtrl;
   this.parent.tab = 'users';
@@ -253,7 +253,7 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
       ctrl.search = search;
     }
 
-    if(pageChanged || limitChanged || fieldChanged || descChanged || filterChanged || searchChanged) { ctrl.pullPage(); }
+    if((pageChanged || limitChanged || fieldChanged || descChanged || filterChanged || searchChanged) && $state.current.name === 'admin-management.users') { ctrl.pullPage(); }
   });
   $scope.$on('$destroy', function() { ctrl.offLCS(); });
 
