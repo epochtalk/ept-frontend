@@ -13,17 +13,21 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
 
   var moderationRedirect = ['$state', 'Session', function($state, Session) {
     if (Session.hasPermission('modAccess.users')) {
-      $state.go('admin-moderation.users', { filter: 'Pending'}, { location: true, reload: true });
+      $state.go('admin-moderation.users', { filter: 'Pending'}, { location: 'replace' });
     }
     else if (Session.hasPermission('modAccess.posts')) {
-      $state.go('admin-moderation.posts', { filter: 'Pending'}, { location: true, reload: true });
+      $state.go('admin-moderation.posts', { filter: 'Pending'}, { location: 'replace' });
     }
     else if (Session.hasPermission('modAccess.messages')) {
-      $state.go('admin-moderation.messages', { filter: 'Pending'}, { location: true, reload: true });
+      $state.go('admin-moderation.messages', { filter: 'Pending'}, { location: 'replace' });
     }
-    else if (Session.hasPermission('modAccess.logs')) { $state.go('admin-moderation.logs'); }
-    else if (Session.hasPermission('modAccess.boardBans')) { $state.go('admin-moderation.board-bans'); }
-    else { $state.go('admin'); }
+    else if (Session.hasPermission('modAccess.logs')) {
+      $state.go('admin-moderation.logs', {}, {location: 'replace'});
+    }
+    else if (Session.hasPermission('modAccess.boardBans')) {
+      $state.go('admin-moderation.board-bans', {}, {location: 'replace'});
+    }
+    else { $state.go('boards', {}, {location: 'replace'}); }
   }];
 
   $urlRouterProvider.when('/admin/moderation', moderationRedirect);

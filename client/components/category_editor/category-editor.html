@@ -103,12 +103,6 @@
       <option value="{{::role.priority}}" ng-repeat="role in roles | orderBy: 'priority'">{{::role.name}}</option>
     </select>
   </label>
-  <label>Category Write Access:
-    <select id="editCatPostable">
-      <option value="">Minimum role level</option>
-      <option value="{{::role.priority}}" ng-repeat="role in roles | orderBy: 'priority'">{{::role.name}}</option>
-    </select>
-  </label>
   <div class="clear">
     <button ng-click="editCategory()" class="fill-row">Edit Category</button>
   </div>

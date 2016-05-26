@@ -34,6 +34,7 @@ var ctrl = [
         if (Session.hasPermission('posts.create.bypass.locked.admin')) { return true; }
         else if (Session.hasPermission('posts.create.bypass.locked.mod')) {
           if (Session.moderatesBoard(ctrl.thread.board_id)) { return true; }
+          else { return false; }
         }
         else { return false; }
       }
@@ -55,7 +56,9 @@ var ctrl = [
         else if (Session.hasPermission('posts.update.bypass.locked.mod')) {
           if (Session.moderatesBoard(ctrl.thread.board_id)) { validBypass = true; }
         }
-        else { return false; }
+        else if (Session.hasPermission('posts.update.bypass.locked.priority')) {
+          if (Session.getPriority() < post.user.priority) { validBypass = true; }
+        }
       }
 
       // owner
@@ -65,7 +68,9 @@ var ctrl = [
         else if (Session.hasPermission('posts.update.bypass.owner.mod')) {
           if (Session.moderatesBoard(ctrl.thread.board_id)) { validBypass = true; }
         }
-        else { return false; }
+        else if (Session.hasPermission('posts.update.bypass.owner.priority')) {
+          if (Session.getPriority() < post.user.priority) { validBypass = true; }
+        }
       }
 
       // deleted
@@ -74,7 +79,9 @@ var ctrl = [
         else if (Session.hasPermission('posts.update.bypass.deleted.mod')) {
           if (Session.moderatesBoard(ctrl.thread.board_id)) { validBypass = true; }
         }
-        else { return false; }
+        else if (Session.hasPermission('posts.update.bypass.deleted.priority')) {
+          if (Session.getPriority() < post.user.priority) { validBypass = true; }
+        }
       }
 
       return validBypass;
@@ -94,7 +101,9 @@ var ctrl = [
         else if (Session.hasPermission('posts.delete.bypass.locked.mod')) {
           if (Session.moderatesBoard(ctrl.thread.board_id)) { validBypass = true; }
         }
-        else { return false; }
+        else if (Session.hasPermission('posts.delete.bypass.locked.priority')) {
+          if (Session.getPriority() < post.user.priority) { validBypass = true; }
+        }
       }
 
       // moderated/owner
@@ -103,10 +112,36 @@ var ctrl = [
       else if (Session.hasPermission('posts.delete.bypass.owner.admin')) { validBypass = true; }
       else if (Session.hasPermission('posts.delete.bypass.owner.mod')) {
         if (Session.moderatesBoard(ctrl.thread.board_id)) { validBypass = true; }
-        else { return false; }
+      }
+      else if (Session.hasPermission('posts.delete.bypass.owner.priority')) {
+        if (Session.getPriority() < post.user.priority) { validBypass = true; }
       }
 
       return validBypass;
+    };
+
+    this.canPostLock = function(post) {
+      if (!pageData.writeAccess) { return false; }
+      if (!Session.isAuthenticated()) { return false; }
+      if (BanSvc.banStatus().boards.length > 0) { return false; }
+      if (!Session.hasPermission('posts.lock.allow')) { return false; }
+
+      if (Session.hasPermission('posts.lock.bypass.lock.admin')) { return true; }
+      else if (Session.hasPermission('posts.lock.bypass.lock.mod')) {
+        if (Session.moderatesBoard(ctrl.thread.board_id)) { return true; }
+        else { return false; }
+      }
+      else if (Session.hasPermission('posts.lock.bypass.lock.priority')) {
+        if (Session.getPriority() < post.user.priority) { return true; }
+        else { return false; }
+      }
+      else { return false; }
+    };
+
+    parent.canPostLockQuick = function(index) {
+      var post = ctrl.posts && ctrl.posts[index] || '';
+      if (!post) { return false; }
+      else { return ctrl.canPostLock(post); }
     };
 
     this.canPurge = function() {
@@ -118,6 +153,7 @@ var ctrl = [
       if (Session.hasPermission('posts.purge.bypass.purge.admin')) { return true; }
       else if (Session.hasPermission('posts.purge.bypass.purge.mod')) {
         if (Session.moderatesBoard(ctrl.thread.board_id)) { return true; }
+        else { return false; }
       }
       else { return false; }
     };
@@ -138,8 +174,8 @@ var ctrl = [
 
     this.offLCS = $rootScope.$on('$locationChangeSuccess', function(){
       var params = $location.search();
-      var page = Number(params.page);
-      var limit = Number(params.limit);
+      var page = Number(params.page) || 1;
+      var limit = Number(params.limit) || 25;
       var pageChanged = false;
       var limitChanged = false;
 

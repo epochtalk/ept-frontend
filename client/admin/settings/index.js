@@ -2,7 +2,9 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
   // Checks if user is an admin
   var adminCheck = function(route) {
     return ['$q', 'Session', function($q, Session) {
-      if (!Session.isAuthenticated()) {  return $q.reject({ status: 401, statusText: 'Unauthorized' }); }
+      if (!Session.isAuthenticated()) {
+        return $q.reject({ status: 401, statusText: 'Unauthorized' });
+      }
       if (route && Session.hasPermission('adminAccess' + '.' + route)) { return true; }
       else if (!route && Session.hasPermission('adminAccess')) { return true; }
       else { return $q.reject({ status: 403, statusText: 'Forbidden' }); }
@@ -10,10 +12,16 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
   };
 
   var adminSettingsRedirect = ['$state', 'Session', function($state, Session) {
-    if (Session.hasPermission('adminAccess.settings.general')) { $state.go('admin-settings.general'); }
-    else if (Session.hasPermission('adminAccess.settings.advanced')) { $state.go('admin-settings.advanced'); }
-    else if (Session.hasPermission('adminAccess.settings.theme')) { $state.go('admin-settings.theme'); }
-    else { $state.go('admin'); }
+    if (Session.hasPermission('adminAccess.settings.general')) {
+      $state.go('admin-settings.general', {}, {location: 'replace'});
+    }
+    else if (Session.hasPermission('adminAccess.settings.advanced')) {
+      $state.go('admin-settings.advanced', {}, {location: 'replace'});
+    }
+    else if (Session.hasPermission('adminAccess.settings.theme')) {
+      $state.go('admin-settings.theme', {}, {location: 'replace'});
+    }
+    else { $state.go('boards', {}, {location: 'replace'}); }
   }];
 
   $urlRouterProvider.when('/admin/settings', adminSettingsRedirect);

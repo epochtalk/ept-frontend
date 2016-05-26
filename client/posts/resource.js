@@ -19,8 +19,23 @@ var resource = ['$resource',
         method: 'GET',
         params: { username: '@username' }
       },
+      delete: {
+        url: '/api/posts/:id',
+        method: 'DELETE',
+        params: { id: '@id', locked: '@locked' }
+      },
       undelete: {
         url: '/api/posts/:id/undelete',
+        method: 'POST',
+        params: { id: '@id' }
+      },
+      lock: {
+        url: '/api/posts/:id/lock',
+        method: 'POST',
+        params: { id: '@id' }
+      },
+      unlock: {
+        url: '/api/posts/:id/unlock',
         method: 'POST',
         params: { id: '@id' }
       },

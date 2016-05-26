@@ -1,11 +1,11 @@
-module.exports = ['$timeout', '$filter', '$compile', '$parse', function($timeout, $filter, $compile, $parse) {
+module.exports = ['$timeout', '$filter', '$compile', function($timeout, $filter, $compile) {
   return {
     scope: {
       postProcessing: '=',
       styleFix: '='
     },
     restrict: 'A',
-    link: function($scope, $element, $attr) {
+    link: function($scope, $element) {
       // Auto Date Regex
       var autoDateRegex = /(ept-date=[0-9]+)/ig;
       var autoDate = function(timeString) {
@@ -91,7 +91,6 @@ module.exports = ['$timeout', '$filter', '$compile', '$parse', function($timeout
 
       var process = function() {
         var postBody = $scope.postProcessing;
-        console.log(postBody);
         var processed = postBody || '';
         var doStyleFix = $scope.styleFix;
 

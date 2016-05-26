@@ -34,11 +34,23 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
       return pathArr[0].toLowerCase() === 'admin' && pathArr[1].toLowerCase() === route;
     };
 
+    // Patrol
+    this.isPatroller = function() {
+      var patrol = false;
+      this.currentUser.roles.map(function(role) {
+        if (role === 'patroller') { patrol = true; }
+      });
+      return patrol;
+    };
+
+
     // Notifications
     this.notifications = {
       messages: 0,
       mentions: 0
     };
+    // Online users
+    this.onlineUsers;
 
     this.refreshNotificationsCounts = function() {
       return Notifications.counts().$promise
@@ -57,24 +69,51 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
     $scope.$watch(function() { return Session.getToken(); }, function(token) {
       if (token) {
         Websocket.authenticate(token);
-        // subscribe to user channel
-        Websocket.subscribe('/u/' + Session.user.id, {waitForAuth: true}).watch(function(data) {
-          if (data.action === 'reauthenticate') {
-            Auth.authenticate();
-          }
-          else {
-            ctrl.refreshNotificationsCounts();
-          }
-        });
-        // subscribe to roles channels
-        Session.user.roles.forEach(function(role) {
-          Websocket.subscribe('/r/' + role, {waitForAuth: true}).watch(function(data) {
-            Auth.authenticate();
+        Websocket.on('authenticate', function() {
+          // subscribe to public channel
+          Websocket.subscribe(JSON.stringify({ type: 'public' }), {waitForAuth: true}).watch(function(data) {
+            ctrl.onlineUsers = data;
+            console.log(ctrl.onlineUsers);
           });
+          // subscribe to roles channels
+          Session.user.roles.forEach(function(role) {
+            Websocket.subscribe(JSON.stringify({ type: 'role', id: role }), {waitForAuth: true}).watch(function(data) {
+              Auth.authenticate();
+            });
+          });
+        });
+        Websocket.on('subscribe', function(channel) {
+          try {
+            channel = JSON.parse(channel);
+            if (channel.type === 'public') {
+              // subscribe to user channel
+              Websocket.subscribe(JSON.stringify({ type: 'user', id: Session.user.id }), {waitForAuth: true}).watch(function(data) {
+                if (data.action === 'reauthenticate') {
+                  Auth.authenticate();
+                }
+                else if (data.action === 'logout') {
+                  Session.clearUser();
+                  $scope.$apply();
+                  Alert.warning('You have been logged out from another window.');
+                }
+                else {
+                  ctrl.refreshNotificationsCounts();
+                }
+              });
+            }
+          }
+          catch (error) {
+            console.log('Websocket error:', error);
+          }
         });
         ctrl.refreshNotificationsCounts();
       }
-      else { Websocket.deauthenticate(); }
+      else {
+        Websocket.subscriptions().forEach(function(channel) {
+          Websocket.unsubscribe(channel);
+        });
+        Websocket.deauthenticate();
+      }
     });
 
     // Login/LogOut

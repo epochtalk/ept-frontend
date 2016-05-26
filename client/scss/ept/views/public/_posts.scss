@@ -58,9 +58,12 @@
       .user-role {
         padding-top: 0.625rem;
         color: $secondary-font-color;
-        font-size: 0.8125em;
+        font-size: 0.625em;
+        overflow: hidden;
+        white-space: nowrap;
         text-align: center;
         text-transform: uppercase;
+        text-overflow: ellipsis;
         width: 100%;
       }
     }
@@ -98,6 +101,7 @@
               color: $secondary-font-color-light;
               &:hover { color: $color-primary; }
             }
+            .clicked { color: $color-primary; }
           }
           &:hover a { color: $secondary-font-color; }
         }
@@ -116,7 +120,7 @@
         clear: both;
         color: $secondary-font-color;
         font-size: 13px;
-        max-height: 80px;
+        max-height: 50px;
         word-wrap: break-word;
         white-space: pre-wrap;
         a {

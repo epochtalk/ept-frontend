@@ -10,11 +10,19 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
   };
 
   var adminManagementRedirect = ['$state', 'Session', function($state, Session) {
-    if (Session.hasPermission('adminAccess.management.boards')) { $state.go('admin-management.boards'); }
-    else if (Session.hasPermission('adminAccess.management.users')) { $state.go('admin-management.users'); }
-    else if (Session.hasPermission('adminAccess.management.roles')) { $state.go('admin-management.roles'); }
-    else if (Session.hasPermission('adminAccess.management.bannedAddresses')) { $state.go('admin-management.banned-addresses'); }
-    else { $state.go('admin'); }
+    if (Session.hasPermission('adminAccess.management.boards')) {
+      $state.go('admin-management.boards', {}, {location: 'replace'});
+    }
+    else if (Session.hasPermission('adminAccess.management.users')) {
+      $state.go('admin-management.users', {}, {location: 'replace'});
+    }
+    else if (Session.hasPermission('adminAccess.management.roles')) {
+      $state.go('admin-management.roles', {}, {location: 'replace'});
+    }
+    else if (Session.hasPermission('adminAccess.management.bannedAddresses')) {
+      $state.go('admin-management.banned-addresses', {}, {location: 'replace'});
+    }
+    else { $state.go('boards', {}, {location: 'replace'}); }
   }];
 
   // Default child state for admin-management is users

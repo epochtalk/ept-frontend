@@ -22,8 +22,8 @@ var route = ['$stateProvider', function($stateProvider) {
           require('../../components/usernotes/usernotes.directive.js');
           require('../../components/image_uploader/image_uploader.directive');
           $ocLazyLoad.load([
-            { name: 'ept.directives.profile'},
-            { name: 'ept.directives.usernotes'},
+            { name: 'ept.directives.profile' },
+            { name: 'ept.directives.usernotes' },
             { name: 'ept.directives.image-uploader' }
           ]);
           deferred.resolve();

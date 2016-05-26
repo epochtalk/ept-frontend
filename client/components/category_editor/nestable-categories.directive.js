@@ -29,7 +29,6 @@ var directive = ['$compile', function($compile) {
             id: cat.id,
             name: cat.name,
             viewable_by: cat.viewable_by,
-            postable_by: cat.postable_by,
             children: catBoards
           };
           // Edit pencil and trash buttons

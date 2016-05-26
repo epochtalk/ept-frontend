@@ -71,7 +71,7 @@ var ctrl = ['user', 'pageData', 'Posts', '$location', '$scope', '$rootScope', '$
         descChanged = true;
         ctrl.desc = descending.toString();
       }
-      if(pageChanged || limitChanged || fieldChanged || descChanged) { ctrl.pullPage(); }
+      if((pageChanged || limitChanged || fieldChanged || descChanged) && $state.current.name === 'users-posts') { ctrl.pullPage(); }
     });
     $scope.$on('$destroy', function() { ctrl.offLCS(); });
 
@@ -84,7 +84,6 @@ var ctrl = ['user', 'pageData', 'Posts', '$location', '$scope', '$rootScope', '$
         field: ctrl.field
       };
 
-
       // replace current user post with new user posts
       Posts.pageByUser(params).$promise
       .then(function(pageData) {
@@ -93,9 +92,6 @@ var ctrl = ['user', 'pageData', 'Posts', '$location', '$scope', '$rootScope', '$
       });
 
       delete params.username;
-
-      // Reload state with new params
-      $state.go('.', params, { location: false });
     };
   }
 ];

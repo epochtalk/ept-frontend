@@ -42,7 +42,7 @@
         <!-- TODO: CHANGE THIS TO LAST LOGIN DATE -->
         <td class="hide-mobile" ng-bind="user.created_at | humanDate"></td>
         <td>
-          <a ui-sref="users-posts({ username: user.username })" ui-sref-opts="{ reload: true }">
+          <a ui-sref="users-posts({ username: user.username })">
             <button class="icon" data-balloon="View Posts">
               <i class="fa fa-file-text-o"></i>
             </button>
