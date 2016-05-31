@@ -1,0 +1,107 @@
+/*-------------- Ignore Users Layout --------------- */
+.ignored-section {
+  @include clearfix;
+  @include row;
+  .leftcol {
+    @include span-columns(6);
+    h2 { display: inline-block; }
+    margin-bottom: 1.5rem;
+  }
+  .rightcol {
+    @include span-columns(6);
+    @include omega;
+    .pagination-slide {
+      @include span-columns(8);
+      @include omega;
+      float: right;
+      .prev, .next, .page { @include span-columns(4); }
+    }
+  }
+}
+
+@include media($mobile) {
+  .ignored-section {
+    .leftcol { @include span-columns(8); }
+    .rightcol {
+      @include span-columns(8);
+      @include omega;
+      .pagination-slide { @include fill-parent; }
+    }
+  }
+}
+
+.ignored-data {
+  @include pad(0.5rem 0 0.5rem 0);
+  clear: both;
+  border-bottom: 1px solid $border-color;
+  &:last-child {
+    border-bottom: 0px;
+    padding-bottom: 1rem;
+  }
+
+  .ignored-user {
+    @include row;
+    @include clearfix;
+    @include pad(0.5rem 0.5rem);
+    @include transition(background-color 250ms ease-in);
+
+    .user {
+      .user-avatar {
+        @include span-columns(1);
+        @include bg-cover;
+        background: no-repeat center center;
+        text-align: center;
+        img {
+          @include border-radius(100px);
+          height: 3.75rem;
+          width: 3.75rem;
+          object-fit: cover;
+        }
+      }
+
+      .user-info {
+        @include span-columns(9);
+        .user-username {
+          font-weight: 900;
+          color: $color-primary;
+          padding-right: 0.5rem;
+        }
+        .user-display-name {
+          font-size: 0.8125rem;
+          font-weight: 400;
+          line-height: 1.3rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 100%;
+          color: $secondary-font-color-dark;
+        }
+      }
+
+      .user-action {
+        @include span-columns(2);
+        @include omega;
+        margin-top: 0.575rem;
+        span {
+          float: right;
+          color: $color-primary;
+          margin-bottom: 0;
+          padding: 0.3rem 0.6rem;
+        }
+      }
+    }
+  }
+}
+
+@include media($mobile) {
+  .ignored-data .ignored-user .user .user-avatar { display: none; }
+  .ignored-data .ignored-user .user .user-info { @include span-columns(6); }
+  .ignored-data .ignored-user .user .user-action { @include span-columns(2); }
+  .ignored-data .ignored-user .user .user-action button { font-size: 0.8125rem; }
+}
+
+/*-------------- Ignore Users Directive Layout --------------- */
+
+.thread-data .post-block .post-user .ignore-directive > a {
+  display: inline; padding-right: 0.225rem;
+}

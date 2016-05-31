@@ -1,9 +1,16 @@
-<div id="{{::post.id}}" ng-repeat="post in PostsCtrl.posts track by post.id" class="post-block" ng-class="{ 'highlighted': post.highlighted, 'hidden': post.hidden, 'deleted': post._deleted, 'editing': post.id === PostsParentCtrl.posting.post.id }">
+<div id="{{::post.id}}" ng-repeat="post in PostsCtrl.posts track by post.id" class="post-block" ng-class="{ 'highlighted': post.highlighted, 'hidden': post.hidden, 'deleted': post._deleted || post.user.ignored,  'editing': post.id === PostsParentCtrl.posting.post.id }">
   <!-- Delete Post View -->
-  <div class="deleted" ng-if="post._deleted">Post Deleted</div>
+  <div class="deleted" ng-if="post._deleted || post.user.ignored">
+    Post
+    <span ng-if="post._deleted">Deleted</span>
+    <span ng-if="post.user.ignored">Ignored</span>
+    <small class="pointer" ng-if="post.user.ignored" ng-click="post.user.ignored = false">
+      <strong>- Show Post</strong>
+    </small>
+  </div>
 
   <!-- Visible Post View -->
-  <div ng-if="!post._deleted">
+  <div ng-if="!post._deleted && !post.user.ignored">
     <!-- Post Profile Section -->
     <div class="post-user">
       <a ui-sref="profile({ username: post.user.username})">
@@ -13,6 +20,9 @@
         <div title="{{post.user.role_name || 'user'}}" class="user-role" ng-bind="post.user.role_name || 'user'"></div>
         <div ng-if="post.user.activity > -1" title="{{ 'Activity: ' + post.user.activity }}" class="user-activity">Act: <span ng-bind="post.user.activity"></span></div>
       </a>
+      <div class="user-role">
+        <ignore-posts user="post.user"></ignore-posts>
+      </div>
     </div>
 
     <!-- Post Body Section -->

@@ -50,6 +50,9 @@ var app = angular.module('ept', ngDeps);
 var resourceContext = require.context('./modules', true, /resource.js$/);
 resourceContext.keys().forEach(function(args) { resourceContext(args); });
 
+var directiveContext = require.context('./modules', true, /directive.js$/);
+directiveContext.keys().forEach(function(args) { directiveContext(args); });
+
 require('./filters');
 require('./services');
 require('./resources');
