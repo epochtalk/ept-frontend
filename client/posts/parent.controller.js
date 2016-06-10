@@ -350,7 +350,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
       })
       .then(closeEditor)
       .catch(function(err) {
-        var error = 'Post could not be saved';
+        var error = err.data.message;
         if (err.status === 429) { error = 'Post Rate Limit Exceeded'; }
         Alert.error(error);
       });
