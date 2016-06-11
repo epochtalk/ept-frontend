@@ -46,7 +46,11 @@
       <a ng-href="#" ng-click="vm.showDelete = true">Delete Account</a>
     </div>
     <div class="profile-row centered-text" ng-if="vm.canPageUserNotes()">
-      <a ng-href="#" ng-click="vm.showModNotes = true">View Moderation Notes</a>
+      <a ng-href="#" ng-click="vm.showModNotes = true">
+        Moderation Notes
+        <i class="fa fa-comment" ng-if="vm.user.hasNotes"></i>
+        <i class="fa fa-comment-o" ng-if="!vm.user.hasNotes"></i>
+      </a>
     </div>
 
     <!-- User Information -->
@@ -107,7 +111,7 @@
 
 <modal class="medium" show="vm.showModNotes">
   <h3 class="thin-underline">Moderator Notes for {{vm.user.username}}</h3>
-  <usernotes user-id="vm.user.id"></usernotes>
+  <usernotes user-id="vm.user.id" user="vm.user"></usernotes>
 </modal>
 
 <!-- Change Password Modal -->

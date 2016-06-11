@@ -3,7 +3,7 @@ function(UserNotes, Session, Alert) {
   return {
     restrict: 'E',
     scope: true,
-    bindToController: { userId: '=' },
+    bindToController: { userId: '=', user: '=' },
     template: require('./usernotes.html'),
     controllerAs: 'usernotesvm',
     controller: ['$scope', function($scope) {
@@ -38,6 +38,8 @@ function(UserNotes, Session, Alert) {
           ctrl.next = noteInfo.next;
           ctrl.prev = noteInfo.prev;
           ctrl.page = noteInfo.page;
+          if (ctrl.usernotes.length) { ctrl.user.hasNotes = true; }
+          else { ctrl.user.hasNotes = false; }
         })
         .catch(function() {
           Alert.error('There was an error paging this user\'s comments');
