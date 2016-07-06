@@ -36,6 +36,7 @@
     <div class="profile-row centered-text" ng-if="vm.canUpdatePrivate()">
       <a ng-href="#" ng-click="vm.openEditEmail()">Edit Email</a>
     </div>
+    <trust-link ng-if="vm.pageOwner()"></trust-link>
     <div class="profile-row centered-text" ng-if="vm.canDeactivate()">
       <a ng-href="#" ng-click="vm.showDeactivate = true">Deactivate Account</a>
     </div>
@@ -59,6 +60,7 @@
     <!-- User Information -->
     <div class="profile-row">
       <h4 ng-bind="vm.user.username"></h4>
+      <trust-profile username="ProfileCtrl.user.username"></trust-profile>
       <div><span ng-bind="vm.user.name"></span></div>
       <div><span ng-bind="vm.user.position"></span></div>
       <div><span ng-bind="vm.user.status"></span></div>

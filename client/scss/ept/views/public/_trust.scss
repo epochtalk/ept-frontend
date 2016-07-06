@@ -1,0 +1,31 @@
+.trust-section {
+  @include row;
+  @include clearfix;
+  margin-bottom: 1rem;
+  .trust-select {
+    background: none;
+    height: 18rem;
+    width: 100%;
+  }
+  .remove-active, .remove-inactive {
+    font-size: 0.825rem;
+    height: 1rem;
+    display: inline-block;
+    line-height: 1.65rem;
+  }
+  .remove-inactive { color: $secondary-font-color; }
+  ul.depth-tree {
+    list-style-position: inside;
+    margin-bottom: 1rem;
+    ul { margin-left: 2rem; }
+  }
+}
+
+.trust-score {
+  color: $secondary-font-color;
+  &.unknown { color: #FA8072; }
+  &.low { color: #DC143C; }
+  &.mid { color: #74C365; }
+  &.high { color: #008000; }
+  .neg { color: orange; }
+}
