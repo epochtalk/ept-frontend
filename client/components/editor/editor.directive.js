@@ -55,9 +55,9 @@ var directive = ['$timeout', '$window', '$rootScope', '$filter', function($timeo
       function parseInput() {
         // BBCode Parsing
         var rawText = $editor.val();
-        var processed = '';
+        var processed = rawText;
         $window.parsers.forEach(function(parser) {
-          processed = parser.parse(rawText);
+          processed = parser.parse(processed);
         });
 
         // re-bind to scope
