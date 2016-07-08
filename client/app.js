@@ -53,6 +53,12 @@ resourceContext.keys().forEach(function(args) { resourceContext(args); });
 var directiveContext = require.context('./modules', true, /directive.js$/);
 directiveContext.keys().forEach(function(args) { directiveContext(args); });
 
+window.parsers = [];
+var parserContext = require.context('./modules', true, /parser.js$/);
+parserContext.keys().forEach(function(args) {
+  window.parsers.push(parserContext(args));
+});
+
 require('./filters');
 require('./services');
 require('./resources');

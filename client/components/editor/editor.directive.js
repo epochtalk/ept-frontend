@@ -1,5 +1,3 @@
-var bbcodeParser = require('epochtalk-bbcode-parser');
-
 var directive = ['$timeout', '$window', '$rootScope', '$filter', function($timeout, $window, $rootScope, $filter) {
   return {
     restrict: 'E',
@@ -57,9 +55,10 @@ var directive = ['$timeout', '$window', '$rootScope', '$filter', function($timeo
       function parseInput() {
         // BBCode Parsing
         var rawText = $editor.val();
-        rawText = rawText.replace(/(?:<|&lt;)/g, '&#60;'); // prevent html
-        rawText = rawText.replace(/(?:>|&gt;)/g, '&#62;');
-        var processed = bbcodeParser.process({text: rawText}).html;
+        var processed = '';
+        $window.parsers.forEach(function(parser) {
+          processed = parser.parse(rawText);
+        });
 
         // re-bind to scope
         $scope.body = processed;
