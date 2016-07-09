@@ -29,3 +29,8 @@
   &.high { color: #008000; }
   .neg { color: orange; }
 }
+td .trust-score { float: right; margin-left: 1rem; }
+
+.pos-feedback { color: #008000; }
+.neu-feedback { color: orange; }
+.neg-feedback { color: #FF0000; }
