@@ -45,6 +45,9 @@
     <div class="profile-row centered-text" ng-if="vm.canDelete()">
       <a ng-href="#" ng-click="vm.showDelete = true">Delete Account</a>
     </div>
+    <div class="profile-row centered-text" ng-if="vm.canMessage()">
+      <a ng-href="#" ng-click="vm.openConvoModal()">Message This User</a>
+    </div>
     <div class="profile-row centered-text" ng-if="vm.canPageUserNotes()">
       <a ng-href="#" ng-click="vm.showModNotes = true">
         Moderation Notes
@@ -350,6 +353,27 @@
     <div class="clear">
       <button class="fill-row" ng-click="vm.deleteUser()">
         Delete Account
+      </button>
+    </div>
+  </form>
+</modal>
+
+<!-- Create Conversation Modal -->
+<modal show="vm.showConvoModal" on-close="vm.closeConvoModal()">
+  <form name="$parent.form" class="css-form" novalidate>
+    <h3 class="thin-underline">New Message</h3>
+    <!-- Select User -->
+    <label>To: <span ng-bind="vm.user.username"></span></label>
+
+    <!-- Message Body -->
+    <label>Message:
+      <textarea type="text" rows="10" ng-model="vm.newConversation.body" maxlength="5000"></textarea>
+    </label>
+
+    <!-- Save Button -->
+    <div class="clear">
+      <button class="fill-row" ng-click="vm.createConversation()" ng-disabled="!vm.newConversation.body">
+        Start Conversation
       </button>
     </div>
   </form>

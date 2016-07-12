@@ -1,5 +1,5 @@
-var directive = ['User', 'Session', 'Alert', '$filter', '$state',
-function(User, Session, Alert, $filter, $state) {
+var directive = ['Conversations', 'User', 'Session', 'Alert', '$filter', '$state',
+function(Conversations, User, Session, Alert, $filter, $state) {
   return {
     restrict: 'E',
     scope: true,
@@ -94,6 +94,14 @@ function(User, Session, Alert, $filter, $state) {
         else if (same) { valid = Session.getPriority() <= this.user.priority; }
         else if (lower) { valid = Session.getPriority() < this.user.priority; }
         return valid;
+      };
+
+      this.canMessage = function() {
+        var valid = false;
+        if (!Session.isAuthenticated()) { return false; }
+        if (!Session.hasPermission('conversations.create.allow')) { return false; }
+        if (!ctrl.pageOwner()) { valid = true; }
+        return valid; 
       };
 
       // Edit Profile
@@ -223,6 +231,31 @@ function(User, Session, Alert, $filter, $state) {
         .then(function() { Alert.success('Account Deleted.'); })
         .catch(function() { Alert.error('Error Deleting Account'); })
         .finally(function() { ctrl.showDelete = false; });
+      };
+
+      // Create Conversation
+      this.newConversation = {};
+      this.showConvoModal = false;
+      this.openConvoModal = function() {
+        ctrl.newConversation = {};
+        ctrl.showConvoModal = true;
+      };
+      this.createConversation = function() {
+        // create a new conversation id to put this message under
+        var newMessage = {
+          receiver_id: ctrl.user.id,
+          body: ctrl.newConversation.body,
+        };
+
+        Conversations.save(newMessage).$promise
+        .then(function() { Alert.success('New Conversation Started!'); })
+        .then(function() { $state.go('messages'); })
+        .catch(function(err) {
+          var msg = 'Failed to create conversation';
+          if (err && err.status === 403) { msg = err.data.message; }
+          Alert.error(msg);
+        })
+        .finally(function() { ctrl.showConvoModal = false; });
       };
     }]
   };
