@@ -23,7 +23,7 @@
           <!-- Moderators -->
           <div ng-if="board.moderators.length > 0">
             <strong>Moderators: </strong>
-            <a ui-sref="profile({ username: mod.username })" ng-repeat="mod in board.moderators" ng-bind="::mod.username + ($last ? '' : ', ')"></a>
+            <a ui-sref="profile.posts({ username: mod.username })" ng-repeat="mod in board.moderators" ng-bind="::mod.username + ($last ? '' : ', ')"></a>
           </div>
           <!-- Board Description -->
           <div class="description" ng-bind-html="::board.description"></div>
@@ -52,7 +52,7 @@
           <div ng-if="board.last_post_username">
             Last post by
             <span ng-if="board.user_deleted || board.post_deleted">deleted</span>
-            <a ng-if="!board.user_deleted && !board.post_deleted" ui-sref="profile({ username: board.last_post_username })" ng-bind="::board.last_post_username"></a>
+            <a ng-if="!board.user_deleted && !board.post_deleted" ui-sref="profile.posts({ username: board.last_post_username })" ng-bind="::board.last_post_username"></a>
           </div>
           <div ng-if="board.last_thread_title">
             in
@@ -95,7 +95,7 @@
           <small>
             by
             <span ng-if="thread.deleted">deleted</span>
-            <a ng-if="!thread.deleted" ui-sref="profile({ username: thread.user.username })" ng-bind-html="thread.user.username"></a>
+            <a ng-if="!thread.deleted" ui-sref="profile.posts({ username: thread.user.username })" ng-bind-html="thread.user.username"></a>
             (<a ui-sref="threads.data({ boardId: thread.board.id })" ng-bind-html="thread.board.name"></a>)
             <a ng-if="thread.latest" ui-sref="posts.data({ threadId: thread.id, start: thread.latest.position, '#': thread.latest.id })"><strong>new</strong></a>
           </small>

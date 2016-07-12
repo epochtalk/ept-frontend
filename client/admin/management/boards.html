@@ -32,7 +32,7 @@
     </p>
     <ul class="indent">
       <li ng-repeat="username in AdminManagementCtrl.usersWithBadPermissions">
-        <a ui-sref="profile({ username: username })" ng-bind-html="username"></a>
+        <a ui-sref="profile.posts({ username: username })" ng-bind-html="username"></a>
       </li>
     </ul>
     <p>

@@ -31,7 +31,7 @@
     <div class="started-by">
       Started by
       <span ng-if="thread.user.deleted">deleted</span>
-      <a ng-if="!thread.user.deleted" ui-sref="profile({ username: thread.user.username })" ng-bind-html="thread.user.username"></a>
+      <a ng-if="!thread.user.deleted" ui-sref="profile.posts({ username: thread.user.username })" ng-bind-html="thread.user.username"></a>
       <em ng-bind="'(' + (thread.created_at | humanDate) + ')'"></em>
     </div>
 
@@ -43,7 +43,7 @@
       <br />
       <span>Last post by </span>
       <span ng-if="thread.last_deleted">deleted</span>
-      <a ng-if="!thread.last_deleted" ui-sref="profile({ username: thread.last_post_username })" ng-bind-html="thread.last_post_username"></a>
+      <a ng-if="!thread.last_deleted" ui-sref="profile.posts({ username: thread.last_post_username })" ng-bind-html="thread.last_post_username"></a>
       <em ng-bind="' (' + (thread.last_post_created_at | humanDate) + ')'"></em>
     </div>
 
@@ -63,7 +63,7 @@
     <a ui-sref="posts.data({ threadId: thread.id, start: thread.last_post_position, '#': thread.last_post_id })">Last post</a>
     by
     <span ng-if="thread.last_deleted">deleted</span>
-    <a ng-if="!thread.last_deleted" ui-sref="profile({ username: thread.last_post_username })" ng-bind-html="thread.last_post_username"></a>
+    <a ng-if="!thread.last_deleted" ui-sref="profile.posts({ username: thread.last_post_username })" ng-bind-html="thread.last_post_username"></a>
     <div ng-bind="thread.last_post_created_at | humanDate"></div>
     <div ng-if="thread.has_new_post">
       <a ui-sref="posts.data({ threadId: thread.id, start: thread.latest_unread_position, '#': thread.latest_unread_post_id })">Last unread post</a>

@@ -44,7 +44,7 @@
             <i ng-if="ModerationCtrl.bannedFromModeratedBoard(row.board_ids)" class="fa fa-star-o"></i>
           </td>
           <td>
-            <a ui-sref="profile({ username: row.username })" ng-bind="row.username"></a>
+            <a ui-sref="profile.posts({ username: row.username })" ng-bind="row.username"></a>
           </td>
           <td><a ng-href="mailto:{{row.email}}" ng-bind="row.email"></a></td>
           <td>

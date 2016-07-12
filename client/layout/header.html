@@ -43,7 +43,7 @@
       </li>
       <li id="user-dropdown-wrap">
         <div>
-          <a ui-sref="profile({ username: HeaderCtrl.currentUser.username })">
+          <a ui-sref="profile.posts({ username: HeaderCtrl.currentUser.username })">
             <img ng-src="{{ HeaderCtrl.currentUser.avatar }}" class="avatar">
             <span ng-bind-html="HeaderCtrl.currentUser.username"></span>
           </a>
@@ -59,7 +59,7 @@
             <a ui-sref="patrol.data">Patrol</a>
           </li>
           <li>
-            <a ui-sref="profile({ username: HeaderCtrl.currentUser.username })">Profile</a>
+            <a ui-sref="profile.posts({ username: HeaderCtrl.currentUser.username })">Profile</a>
           </li>
           <li>
             <a ui-sref="messages">Messages</a>

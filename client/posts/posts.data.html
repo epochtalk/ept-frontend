@@ -13,7 +13,7 @@
   <div ng-if="!post._deleted && !post.user.ignored">
     <!-- Post Profile Section -->
     <div class="post-user">
-      <a ui-sref="profile({ username: post.user.username})">
+      <a ui-sref="profile.posts({ username: post.user.username})">
         <div class="user-avatar">
           <img ng-style="PostsCtrl.avatarHighlight(post.user.highlight_color)" ng-src="{{::post.avatar}}">
         </div>
@@ -29,7 +29,7 @@
     <div class="post-content">
       <!-- Post Title -->
       <div class="post-title">
-        <a class="username" data-balloon="{{post.user.role_name || 'User'}}" ui-sref="profile({ username: post.user.username})" ng-style="PostsCtrl.usernameHighlight(post.user.highlight_color)" ng-bind="::post.user.username"></a>
+        <a class="username" data-balloon="{{post.user.role_name || 'User'}}" ui-sref="profile.posts({ username: post.user.username})" ng-style="PostsCtrl.usernameHighlight(post.user.highlight_color)" ng-bind="::post.user.username"></a>
         <div title="{{post.user.name}}" ng-if="post.user.name" class="display-name">
           <span ng-bind-html="::post.user.name | truncate:33"></span>
           <span class="hide-mobile">&nbsp;&mdash;&nbsp;</span>

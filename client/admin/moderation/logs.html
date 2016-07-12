@@ -58,7 +58,7 @@
       <tr ng-repeat="log in ModerationCtrl.logs">
         <td ng-bind="log.action_taken_at | humanDate"></td>
         <td>
-          <a ui-sref="profile({ username: '{{log.mod_username}}' })" target="_blank" ng-bind="log.mod_username"></a>
+          <a ui-sref="profile.posts({ username: '{{log.mod_username}}' })" target="_blank" ng-bind="log.mod_username"></a>
         </td>
         <td ng-bind-html="log.action_display_text"></td>
         <td class="centered-text">

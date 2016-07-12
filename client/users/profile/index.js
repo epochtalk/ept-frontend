@@ -1,20 +1,16 @@
 var route = ['$stateProvider', function($stateProvider) {
   $stateProvider.state('profile', {
-    url: '/profiles/{username}',
+    // url: '/profiles/{username}',
     parent: 'public-layout',
     reloadOnSearch: false,
     views: {
       'content': {
-        controller: ['user', '$location', '$state', function(user, $location, $state) {
-          this.user = user;
-          $state.go('profile.posts', $location.search(), { reload: 'profile.posts' });
-        } ],
+        controller: [ function() {} ],
         controllerAs: 'ProfileCtrl',
         template: require('./profile.html')
       }
     },
     resolve: {
-      $title: ['user', function(user) { return user.username; }],
       profileDirective: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
@@ -29,15 +25,11 @@ var route = ['$stateProvider', function($stateProvider) {
           deferred.resolve();
         });
         return deferred.promise;
-      }],
-      user: ['User', '$stateParams', function(User, $stateParams) {
-        return User.get({ id: $stateParams.username }).$promise
-        .then(function(user) { return user; });
       }]
     }
   })
   .state('profile.posts', {
-    url: '?limit&page&field&desc',
+    url: '/profiles/{username}?limit&page&field&desc',
     reloadOnSearch: false,
     views: {
       'posts@profile': {
@@ -47,6 +39,7 @@ var route = ['$stateProvider', function($stateProvider) {
       }
     },
     resolve: {
+      $title: ['user', function(user) { return user.username; }],
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
@@ -55,6 +48,10 @@ var route = ['$stateProvider', function($stateProvider) {
           deferred.resolve(ctrl);
         });
         return deferred.promise;
+      }],
+      user: ['User', '$stateParams', function(User, $stateParams) {
+        return User.get({ id: $stateParams.username }).$promise
+        .then(function(user) { return user; });
       }],
       pageData: ['Posts', '$stateParams', function(Posts, $stateParams) {
         var params = {

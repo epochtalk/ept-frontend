@@ -101,7 +101,7 @@ function(Conversations, User, Session, Alert, $filter, $state) {
         if (!Session.isAuthenticated()) { return false; }
         if (!Session.hasPermission('conversations.create.allow')) { return false; }
         if (!ctrl.pageOwner()) { valid = true; }
-        return valid; 
+        return valid;
       };
 
       // Edit Profile
@@ -123,7 +123,7 @@ function(Conversations, User, Session, Alert, $filter, $state) {
           if (ctrl.user.username !== data.username) {
             if (this.pageOwner()) { Session.setUsername(ctrl.user.username); }
             var params = { username: ctrl.user.username};
-            $state.go('profile', params, { location: true, reload: false });
+            $state.go('profile.posts', params, { location: true, reload: false });
           }
           else {
             angular.extend(ctrl.user, data);

@@ -70,7 +70,7 @@
       </thead>
       <tbody ng-repeat="user in AdminManagementCtrl.userData.users">
         <tr>
-          <td><a ui-sref="profile({ username: user.username })" ng-bind-html="user.username"></a></td>
+          <td><a ui-sref="profile.posts({ username: user.username })" ng-bind-html="user.username"></a></td>
           <td><a href="mailto:{{user.email}}" ng-bind-html="user.email"></a></td>
           <td>
             <a ng-if="user.remove" ng-href="#" ng-click="AdminManagementCtrl.removeUser(user)">Remove</a>

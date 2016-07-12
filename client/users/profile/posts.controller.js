@@ -9,6 +9,8 @@ var ctrl = ['user', 'pageData', 'Posts', '$location', '$scope', '$rootScope', '$
     this.field = pageData.sortField;
     this.desc = pageData.sortDesc;
     this.usersPosts = pageData.posts;
+    this.parent = $scope.$parent.ProfileCtrl;
+    if (this.parent) { this.parent.user = user; }
 
     if ($state.current.name === 'users-posts') { $anchorScroll(); }
 
@@ -71,7 +73,9 @@ var ctrl = ['user', 'pageData', 'Posts', '$location', '$scope', '$rootScope', '$
         descChanged = true;
         ctrl.desc = descending.toString();
       }
-      if((pageChanged || limitChanged || fieldChanged || descChanged) && $state.current.name === 'users-posts') { ctrl.pullPage(); }
+
+      if((pageChanged || limitChanged || fieldChanged || descChanged) && ($state.current.name === 'users-posts' || $state.current.name === 'profile.posts')) {
+        ctrl.pullPage(); }
     });
     $scope.$on('$destroy', function() { ctrl.offLCS(); });
 
@@ -90,8 +94,6 @@ var ctrl = ['user', 'pageData', 'Posts', '$location', '$scope', '$rootScope', '$
         ctrl.pageCount = Math.ceil(pageData.count / pageData.limit);
         ctrl.usersPosts = pageData.posts;
       });
-
-      delete params.username;
     };
   }
 ];
