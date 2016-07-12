@@ -1,8 +1,6 @@
-var bbcodeParser = require('epochtalk-bbcode-parser');
-
 var ctrl = [
-  '$scope', '$rootScope', '$timeout', '$window', '$location', '$anchorScroll', 'Session', 'Alert', 'Messages', 'Conversations', 'Reports', 'pageData', 'Websocket',
-  function($scope, $rootScope, $timeout, $window, $location, $anchorScroll, Session, Alert, Messages, Conversations, Reports, pageData, Websocket) {
+  '$scope', '$rootScope', '$timeout', '$window', '$anchorScroll', 'Session', 'Alert', 'Messages', 'Conversations', 'Reports', 'pageData', 'Websocket',
+  function($scope, $rootScope, $timeout, $window, $anchorScroll, Session, Alert, Messages, Conversations, Reports, pageData, Websocket) {
     var ctrl = this;
     this.currentUserId = Session.user.id;
     this.recentMessages = pageData.messages;
@@ -200,9 +198,10 @@ var ctrl = [
       if (body) {
         // BBCode Parsing
         var rawText = body;
-        rawText = rawText.replace(/(?:<|&lt;)/g, '&#60;'); // prevent html
-        rawText = rawText.replace(/(?:>|&gt;)/g, '&#62;');
-        var processed = bbcodeParser.process({text: rawText}).html;
+        var processed = rawText;
+        $window.parsers.forEach(function(parser) {
+          processed = parser.parse(processed);
+        });
         // re-bind to scope
         ctrl.newMessage.previewBody = processed;
       }

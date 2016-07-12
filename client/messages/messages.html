@@ -24,7 +24,7 @@
     <div ng-repeat="message in MessagesCtrl.recentMessages track by message.id" class="cell" ng-click="MessagesCtrl.loadConversation(message.conversation_id)" ng-class="{ 'active': MessagesCtrl.selectedConversationId === message.conversation_id}">
       <strong>To:</strong> {{ message.receiver_username }}<br>
       <strong>From:</strong> {{ message.sender_username }}<br>
-      <span class="msg-preview">{{ message.body }}</span>
+      <span class="msg-preview" ng-bind-html="message.body"></span>
     </div>
   </div>
 </div>
