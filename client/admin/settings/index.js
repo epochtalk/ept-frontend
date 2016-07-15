@@ -113,7 +113,10 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
         var deferred = $q.defer();
         require.ensure([], function() {
           require('./advanced.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.settings.advanced.ctrl' });
+          $ocLazyLoad.load([
+            { name: 'ept.admin.settings.advanced.ctrl' },
+            { name: 'ept.directives.autocomplete-user-id' }
+          ]);
           deferred.resolve();
         });
         return deferred.promise;

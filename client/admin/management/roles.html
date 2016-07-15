@@ -136,6 +136,7 @@
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'watchlist'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'watchlist'}" ng-href="#">Watchlist</a></li>
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'autoModeration'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'autoModeration'}" ng-href="#">Auto Moderation</a></li>
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'rateLimiting'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'rateLimiting'}" ng-href="#">Rate Limits</a></li>
+        <li><a ng-click="AdminManagementCtrl.selectedTab = 'trust'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'trust'}" ng-href="#">Trust</a></li>
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'admin'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'admin'}" ng-href="#">Admin</a></li>
         <li><a ng-click="AdminManagementCtrl.selectedTab = 'ads'" ng-class="{'active' : AdminManagementCtrl.selectedTab === 'ads'}" ng-href="#">Ads</a></li>
       </ul>
@@ -1404,6 +1405,40 @@
             </ul>
           </div>
         </div>
+      </div>
+
+      <!-- Trust Tab -->
+      <div ng-if="AdminManagementCtrl.selectedTab === 'trust'">
+        <section class="permission" ng-repeat="(model, details) in AdminManagementCtrl.layouts.userTrust">
+
+          <!-- Title Display -->
+          <div ng-if="details.type === 'title'">
+            <h4 ng-bind="details.title"></h4>
+            <h3 class="thin-underline"></h3>
+          </div>
+
+          <!-- Subtitle Display -->
+          <div ng-if="details.type === 'subtitle'">
+            <h6 ng-bind="details.title"></h6>
+          </div>
+
+          <!-- Separator Display -->
+          <div ng-if="details.type === 'separator'">
+            <div class="clear"></div><br />
+          </div>
+
+          <!-- Main Permission -->
+          <div ng-if="!details.type">
+
+            <label>
+              <input type="checkbox"
+                ng-change="AdminManagementCtrl.newRole.permissions.userTrust[model].allow ? null : AdminManagementCtrl.newRole.permissions.userTrust[model] = undefined"
+                ng-model="AdminManagementCtrl.newRole.permissions.userTrust[model].allow"
+                ng-false-value="undefined" />
+              <span class="permission-title" ng-bind="details.title"></span>
+            </label>
+          </div>
+        </section>
       </div>
 
       <!-- Watchlist Tab -->

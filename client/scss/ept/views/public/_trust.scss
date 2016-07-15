@@ -19,6 +19,15 @@
     margin-bottom: 1rem;
     ul { margin-left: 2rem; }
   }
+  select { margin-bottom: 0; }
+  .trust-button {
+    margin-top: 1.25rem;
+    margin-bottom: 0;
+    @include media($mobile) {
+      margin: 0;
+      width: 100%;
+    }
+  }
 }
 
 .trust-score {
