@@ -46,7 +46,8 @@ function ($stateParams, $location, Breadcrumbs) {
         boardId:  'board',
         threadId: 'thread',
       };
-      var routeParamKeys = without(Object.keys(routeParams), '#'); // remove anchor hash from params
+      // remove anchor hash from params
+      var routeParamKeys = without(Object.keys(routeParams), '#');
       var keys = Object.keys(keyToType);
       var matches = intersection(routeParamKeys, keys);
 
@@ -59,14 +60,23 @@ function ($stateParams, $location, Breadcrumbs) {
           breadcrumbsStore = breadcrumbs;
         });
       }
-      else { // routeParams is empty, route is static
+      // routeParams is empty, route is static
+      else {
         var pathArr = path.split('/');
-        pathArr.shift(); // Shifting array by one to eliminate empty index
+        // Shifting array by one to eliminate empty index
+        pathArr.shift();
         for (var i = 0, len = pathArr.length; i < len; i++) {
           var id = pathArr[i];
           var crumb = pathLookup[id] || { label: id };
           breadcrumbs.push(crumb);
-          if (crumb.ignoreFollowing) { break; } // ignore following crumbs if ignoreFollowing is true
+          // ignore following crumbs if ignoreFollowing is true
+          if (crumb.ignoreFollowing) { break; }
+        }
+        // Special case for extended profile pages. Allows link back to user
+        // profile from breadcrumbs
+        if (breadcrumbs[1].label === pathLookup.profiles.label && breadcrumbs.length > 3) {
+          breadcrumbs[2].state = '^.profile';
+          breadcrumbs[2].opts = { username: breadcrumbs[2].label };
         }
         breadcrumbsStore = breadcrumbs;
       }

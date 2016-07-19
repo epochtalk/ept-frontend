@@ -9,6 +9,8 @@ function(Conversations, User, Session, Alert, $filter, $state) {
     controller: [function() {
       var ctrl = this;
 
+      this.isLoggedIn = function() { return Session.isAuthenticated() };
+
       this.canPageUserNotes = function() {
         return Session.isAuthenticated() && Session.hasPermission('userNotes.page');
       };

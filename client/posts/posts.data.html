@@ -20,6 +20,9 @@
         <div title="{{post.user.role_name || 'user'}}" class="user-role" ng-bind="post.user.role_name || 'user'"></div>
         <div ng-if="post.user.activity > -1" title="{{ 'Activity: ' + post.user.activity }}" class="user-activity">Act: <span ng-bind="post.user.activity"></span></div>
       </a>
+      <div class="user-role" ng-if="PostsParentCtrl.loggedIn()">
+        <trust-score user="post.user" visible="PostsParentCtrl.thread.trust_visible"></trust-score>
+      </div>
       <div class="user-role">
         <ignore-posts user="post.user"></ignore-posts>
       </div>

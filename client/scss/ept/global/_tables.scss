@@ -50,6 +50,7 @@ table.striped {
     font-size: 0.875rem;
     color: $secondary-font-color-dark;
     text-align: left;
+    &.centered-text { text-align: center; }
   }
   tr:nth-of-type(even), tbody:nth-of-type(even) { background: $sub-header-color; }
   tr { border: 0; }
