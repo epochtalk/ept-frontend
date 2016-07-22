@@ -1,7 +1,7 @@
 var difference = require('lodash/difference');
 
-var directive = ['Conversations', 'User', 'Session', 'Alert', '$filter', '$state', '$q', '$timeout', 'Boards', 'Bans',
-function(Conversations, User, Session, Alert, $filter, $state, $q, $timeout, Boards, Bans) {
+var directive = ['Conversations', 'User', 'Session', 'Alert', '$filter', '$state', '$q', '$timeout', 'Boards', 'Bans', 'Websocket',
+function(Conversations, User, Session, Alert, $filter, $state, $q, $timeout, Boards, Bans, Websocket) {
   return {
     restrict: 'E',
     scope: true,
@@ -497,6 +497,12 @@ function(Conversations, User, Session, Alert, $filter, $state, $q, $timeout, Boa
           }, 500);
         });
       };
+
+      this.isOnline = false;
+      Websocket.isOnline(Session.user.id, function(err, data) {
+        if (err) { return console.log(err); }
+        else { ctrl.isOnline = data; }
+      });
     }]
   };
 }];

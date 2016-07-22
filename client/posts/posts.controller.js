@@ -1,6 +1,6 @@
 var ctrl = [
-  '$rootScope', '$scope', '$timeout', '$anchorScroll', '$location', 'Alert', 'BanSvc', 'Watchlist', 'Session', 'Posts', 'pageData',
-  function($rootScope, $scope, $timeout, $anchorScroll, $location, Alert, BanSvc, Watchlist, Session, Posts, pageData) {
+  '$rootScope', '$scope', '$timeout', '$anchorScroll', '$location', 'Alert', 'BanSvc', 'Watchlist', 'Session', 'Posts', 'pageData', 'Websocket',
+  function($rootScope, $scope, $timeout, $anchorScroll, $location, Alert, BanSvc, Watchlist, Session, Posts, pageData, Websocket) {
     var ctrl = this;
     var parent = $scope.$parent.PostsParentCtrl;
     parent.loggedIn = Session.isAuthenticated;
@@ -163,6 +163,7 @@ var ctrl = [
       calculatePollPercentage();
       parent.pageCount = Math.ceil(parent.thread.post_count / parent.limit);
       $timeout(function() { highlight($location.hash()); }, 500);
+      checkUsersOnline();
     })();
 
     // default post avatar image if not found
@@ -215,6 +216,7 @@ var ctrl = [
         parent.thread.poll = pageData.thread.poll;
         parent.pageCount = Math.ceil(parent.thread.post_count / parent.limit);
         calculatePollPercentage();
+        checkUsersOnline();
         $timeout($anchorScroll);
       });
     };
@@ -279,6 +281,28 @@ var ctrl = [
         answer.style = { width: percentage + '%' };
         answer.percentage = percentage;
       });
+    }
+
+    function checkUsersOnline() {
+      var uniqueUsers = {};
+      ctrl.posts.forEach(function(post) {
+        uniqueUsers[post.user.id] = 'user';
+      });
+
+      Object.keys(uniqueUsers).map(function(user) {
+        return Websocket.isOnline(user, setOnline);
+      });
+    }
+
+    function setOnline(err, data) {
+      if (err) { return console.log(err); }
+      else {
+        ctrl.posts.map(function(post) {
+          if (post.user.id === data.id) {
+            post.user.online = data.online;
+          }
+        });
+      }
     }
   }
 ];

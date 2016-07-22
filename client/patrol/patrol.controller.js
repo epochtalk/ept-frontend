@@ -1,6 +1,6 @@
 var ctrl = [
-  '$rootScope', '$scope', '$timeout', '$anchorScroll', '$location', 'Session', 'Patrol', 'pageData',
-  function($rootScope, $scope, $timeout, $anchorScroll, $location, Session, Patrol, pageData) {
+  '$rootScope', '$scope', '$timeout', '$anchorScroll', '$location', 'Session', 'Patrol', 'Websocket', 'pageData',
+  function($rootScope, $scope, $timeout, $anchorScroll, $location, Session, Patrol, Websocket, pageData) {
     var ctrl = this;
     var parent = $scope.$parent.PatrolParentCtrl;
     parent.loggedIn = Session.isAuthenticated;
@@ -20,6 +20,7 @@ var ctrl = [
     // init function
     (function() {
       $timeout(function() { highlight($location.hash()); }, 500);
+      checkUsersOnline();
     })();
 
     // default post avatar image if not found
@@ -127,6 +128,7 @@ var ctrl = [
         ctrl.posts = pageData.posts;
         parent.posts = pageData.posts;
         parent.hasMorePosts = pageData.hasMorePosts;
+        checkUsersOnline();
       });
     };
 
@@ -167,6 +169,28 @@ var ctrl = [
       if ($location.port() !== 80) { url += ':' + $location.port(); }
       url += $location.path();
       return url;
+    }
+
+    function checkUsersOnline() {
+      var uniqueUsers = {};
+      ctrl.posts.forEach(function(post) {
+        uniqueUsers[post.user.id] = 'user';
+      });
+
+      Object.keys(uniqueUsers).map(function(user) {
+        return Websocket.isOnline(user, setOnline);
+      });
+    }
+
+    function setOnline(err, data) {
+      if (err) { return console.log(err); }
+      else {
+        ctrl.posts.map(function(post) {
+          if (post.user.id === data.id) {
+            post.user.online = data.online;
+          }
+        });
+      }
     }
   }
 ];

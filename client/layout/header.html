@@ -30,15 +30,15 @@
       <li id="notifications-tray">
         <!-- <div class="tray-icon">
           <i class="fa fa-at"></i>
-          <div class="count" ng-if="HeaderCtrl.notifications.mentions" ng-bind-html="HeaderCtrl.notifications.mentions"></div>
+          <div class="count" ng-if="HeaderCtrl.notificationMentions()" ng-bind-html="HeaderCtrl.notificationMentions()"></div>
         </div> -->
         <div class="tray-icon" ui-sref="messages" ui-sref-opts="{ reload: true }" ng-click="HeaderCtrl.dismissNotifications('message')" data-balloon="Messages" data-balloon-pos="down">
           <i class="fa fa-envelope"></i>
-          <div class="count" ng-if="HeaderCtrl.notifications.messages" ng-bind-html="HeaderCtrl.notifications.messages"></div>
+          <div class="count" ng-if="HeaderCtrl.notificationMessages()" ng-bind-html="HeaderCtrl.notificationMessages()"></div>
         </div>
         <!-- <div class="tray-icon">
           <i class="fa fa-globe"></i>
-          <div class="count" ng-if="HeaderCtrl.notifications.other" ng-bind-html="HeaderCtrl.notifications.other"></div>
+          <div class="count" ng-if="HeaderCtrl.notificationOther" ng-bind-html="HeaderCtrl.notificationOther"></div>
         </div> -->
       </li>
       <li id="user-dropdown-wrap">

@@ -1,4 +1,3 @@
-<!-- Page Title -->
 <!-- Recent Conversations -->
 <div class="conversations">
   <div id="recentMessagesHeader">
@@ -14,7 +13,7 @@
     <div class="prev">
       <button ng-click="MessagesCtrl.loadRecentMessages(MessagesCtrl.page - 1)" ng-disabled="MessagesCtrl.page === 1">&#10094;</button>
     </div>
-    <div class="page">{{ MessagesCtrl.page }} of {{ MessagesCtrl.pageMax }}</div>
+    <div class="page" ng-bind="MessagesCtrl.page + ' of ' + MessagesCtrl.pageMax"></div>
     <div class="next">
       <button ng-click="MessagesCtrl.loadRecentMessages(MessagesCtrl.page + 1)" ng-disabled="MessagesCtrl.page === MessagesCtrl.pageMax">&#10095;</button>
     </div>
@@ -22,8 +21,8 @@
 
   <div class="list" ng-if="MessagesCtrl.pageMax > 0">
     <div ng-repeat="message in MessagesCtrl.recentMessages track by message.id" class="cell" ng-click="MessagesCtrl.loadConversation(message.conversation_id)" ng-class="{ 'active': MessagesCtrl.selectedConversationId === message.conversation_id}">
-      <strong>To:</strong> {{ message.receiver_username }}<br>
-      <strong>From:</strong> {{ message.sender_username }}<br>
+      <strong>To:</strong> <span ng-bind="message.receiver_username"></span><br>
+      <strong>From:</strong> <span ng-bind="message.sender_username"></span><br>
       <span class="msg-preview" ng-bind-html="message.body"></span>
     </div>
   </div>
@@ -33,8 +32,10 @@
 <div class="messages">
   <!-- New Message -->
   <div ng-if="MessagesCtrl.currentConversation.messages.length > 0" class="thin-underline">
-    <h4>Conversation with {{ MessagesCtrl.receiverName }}</h4> {{showReply}}
-    <a class="right no-select" ng-if='MessagesCtrl.canCreateMessage()' ng-click="MessagesCtrl.showReply = !MessagesCtrl.showReply"><i class="fa fa-reply"></i> Reply</a>
+    <h4 ng-bind="'Conversation with ' + MessagesCtrl.receiverName"></h4>
+    <a class="right no-select" ng-if='MessagesCtrl.canCreateMessage()' ng-click="MessagesCtrl.showReply = !MessagesCtrl.showReply">
+      <i class="fa fa-reply"></i> Reply
+    </a>
   </div>
   <div ng-if="MessagesCtrl.currentConversation.messages.length > 0" class="reply" ng-show="MessagesCtrl.showReply">
     <!-- Messages Receiver -->
@@ -61,8 +62,8 @@
       </div>
       <div class="content">
         <div class="title">
-          <strong>{{ message.sender_username}}</strong>
-          <span class="date">{{ message.created_at | humanDate }}</span>
+          <strong ng-bind="message.sender_username"></strong>
+          <span class="date" ng-bind="message.created_at | humanDate"></span>
           <div class="right">
             <a ng-if="MessagesCtrl.canDeleteMessage(message.sender_id)" ng-href="#" class="action" ng-click="MessagesCtrl.openDeleteModal(message.id)" data-balloon="Delete">
               <i class="fa fa-trash"></i>
@@ -72,7 +73,7 @@
             </a>
           </div>
         </div>
-        <div post-processing="message.body" style-fix="true">{{ message.body }}</div>
+        <div post-processing="message.body" style-fix="true"></div>
       </div>
     </div>
   </div>

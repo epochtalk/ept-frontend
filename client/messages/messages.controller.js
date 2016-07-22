@@ -66,7 +66,8 @@ var ctrl = [
 
     // Conversations
 
-    this.loadConversation = function(conversationId) {
+    this.loadConversation = function(conversationId, options) {
+      options = options || {};
       ctrl.selectedConversationId = conversationId;
       Conversations.messages({id: conversationId}).$promise
       // build out conversation information
@@ -78,7 +79,11 @@ var ctrl = [
       })
       // build out reply information
       .then(function(data) {
-        ctrl.newMessage = { body: '', previewBody: '' };
+        if (options.saveInput) {
+          ctrl.newMessage.body = ctrl.newMessage.body || '';
+          ctrl.newMessage.previewBody = ctrl.newMessage.previewBody || '';
+        }
+        else { ctrl.newMessage = { body: '', previewBody: '' }; }
         ctrl.newMessage.conversation_id = data.id;
         ctrl.newMessage.sender_id = Session.user.id;
         ctrl.newMessage.sender_username = Session.user.username;
@@ -171,15 +176,20 @@ var ctrl = [
       .finally(function() { ctrl.showConvoModal = false; });
     };
 
-    // Messages
-    Websocket.subscribe(JSON.stringify({ type: 'user', id: Session.user.id }), { waitForAuth: true })
-    .watch(function() {
-      ctrl.loadRecentMessages(ctrl.page, ctrl.limit);
-      if (ctrl.selectedConversationId) {
-        ctrl.loadConversation(ctrl.selectedConversationId);
+    // Websocket Handling
+    function userChannelHandler(data) {
+      if (data.action === 'newMessage') {
+        ctrl.loadRecentMessages(ctrl.page, ctrl.limit);
+        if (ctrl.selectedConversationId === data.conversationId) {
+          ctrl.loadConversation(ctrl.selectedConversationId, { saveInput: true });
+        }
       }
-    });
+    }
 
+    Websocket.watchUserChannel(userChannelHandler);
+    $scope.$on('$destroy', function() { Websocket.unwatchUserChannel(userChannelHandler); });
+
+    // Messages
     this.loadRecentMessages = function(page, limit) {
       if (page <= 0 || page > ctrl.pageMax) { return; }
       page = page || 1;

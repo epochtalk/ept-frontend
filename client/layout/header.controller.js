@@ -1,5 +1,5 @@
-var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth', 'Session', 'User', 'BreadcrumbSvc', 'Alert', 'ThemeSVC', 'Notifications', 'Websocket', 'BanSvc',
-  function($scope, $location, $timeout, $state, $stateParams, Auth, Session, User, BreadcrumbSvc, Alert, ThemeSVC, Notifications, Websocket, BanSvc) {
+var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth', 'Session', 'User', 'BreadcrumbSvc', 'Alert', 'ThemeSVC', 'NotificationSvc', 'BanSvc',
+  function($scope, $location, $timeout, $state, $stateParams, Auth, Session, User, BreadcrumbSvc, Alert, ThemeSVC, NotificationSvc, BanSvc) {
     var ctrl = this;
     this.currentUser = Session.user;
     this.hasPermission = Session.hasPermission;
@@ -43,78 +43,10 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
       return patrol;
     };
 
-
     // Notifications
-    this.notifications = {
-      messages: 0,
-      mentions: 0
-    };
-    // Online users
-    this.onlineUsers;
-
-    this.refreshNotificationsCounts = function() {
-      return Notifications.counts().$promise
-      .then(function(counts) {
-        ctrl.notifications.messages = counts.message;
-        ctrl.notifications.mentions = counts.mention;
-      });
-    };
-
-    this.dismissNotifications = function(type) {
-      var query = { type: type };
-      return Notifications.dismiss(query).$promise
-      .then(function() { ctrl.refreshNotificationsCounts(); });
-    };
-
-    $scope.$watch(function() { return Session.getToken(); }, function(token) {
-      if (token) {
-        Websocket.authenticate(token);
-        Websocket.on('authenticate', function() {
-          // subscribe to public channel
-          Websocket.subscribe(JSON.stringify({ type: 'public' }), {waitForAuth: true}).watch(function(data) {
-            ctrl.onlineUsers = data;
-            console.log(ctrl.onlineUsers);
-          });
-          // subscribe to roles channels
-          Session.user.roles.forEach(function(role) {
-            Websocket.subscribe(JSON.stringify({ type: 'role', id: role }), {waitForAuth: true}).watch(function(data) {
-              Auth.authenticate();
-            });
-          });
-        });
-        Websocket.on('subscribe', function(channel) {
-          try {
-            channel = JSON.parse(channel);
-            if (channel.type === 'public') {
-              // subscribe to user channel
-              Websocket.subscribe(JSON.stringify({ type: 'user', id: Session.user.id }), {waitForAuth: true}).watch(function(data) {
-                if (data.action === 'reauthenticate') {
-                  Auth.authenticate();
-                }
-                else if (data.action === 'logout') {
-                  Session.clearUser();
-                  $scope.$apply();
-                  Alert.warning('You have been logged out from another window.');
-                }
-                else {
-                  ctrl.refreshNotificationsCounts();
-                }
-              });
-            }
-          }
-          catch (error) {
-            console.log('Websocket error:', error);
-          }
-        });
-        ctrl.refreshNotificationsCounts();
-      }
-      else {
-        Websocket.subscriptions().forEach(function(channel) {
-          Websocket.unsubscribe(channel);
-        });
-        Websocket.deauthenticate();
-      }
-    });
+    this.notificationMessages = NotificationSvc.getMessages;
+    this.notificationMentions = NotificationSvc.getMentions;
+    this.dismissNotifications = NotificationSvc.dismiss;
 
     // Login/LogOut
     this.user = {};

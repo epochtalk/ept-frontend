@@ -32,6 +32,8 @@
     <div class="post-content">
       <!-- Post Title -->
       <div class="post-title">
+        <span ng-if="post.user.online" class="online green"><i class="fa fa-circle"></i></span>
+        <span ng-if="!post.user.online" class="online green"><i class="fa fa-circle-o"></i></span>
         <a class="username" data-balloon="{{post.user.role_name || 'User'}}" ui-sref="profile.posts({ username: post.user.username})" ng-style="PostsCtrl.usernameHighlight(post.user.highlight_color)" ng-bind="::post.user.username"></a>
         <div title="{{post.user.name}}" ng-if="post.user.name" class="display-name">
           <span ng-bind-html="::post.user.name | truncate:33"></span>

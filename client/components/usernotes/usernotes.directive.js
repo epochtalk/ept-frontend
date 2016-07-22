@@ -22,7 +22,7 @@ function(UserNotes, Session, Alert) {
 
       // Wait for userId to be populated
       $scope.$watch(function() { return ctrl.userId; }, function(val) {
-        if (val && ctrl.accessControl.page) { ctrl.pageUserNotes(); }
+        if (val && ctrl.accessControl && ctrl.accessControl.page) { ctrl.pageUserNotes(); }
       });
 
       // Page comments

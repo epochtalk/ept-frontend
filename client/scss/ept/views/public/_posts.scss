@@ -75,6 +75,7 @@
         color: $secondary-font-color;
         margin-bottom: 0.5rem;
         width: 100%;
+        .online { float: left; margin-right: 0.5rem; }
         a.username {
           float: left;
           margin-right: 0.75rem;

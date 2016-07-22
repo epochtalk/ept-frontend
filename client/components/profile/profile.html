@@ -62,7 +62,12 @@
 
     <!-- User Information -->
     <div class="profile-row">
-      <h4 ng-bind="vm.user.username"></h4>
+      <h4>
+        <span class="green" ng-if="vm.isOnline"><i class="fa fa-circle"></i></span>
+        <span class="green" ng-if="!vm.isOnline"><i class="fa fa-circle-o"></i></span>
+        &nbsp;
+        <span ng-bind="vm.user.username"></span>
+      </h4>
       <div><span ng-bind="vm.user.name"></span></div>
       <div><span ng-bind="vm.user.position"></span></div>
       <div><span ng-bind="vm.user.status"></span></div>
