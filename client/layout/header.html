@@ -32,7 +32,7 @@
           <i class="fa fa-at"></i>
           <div class="count" ng-if="HeaderCtrl.notificationMentions()" ng-bind-html="HeaderCtrl.notificationMentions()"></div>
         </div> -->
-        <div class="tray-icon" ui-sref="user-search" ui-sref-opts="{ reload: true }" data-balloon="Member Search" data-balloon-pos="down">
+        <div ng-if="HeaderCtrl.hasPermission('users.pagePublic.allow')" class="tray-icon" ui-sref="user-search" ui-sref-opts="{ reload: true }" data-balloon="Member Search" data-balloon-pos="down">
           <i class="fa fa-users"></i>
         </div>
         <div class="tray-icon" ui-sref="messages" ui-sref-opts="{ reload: true }" ng-click="HeaderCtrl.dismissNotifications('message')" data-balloon="Messages" data-balloon-pos="down">
