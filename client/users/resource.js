@@ -30,6 +30,10 @@ var resource = ['$resource',
         method: 'GET',
         url: '/api/authenticate'
       },
+      pagePublic: {
+        method: 'GET',
+        url: '/api/search/users'
+      },
       checkUsername: {
         method: 'GET',
         url: '/api/register/username/:username',

@@ -24,8 +24,8 @@
     color: #fff;
     background-color: $color-primary;
     cursor: pointer;
-    padding: 0.875rem 1.0625rem;
-    width: 3rem;
+    padding: 0 1.0625rem;
+    line-height: 3rem;
     height: 3rem;
     -webkit-border-radius:  1.5625rem;
     -moz-border-radius:     1.5625rem;
@@ -34,7 +34,7 @@
 
     span {
       font-weight: bold;
-      font-size: 1.5rem;
+      font-size: 1.25rem;
     }
   }
 }
