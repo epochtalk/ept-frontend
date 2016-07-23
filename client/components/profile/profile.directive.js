@@ -297,6 +297,8 @@ function(Conversations, User, Session, Alert, $filter, $state, $q, $timeout, Boa
       };
 
       this.canBoardBanUser = function(boardId) {
+        var loggedIn = Session.isAuthenticated();
+        if (!loggedIn) { return false; }
         var moderatingBoard = ctrl.modUser.moderating.indexOf(boardId) >= 0;
         var banAllBoardsPermission = Session.hasPermission('bans.privilegedBanFromBoards.all');
         if (moderatingBoard || banAllBoardsPermission) { return true; }
