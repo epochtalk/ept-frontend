@@ -500,10 +500,14 @@ function(Conversations, User, Session, Alert, $filter, $state, $q, $timeout, Boa
         });
       };
 
+      // Websockets
+
       this.isOnline = false;
-      Websocket.isOnline(Session.user.id, function(err, data) {
-        if (err) { return console.log(err); }
-        else { ctrl.isOnline = data; }
+      $timeout(function() {
+        Websocket.isOnline(ctrl.user.id, function(err, data) {
+          if (err) { return console.log(err); }
+          else { ctrl.isOnline = data.online; }
+        });
       });
     }]
   };
