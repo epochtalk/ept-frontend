@@ -80,7 +80,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
     }
   })
   .state('admin-management.users', {
-    url: '/users?page&limit&field&desc&filter&search',
+    url: '/users?page&limit&field&desc&filter&search&ip',
     reloadOnSearch: false,
     views: {
       'data@admin-management': {
@@ -111,7 +111,8 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           limit: Number($stateParams.limit) || 15,
           page: Number($stateParams.page) || 1,
           filter: $stateParams.filter,
-          search: $stateParams.search
+          search: $stateParams.search,
+          ip: $stateParams.ip
         };
         return AdminUsers.page(query).$promise;
       }],
@@ -119,10 +120,12 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
         var opts;
         var filter = $stateParams.filter;
         var search = $stateParams.search;
+        var ip = $stateParams.ip;
         if (filter || search) {
           opts = {
             filter: filter,
-            search: search
+            search: search,
+            ip: ip
           };
         }
         return AdminUsers.count(opts).$promise
@@ -145,6 +148,9 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       }],
       search: ['$stateParams', function($stateParams) {
         return $stateParams.search;
+      }],
+      ip: ['$stateParams', function($stateParams) {
+        return $stateParams.ip === 'true';
       }]
     }
   })
