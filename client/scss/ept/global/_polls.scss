@@ -69,11 +69,9 @@
     }
   }
   // poll edit section
-  .poll-edit {
-    max-height: 0;
+  .poll-edit-container {
+    padding: 0.5rem;
     background-color: #eee;
-    &.open { margin-bottom: 1rem; }
-    .poll-edit-container { padding: 1rem; overflow: hidden; }
   }
   // poll answers section
   .poll-answer {

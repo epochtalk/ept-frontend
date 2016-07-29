@@ -2,7 +2,7 @@
   <!-- Category Title -->
   <div id="{{BoardsCtrl.generateCatId(cat.name, cat.view_order)}}" class="title">
     <div ng-click="cat.show = !cat.show" class="collapse-section">
-      <a ng-class="{ 'fa-chevron-right' : cat.show, 'fa-chevron-down': !cat.show }"
+      <a ng-class="{ 'fa-chevron-down' : cat.show, 'fa-chevron-right': !cat.show }"
       class="fa collapse-btn no-select"></a>
       <h4 ng-bind-html="::cat.name"></h4>
     </div>
@@ -10,7 +10,7 @@
   </div>
 
   <!-- Boards in Category -->
-  <div slide-toggle="cat.show" ng-init="cat.show = true">
+  <div slide-toggle="cat.show" initial-state="open" ng-init="cat.show = true">
     <div class="slide-wrapper">
       <div class="board" ng-repeat="board in cat.boards track by board.id">
 
