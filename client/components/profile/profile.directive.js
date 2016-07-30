@@ -113,7 +113,9 @@ function(Conversations, User, Session, Alert, $filter, $state, $q, $timeout, Boa
       this.editProfileUser = {};
       this.openEditProfile = function() {
         this.editProfileUser = angular.copy(this.user);
-        this.editProfileUser.dob = new Date(this.editProfileUser.dob);
+        if (this.editProfileUser.dob) { // safari fix
+          this.editProfileUser.dob = new Date(this.editProfileUser.dob);
+        }
         delete this.editProfileUser.email;
         delete this.editProfileUser.raw_signature;
         delete this.editProfileUser.signature;
