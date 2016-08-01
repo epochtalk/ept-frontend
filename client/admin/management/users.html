@@ -7,12 +7,20 @@
     <input type="radio" class="hide-radio" name="table-filter" value="1" id="users-filter-1" ng-model="AdminManagementCtrl.tableFilter" ng-click="AdminManagementCtrl.setFilter('banned')" />
     <label for="users-filter-1">Banned</label>
   </div>
-  <div class="header-spacer">&nbsp;</div>
+  <div class="header-spacer">
+    <select ng-change="AdminManagementCtrl.searchStr = ''"ng-model="AdminManagementCtrl.searchIps" ng-options="o.v as o.n for o in [{ n: 'Search by Username', v: false }, { n: 'Search by IP Address', v: true }]">
+    </select>
+  </div>
   <div class="user-search">
-    <div class="nested-input-container">
+    <div class="nested-input-container" ng-hide="AdminManagementCtrl.searchIps">
       <a ng-if="AdminManagementCtrl.search" ng-click="AdminManagementCtrl.clearSearch()" class="nested-clear-btn fa fa-times"></a>
       <a ng-click="AdminManagementCtrl.searchUsers()" class="nested-btn">Search</a>
       <input class="input-text nested-input" ng-model="AdminManagementCtrl.searchStr" type="text" id="search-users" placeholder="Search users by username" ng-keydown="$event.which === 13 && AdminManagementCtrl.searchUsers()" ng-keyup="$event.which === 27 && AdminManagementCtrl.clearSearch()" />
+    </div>
+    <div class="nested-input-container" ng-show="AdminManagementCtrl.searchIps">
+      <a ng-if="AdminManagementCtrl.search" ng-click="AdminManagementCtrl.clearSearch()" class="nested-clear-btn fa fa-times"></a>
+      <a ng-click="AdminManagementCtrl.searchUsers()" class="nested-btn">Search</a>
+      <input class="input-text nested-input" ng-model="AdminManagementCtrl.searchStr" type="text" id="search-users" ng-pattern="AdminManagementCtrl.ipRegex" placeholder="Search users by IP address" ng-keydown="$event.which === 13 && AdminManagementCtrl.searchUsers()" ng-keyup="$event.which === 27 && AdminManagementCtrl.clearSearch()" />
     </div>
   </div>
   <div class="clear"></div>
@@ -31,6 +39,7 @@
       <th class="pointer" ng-show="AdminManagementCtrl.tableFilter == 1" ng-click="AdminManagementCtrl.setSortField('ban_expiration')"><span ng-class="AdminManagementCtrl.getSortClass('ban_expiration')"></span>&nbsp;Ban Expiration</th>
       <th class="pointer hide-mobile" ng-click="AdminManagementCtrl.setSortField('created_at')"><span ng-class="AdminManagementCtrl.getSortClass('created_at')"></span>&nbsp;Registered Date</th>
       <th class="hide-mobile">Last Active Date</th>
+      <th class="hide-mobile">IP Addresses</th>
       <th class="user-actions">Actions</th>
     </thead>
     <tbody>
@@ -41,6 +50,12 @@
         <td class="hide-mobile" ng-bind="user.created_at | humanDate"></td>
         <!-- TODO: CHANGE THIS TO LAST LOGIN DATE -->
         <td class="hide-mobile" ng-bind="user.created_at | humanDate"></td>
+        <td class="hide-mobile">
+          <span ng-repeat="ip in user.user_ips track by $index">
+            <span ng-bind="ip"></span>{{ !$last ? ', ' : '' }}
+          </span>
+          <span ng-if="!user.user_ips.length">Not Available</span>
+        </td>
         <td>
           <a ui-sref="users-posts({ username: user.username })">
             <button class="icon" data-balloon="View Posts">
@@ -116,6 +131,10 @@
       <tr>
         <td>Register Date</td>
         <td ng-bind="AdminManagementCtrl.selectedUser.created_at | humanDate"></td>
+      </tr>
+      <tr ng-if="AdminManagementCtrl.selectedUser.ban_expiration">
+        <td>Ban Expiration</td>
+        <td ng-bind="AdminManagementCtrl.selectedUser.ban_expiration | humanDate: true"></td>
       </tr>
     </table>
 

@@ -1,4 +1,4 @@
-var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$filter', '$state', 'Session', 'Alert', 'AdminUsers', 'Bans', 'User', 'users', 'usersCount', 'page', 'limit', 'field', 'desc', 'filter', 'search', function($rootScope, $scope, $location, $timeout, $anchorScroll, $filter, $state, Session, Alert, AdminUsers, Bans, User, users, usersCount, page, limit, field, desc, filter, search) {
+var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$filter', '$state', 'Session', 'Alert', 'AdminUsers', 'Bans', 'User', 'users', 'usersCount', 'page', 'limit', 'field', 'desc', 'filter', 'search', 'ip', function($rootScope, $scope, $location, $timeout, $anchorScroll, $filter, $state, Session, Alert, AdminUsers, Bans, User, users, usersCount, page, limit, field, desc, filter, search, ip) {
   var ctrl = this;
   this.parent = $scope.$parent.AdminManagementCtrl;
   this.parent.tab = 'users';
@@ -13,8 +13,11 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
   this.filter = filter;
   this.tableFilter = 0;
   this.search = search;
-  this.searchStr = null;
+  this.searchStr = search;
+  this.searchIps = ip;
   if (filter === 'banned') { this.tableFilter = 1; }
+
+  this.ipRegex = /(^\s*((%|25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(%|25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(%|25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(%|25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\s*$)/;
 
   // Action Control Access
   this.actionAccess = Session.getModPanelControlAccess();
@@ -33,10 +36,12 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
       ctrl.clearSearch();
       return;
     }
+    console.log(ctrl.searchIps);
     ctrl.queryParams = {
       filter: ctrl.filter,
       field: 'username',
-      search: ctrl.searchStr
+      search: ctrl.searchStr,
+      ip: ctrl.searchIps ? 'true' : undefined
     };
     $location.search(ctrl.queryParams);
   };
@@ -175,6 +180,7 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
     $location.search(ctrl.queryParams);
     ctrl.selectedUser = null;
     ctrl.searchStr = null;
+    ctrl.searchIps = false;
   };
 
   this.setSortField = function(sortField) {
@@ -264,14 +270,16 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
       desc: ctrl.desc,
       field: ctrl.field,
       filter: ctrl.filter,
-      search: ctrl.search
+      search: ctrl.search,
+      ip: ctrl.searchIps
     };
 
     var opts;
     if (ctrl.filter || ctrl.search) {
       opts = {
         filter: ctrl.filter,
-        search: ctrl.search
+        search: ctrl.search,
+        ip: ctrl.searchIps
       };
     }
 
