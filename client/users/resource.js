@@ -50,7 +50,7 @@ var resource = ['$resource',
         params: { username: '@username', token: '@token' }
       },
       recoverAccount: {
-        method: 'GET',
+        method: 'POST',
         url: '/api/recover/:query',
         params: { query: '@query' }
       },
