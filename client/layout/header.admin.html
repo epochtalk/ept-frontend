@@ -30,14 +30,17 @@
           </a>
         </div>
         <ul id="user-dropdown">
-          <li>
-            <a ui-sref="watchlist">Watchlist</a>
+          <li ng-if="HeaderCtrl.isPatroller()">
+            <a ui-sref="patrol.data">Patrol</a>
           </li>
           <li>
             <a ui-sref="^.profile.posts({ username: HeaderCtrl.currentUser.username })">Profile</a>
           </li>
           <li>
-            <a ui-sref="^.messages" ui-sref-opts="{ reload: true }">Messages</a>
+            <a ui-sref="messages">Messages</a>
+          </li>
+          <li>
+            <a ui-sref="watchlist">Watchlist</a>
           </li>
           <li>
             <a ng-href="#" ng-click="HeaderCtrl.logout()">Logout</a>
