@@ -110,6 +110,8 @@ app
       // Forbidden redirect home
       else if (error.status === 403 || error.statusText === 'Forbidden' && next.name !== 'boards') { $state.go('boards'); }
       else if (error.status === 429) { Alert.error('Too Many Requests'); }
+      // logout from private board (returns a 404)
+      else if (error.status === 404 && prev.name === 'threads.data') { $state.go('boards'); }
       // 404 Not Found
       else if (error.status === 404) { $state.go('404'); }
       // 503 Service Unavailable
