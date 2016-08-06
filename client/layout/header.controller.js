@@ -1,5 +1,5 @@
-var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth', 'Session', 'User', 'BreadcrumbSvc', 'Alert', 'ThemeSVC', 'NotificationSvc', 'BanSvc',
-  function($scope, $location, $timeout, $state, $stateParams, Auth, Session, User, BreadcrumbSvc, Alert, ThemeSVC, NotificationSvc, BanSvc) {
+var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth', 'Session', 'BreadcrumbSvc', 'Alert', 'ThemeSVC', 'NotificationSvc', 'BanSvc',
+  function($scope, $location, $timeout, $state, $stateParams, Auth, Session, BreadcrumbSvc, Alert, ThemeSVC, NotificationSvc, BanSvc) {
     var ctrl = this;
     this.currentUser = Session.user;
     this.hasPermission = Session.hasPermission;
@@ -7,7 +7,6 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
     this.loggedIn = Session.isAuthenticated;
     this.breadcrumbs = BreadcrumbSvc.crumbs;
     this.isBanned = BanSvc.isBanned;
-    this.loginOrRecover = true;
 
     // Update preview mode on change
     $scope.$watch(function() { return ThemeSVC.previewActive(); }, function(val) {
@@ -118,46 +117,6 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
         else { Alert.error('Registration Error'); }
       });
     };
-
-    // Recover Account
-    this.recoverQuery = '';
-    this.showRecover = false;
-    this.recoverSubmitted = false;
-    this.recoverBtnLabel = 'Reset';
-    this.clearRecoverFields = function() {
-      $timeout(function() {
-        ctrl.recoverSubmitted = false;
-        ctrl.recoverBtnLabel = 'Reset';
-        ctrl.recoverQuery = '';
-      }, 500);
-    };
-
-    this.recover = function() {
-      if (ctrl.recoverQuery.length === 0) { return; }
-
-      ctrl.recoverSubmitted = true;
-      ctrl.recoverBtnLabel = 'Loading...';
-
-      User.recoverAccount({ query: ctrl.recoverQuery }).$promise
-      .then(function() { ctrl.recoverBtnLabel = 'Account Reset'; })
-      .catch(function(err) {
-        ctrl.recoverSubmitted = false;
-        ctrl.recoverBtnLabel = 'Reset';
-        Alert.error(err.data.message);
-      });
-    };
-
-    this.swapModals = function() {
-      if (ctrl.showLogin) {
-        ctrl.showLogin = false;
-        $timeout(function() { ctrl.showRecover = true; }, 200);
-      }
-      else {
-        ctrl.showRecover = false;
-        $timeout(function() { ctrl.showLogin = true; }, 200);
-      }
-    };
-
   }
 ];
 

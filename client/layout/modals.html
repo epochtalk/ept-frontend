@@ -18,26 +18,7 @@
     </div>
     <hr />
     <div class="centered-text">
-      <a ng-click="HeaderCtrl.swapModals()">Help, I forgot my password!</a>
-    </div>
-  </form>
-</modal>
-
-<!-- Recover Account Modal -->
-<modal show="HeaderCtrl.showRecover" on-close="HeaderCtrl.clearRecoverFields()">
-  <form name="$parent.form" class="css-form" novalidate>
-    <h3 class="thin-underline">Recover Your Account</h3>
-
-    <input type="text" class="input-text" placeholder="Username or Email" ng-model="HeaderCtrl.recoverQuery" ng-hide="HeaderCtrl.recoverBtnLabel === 'Account Reset'" ng-disabled="HeaderCtrl.recoverSubmitted" auto-focus="$parent.focus" required>
-    <span ng-show="HeaderCtrl.recoverBtnLabel === 'Account Reset'">
-      Please check your email to reset your password.
-      <br /><br />
-    </span>
-    <button class="button fill-row" ng-click="HeaderCtrl.recover()"
-        ng-disabled="$parent.form.$invalid || $parent.form.$errors || HeaderCtrl.recoverSubmitted" ng-bind="HeaderCtrl.recoverBtnLabel"></button>
-    <hr />
-    <div class="centered-text">
-      <a ng-click="HeaderCtrl.swapModals()">Take me back to Login</a>
+      <a ng-href="/recover" target="_blank" rel="noopener noreferrer">Help, I forgot my password!</a>
     </div>
   </form>
 </modal>
