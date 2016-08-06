@@ -109,17 +109,6 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
       return show;
     };
 
-    this.showThreadControls = function() {
-      if (!ctrl.loggedIn()) { return false; }
-
-      var show = false;
-      if (ctrl.canLock()) { show = true; }
-      if (ctrl.canSticky()) { show = true; }
-      if (ctrl.canPurge()) { show = true; }
-      if (ctrl.canMove()) { show = true; }
-      return show;
-    };
-
     // Poll Permissions
     this.canCreatePoll = function() {
       if (!ctrl.loggedIn()) { return false; }
@@ -231,11 +220,17 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
       });
     };
 
+    this.showMoveThreadModal = false;
+    this.closeMoveThreadModal = function() {
+      $timeout(function() { ctrl.showMoveThreadModal = false; });
+    };
+    this.openMoveThreadModal = function() { ctrl.showMoveThreadModal = true; };
     this.moveThread = function() {
       var newBoardId = ctrl.moveBoard.id;
       return Threads.move({id: ctrl.thread.id}, {newBoardId: newBoardId}).$promise
       .then(function() { $state.go($state.$current, null, {reload:true}); })
-      .catch(function() { Alert.error('Error Moving Thread'); });
+      .catch(function() { Alert.error('Error Moving Thread'); })
+      .finally(function() { ctrl.showMoveThreadModal = false; });
     };
 
     this.showPurgeThreadModal = false;
