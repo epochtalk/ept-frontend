@@ -32,16 +32,21 @@
   </div>
 
   <!-- User Controls -->
-  <div class="fill-row" ng-if="PostsParentCtrl.showUserControls()">
+  <div class="fill-row">
     <div class="half-column">
       <!-- Watch Thread -->
-      <a class="inverted-button" ng-if="!PostsParentCtrl.thread.watched" ng-click="PostsParentCtrl.watchThread()">
-        <i class="icon-epoch-watch"></i>Watch This Thread
-      </a>
+      <span ng-if="PostsParentCtrl.showUserControls()">
+        <a class="inverted-button" ng-if="!PostsParentCtrl.thread.watched" ng-click="PostsParentCtrl.watchThread()">
+          <i class="icon-epoch-watch"></i>Watch This Thread
+        </a>
+      </span>
       <!-- Add Poll -->
-      <a class="inverted-button" ng-if="PostsParentCtrl.canCreatePoll()" ng-click="PostsParentCtrl.addPoll = !PostsParentCtrl.addPoll">
-        <i class="fa fa-bar-chart"></i>Add a Poll
-      </a>
+      <span ng-if="PostsParentCtrl.showUserControls()">
+        <a class="inverted-button" ng-if="PostsParentCtrl.canCreatePoll()" ng-click="PostsParentCtrl.addPoll = !PostsParentCtrl.addPoll">
+          <i class="fa fa-bar-chart"></i>Add a Poll
+        </a>
+      </span>
+      <span ng-if="!PostsParentCtrl.showUserControls()">&nbsp;</span>
     </div>
     <div class="half-column">
       <div>
@@ -77,14 +82,6 @@
         </div>
       </div>
 
-      <!-- Move Thread -->
-<!--       <div class="control-full-width" ng-if="PostsParentCtrl.canMove()">
-        <label>Move Thread</label>
-        <select name="boards" id="moveThreadBoards" ng-model="PostsParentCtrl.moveBoard" ng-options="board.name group by board.parent_name for board in PostsParentCtrl.boards | orderBy:board.view_order"></select>
-        <a class="button" ng-click="PostsParentCtrl.moveThread()"><i class="fa fa-arrow-circle-left"></i>&nbsp;&nbsp;&nbsp;Move</a>
-      </div>
- -->
-
     </div>
   </div>
   <div class="clear"></div>
@@ -116,12 +113,7 @@
 <!-- Editor -->
 <div ng-if="PostsParentCtrl.canPost()">
 
-  <!-- fixed bottom toolbar -->
- <!--  <ul class="post-toolbar">
-    <li ng-click="PostsParentCtrl.loadEditor()" ng-if="PostsParentCtrl.canPost()">
-      <span><i class="fa fa-reply"></i>&nbsp;&nbsp;&nbsp;Reply</span>
-    </li>
-  </ul> -->
+
   <div id="post-tools-fixed">
     <div class="tool-wrap">
       <div class="tool-container">
