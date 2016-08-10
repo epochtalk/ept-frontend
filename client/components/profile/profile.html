@@ -60,6 +60,8 @@
       <a ng-href="#" ng-click="vm.showManageBans({ id: vm.user.id, username: vm.user.username, email: vm.user.email, created_at: vm.user.created_at, ban_expiration: vm.user.ban_expiration })">Manage Bans</a>
     </div>
 
+    <reset-password user="vm.user"></reset-password>
+
     <!-- User Information -->
     <div class="profile-row">
       <h4>

@@ -14,10 +14,12 @@ var route = ['$stateProvider', function($stateProvider) {
       profileDirective: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
+          require('../../components/reset_password/reset-password.directive.js');
           require('../../components/profile/profile.directive.js');
           require('../../components/usernotes/usernotes.directive.js');
           require('../../components/image_uploader/image_uploader.directive');
           $ocLazyLoad.load([
+            { name: 'ept.directives.resetPassword' },
             { name: 'ept.directives.profile' },
             { name: 'ept.directives.usernotes' },
             { name: 'ept.directives.image-uploader' }

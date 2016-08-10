@@ -1852,6 +1852,12 @@
               <input id="adminUsers-pageModerators" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminUsers.pageModerators" ng-change="AdminManagementCtrl.newRole.permissions.adminUsers.pageModerators ? AdminManagementCtrl.newRole.permissions.adminUsers.countModerators = true : AdminManagementCtrl.newRole.permissions.adminUsers.countModerators = undefined" ng-false-value="undefined" />
               Allow user to page through all forum moderators
             </label>
+
+            <!-- Reset Password -->
+            <label>
+              <input id="adminUsers-resetPassword" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminUsers.resetPassword" ng-false-value="undefined" />
+              Allow user to reset another user's password
+            </label>
           </div>
 
           <div class="half-column">
