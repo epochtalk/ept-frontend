@@ -38,23 +38,10 @@
   <image-uploader class="editor-image-uploader" model="AdminSettingsCtrl.settings.website.favicon" purpose="favicon"></image-uploader>
   <input type="text" class="input-text" id="website-favicon" ng-model="AdminSettingsCtrl.settings.website.favicon" placeholder="favicon.ico" />
 
-  <!-- Database Tasks -->
-  <h5 class="thin-underline section-header-top-spacing">Database Tasks</h5>
-  <div class="desc">
-    <label for="database-backup">Backup Database</label>
-    <label class="desc-label" for="database-backup">Creates and downloads a backup of all forum data</label>
-  </div>
-  <a id="database-backup" class="button" style="background-color: #CCC;">Backup</a>
-  <div class="desc">
-    <label for="database-restore">Restore Database</label>
-    <label class="desc-label" for="database-restore">Allows restoration of forum data from a backup file</label>
-  </div>
-  <a id="database-restore" class="button" style="background-color: #CCC;">Restore</a>
-  <div class="desc">
-    <label for="database-migrate">Migrate Database</label>
-    <label class="desc-label" for="database-migrate">Launches wizard to migrate data from other forums</label>
-  </div>
-  <a id="database-migrate" class="button" style="background-color: #CCC;">Migrate</a>
+  <!-- Analytics -->
+  <h5 class="thin-underline">Google Analytics</h5>
+  <label for="google-analytics-key">Google Analytics Key</label>
+  <input type="text" class="input-text" id="google-analytics-key" ng-model="AdminSettingsCtrl.settings.ga_key" placeholder="UA-XXXXX-Y" />
 
 </div>
 
