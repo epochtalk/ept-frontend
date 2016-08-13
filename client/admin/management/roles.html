@@ -196,7 +196,7 @@
         <h4><br />Administration View Permissions</h4>
         <!-- View Admin Settings -->
         <label>
-          <input id="adminAccess-settings" type="checkbox" ng-init="settings = AdminManagementCtrl.newRole.permissions.adminAccess.settings.general || AdminManagementCtrl.newRole.permissions.adminAccess.settings.advanced || AdminManagementCtrl.newRole.permissions.adminAccess.settings.theme" ng-model="settings" ng-change="!settings ? AdminManagementCtrl.newRole.permissions.adminAccess.settings.general = false : null; !settings ? AdminManagementCtrl.newRole.permissions.adminAccess.settings.advanced = false : null; !settings ? AdminManagementCtrl.newRole.permissions.adminAccess.settings.theme = false : null;" />
+          <input id="adminAccess-settings" type="checkbox" ng-init="settings = AdminManagementCtrl.newRole.permissions.adminAccess.settings.general || AdminManagementCtrl.newRole.permissions.adminAccess.settings.advanced || AdminManagementCtrl.newRole.permissions.adminAccess.settings.legal || AdminManagementCtrl.newRole.permissions.adminAccess.settings.theme" ng-model="settings" ng-change="!settings ? AdminManagementCtrl.newRole.permissions.adminAccess.settings.general = false : null; !settings ? AdminManagementCtrl.newRole.permissions.adminAccess.settings.advanced = false : null; !settings ? AdminManagementCtrl.newRole.permissions.adminAccess.settings.legal = false : null; !settings ? AdminManagementCtrl.newRole.permissions.adminAccess.settings.theme = false : null;" />
           Allow user to access admin settings view
         </label>
         <div class="indent" ng-if="settings">
@@ -207,6 +207,10 @@
           <label>
             <input id="adminAccess-settings-advanced" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminAccess.settings.advanced" ng-false-value="undefined" />
             Advanced Settings Tab
+          </label>
+          <label>
+            <input id="adminAccess-settings-legal" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminAccess.settings.legal" ng-false-value="undefined" />
+            Legal Settings Tab
           </label>
           <label>
             <input id="adminAccess-settings-theme" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminAccess.settings.theme" ng-false-value="undefined" />
@@ -1939,6 +1943,29 @@
             <label>
               <input id="adminModerators-remove" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminModerators.remove" ng-false-value="undefined" />
               Allow user to remove moderators from boards
+            </label>
+          </div>
+        </div>
+
+        <div class="clear"></div><br>
+        <h4>Legal</h4>
+        <div class="container">
+          <div class="half-column">
+            <label> <!-- Legal Text -->
+              <input id="adminBoards-legal-text" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminLegal.text" ng-false-value="undefined" />
+              Allow user view legal text on the admin page
+            </label>
+
+            <label> <!-- Legal Update -->
+              <input id="adminBoards-legal-update" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminLegal.update" ng-false-value="undefined" />
+              Allow user update legal text on the admin page
+            </label>
+          </div>
+
+          <div class="half-column">
+            <label> <!-- Legal Reset -->
+              <input id="adminBoards-legal-reset" type="checkbox" ng-model="AdminManagementCtrl.newRole.permissions.adminLegal.reset" ng-false-value="undefined" />
+              Allow user reset legal text on the admin page
             </label>
           </div>
         </div>

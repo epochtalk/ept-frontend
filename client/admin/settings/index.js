@@ -18,6 +18,9 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
     else if (Session.hasPermission('adminAccess.settings.advanced')) {
       $state.go('admin-settings.advanced', {}, {location: 'replace'});
     }
+    else if (Session.hasPermission('adminAccess.settings.legal')) {
+      $state.go('admin-settings.legal', {}, { location: 'replace'});
+    }
     else if (Session.hasPermission('adminAccess.settings.theme')) {
       $state.go('admin-settings.theme', {}, {location: 'replace'});
     }
@@ -40,6 +43,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           $scope.$watch(function() { return ThemeSVC.previewActive(); }, function(val) { ctrl.previewActive = val; });
           if (Session.hasPermission('adminAccess.settings.general')) { this.tab = 'general'; }
           else if (Session.hasPermission('adminAccess.settings.advanced')) { this.tab = 'advanced'; }
+          else if (Session.hasPermission('adminAccess.settings.legal')) { this.tab = 'legal'; }
           else if (Session.hasPermission('adminAccess.settings.theme')) { this.tab = 'theme'; }
           $scope.child = {};
         }],
@@ -117,6 +121,33 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
             { name: 'ept.admin.settings.advanced.ctrl' },
             { name: 'ept.directives.autocomplete-user-id' }
           ]);
+          deferred.resolve();
+        });
+        return deferred.promise;
+      }],
+    }
+  })
+  .state('admin-settings.legal', {
+    url: '/legal',
+    views: {
+      'data@admin-settings': {
+        controller: 'LegalSettingsCtrl',
+        controllerAs: 'AdminSettingsCtrl',
+        templateUrl: '/static/templates/admin/settings/legal.html'
+      }
+    },
+    resolve: {
+      userAccess: adminCheck('settings.legal'),
+      $title: function() { return 'Legal Settings'; },
+      text: ['AdminLegal', function(AdminLegal) {
+        return AdminLegal.text().$promise
+        .then(function(text) { return text; });
+      }],
+      loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
+        var deferred = $q.defer();
+        require.ensure([], function() {
+          require('./legal.controller');
+          $ocLazyLoad.load([ { name: 'ept.admin.settings.legal.ctrl' } ]);
           deferred.resolve();
         });
         return deferred.promise;

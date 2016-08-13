@@ -6,7 +6,6 @@ module.exports = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '
       views: {
         'header': { template: require('./layout/header.html') },
         'body': { template: require('./layout/public-content.html') },
-        'footer': { template: require('./layout/footer.html') },
         'modals': { template: require('./layout/modals.html') }
       }
     });
