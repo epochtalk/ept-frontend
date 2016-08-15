@@ -60,30 +60,16 @@ function(Conversations, User, Session, Alert, $filter, $state, $q, $timeout, Boa
         if (!Session.isAuthenticated()) { return false; }
         if (!Session.hasPermission('users.deactivate.allow')) { return false; }
         if (ctrl.user.deleted) { return false; }
-
-        var same = Session.hasPermission('users.deactivate.bypass.priority.admin');
-        var lower = Session.hasPermission('users.deactivate.bypass.priority.mod');
-
-        var valid = false;
-        if (ctrl.pageOwner()) { valid = true; }
-        else if (same) { valid = Session.getPriority() <= this.user.priority; }
-        else if (lower) { valid = Session.getPriority() < this.user.priority; }
-        return valid;
+        if (ctrl.pageOwner()) { return true; }
+        else { return false; }
       };
 
       this.canReactivate = function() {
         if (!Session.isAuthenticated()) { return false; }
         if (!Session.hasPermission('users.reactivate.allow')) { return false; }
         if (!ctrl.user.deleted) { return false; }
-
-        var same = Session.hasPermission('users.reactivate.bypass.priority.admin');
-        var lower = Session.hasPermission('users.reactivate.bypass.priority.mod');
-
-        var valid = false;
-        if (ctrl.pageOwner()) { valid = true; }
-        else if (same) { valid = Session.getPriority() <= ctrl.user.priority; }
-        else if (lower) { valid = Session.getPriority() < ctrl.user.priority; }
-        return valid;
+        if (ctrl.pageOwner()) { return true; }
+        else { return false; }
       };
 
       this.canDelete = function() {
