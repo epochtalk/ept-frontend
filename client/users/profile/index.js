@@ -58,7 +58,6 @@ var route = ['$stateProvider', function($stateProvider) {
       pageData: ['Posts', '$stateParams', function(Posts, $stateParams) {
         var params = {
           username: $stateParams.username,
-          field: $stateParams.field,
           desc: $stateParams.desc || true,
           limit: Number($stateParams.limit) || 25,
           page: Number($stateParams.page) || 1
@@ -99,7 +98,6 @@ var route = ['$stateProvider', function($stateProvider) {
       pageData: ['Posts', '$stateParams', function(Posts, $stateParams) {
         var params = {
           username: $stateParams.username,
-          field: $stateParams.field,
           desc: $stateParams.desc || true,
           limit: Number($stateParams.limit) || 25,
           page: Number($stateParams.page) || 1

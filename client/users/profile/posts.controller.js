@@ -6,40 +6,23 @@ var ctrl = ['user', 'pageData', 'Posts', '$location', '$scope', '$rootScope', '$
     this.queryParams = $location.search();
     this.page = pageData.page;
     this.limit = pageData.limit;
-    this.field = pageData.sortField;
-    this.desc = pageData.sortDesc;
+    this.desc = pageData.sortDesc || true; // default to true
     this.usersPosts = pageData.posts;
     this.parent = $scope.$parent.ProfileCtrl;
     if (this.parent) { this.parent.user = user; }
 
     if ($state.current.name === 'users-posts') { $anchorScroll(); }
 
-    this.setSortField = function(sortField) {
-      // Sort Field hasn't changed just toggle desc
-      var unchanged = sortField === ctrl.field;
-      if (unchanged) { ctrl.desc = ctrl.desc === 'true' ? 'false' : 'true'; } // bool to str
-      // Sort Field changed default to ascending order
-      else { ctrl.desc = 'false'; }
-      ctrl.field = sortField;
-      ctrl.page = 1;
-      $location.search('page', ctrl.page);
-      $location.search('desc', ctrl.desc);
-      $location.search('field', sortField);
+    this.setDesc = function() {
+      $location.search('page', 1);
+      $location.search('desc', !ctrl.desc);
       // Update queryParams (forces pagination to refresh)
       ctrl.queryParams = $location.search();
     };
 
-    this.getSortClass = function(sortField) {
-      var sortClass;
-      var sortDesc;
-      // if desc param is undefined default to true if sorting by created_at
-      if ($location.search().desc === undefined && sortField === 'created_at') { sortDesc = true; }
-      else { sortDesc = ctrl.desc === 'true'; }
-      // created_at is sorted desc by default when ctrl.field is not present
-      if (sortField === 'created_at' && !ctrl.field && sortDesc) { sortClass = 'fa fa-sort-desc'; }
-      else if (ctrl.field === sortField && sortDesc) { sortClass = 'fa fa-sort-desc'; }
-      else if (ctrl.field === sortField && !sortDesc) { sortClass = 'fa fa-sort-asc'; }
-      else { sortClass = 'fa fa-sort'; }
+    this.getDesc = function() {
+      var sortClass = 'fa fa-sort-desc';
+      if (ctrl.desc === false) { sortClass = 'fa fa-sort-asc'; }
       return sortClass;
     };
 
@@ -47,14 +30,13 @@ var ctrl = ['user', 'pageData', 'Posts', '$location', '$scope', '$rootScope', '$
       var params = $location.search();
       var page = Number(params.page) || 1;
       var limit = Number(params.limit) || 25;
-      var field = params.field;
       var descending;
-      // desc when undefined defaults to true, since we are sorting created_at desc by default
-      if (params.desc === undefined) { descending = true; }
-      else { descending = params.desc === 'true'; }
+
+      if (params.desc === false) { descending = false; }
+      else { descending = true; }
+
       var pageChanged = false;
       var limitChanged = false;
-      var fieldChanged = false;
       var descChanged = false;
 
       if (page && page !== ctrl.page) {
@@ -65,16 +47,12 @@ var ctrl = ['user', 'pageData', 'Posts', '$location', '$scope', '$rootScope', '$
         limitChanged = true;
         ctrl.limit = limit;
       }
-      if (field && field !== ctrl.field) {
-        fieldChanged = true;
-        ctrl.field = field;
-      }
       if (descending !== ctrl.desc) {
         descChanged = true;
-        ctrl.desc = descending.toString();
+        ctrl.desc = descending;
       }
 
-      if((pageChanged || limitChanged || fieldChanged || descChanged) && ($state.current.name === 'users-posts' || $state.current.name === 'profile.posts')) {
+      if((pageChanged || limitChanged || descChanged) && ($state.current.name === 'users-posts' || $state.current.name === 'profile.posts')) {
         ctrl.pullPage(); }
     });
     $scope.$on('$destroy', function() { ctrl.offLCS(); });
@@ -84,8 +62,7 @@ var ctrl = ['user', 'pageData', 'Posts', '$location', '$scope', '$rootScope', '$
         username: ctrl.user.username,
         page: ctrl.page,
         limit: ctrl.limit,
-        desc: ctrl.desc,
-        field: ctrl.field
+        desc: ctrl.desc
       };
 
       // replace current user post with new user posts

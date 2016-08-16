@@ -15,9 +15,9 @@
 <div class="fill-row hide-mobile" ng-if="ProfilePostsCtrl.pageCount > 0">
   <table class="striped" width="100%">
     <thead>
-      <th width="20%" class="pointer" ng-click="ProfilePostsCtrl.setSortField('thread_title')"><span ng-class="ProfilePostsCtrl.getSortClass('thread_title')"></span>&nbsp;Thread</th>
+      <th width="20%"></span>Thread</th>
       <th width="60%">Post</th>
-      <th width="20%" class="pointer" ng-click="ProfilePostsCtrl.setSortField('created_at')"><span ng-class="ProfilePostsCtrl.getSortClass('created_at')"></span>&nbsp;Post Date</th>
+      <th width="20%" class="pointer" ng-click="ProfilePostsCtrl.setDesc()"><span ng-class="ProfilePostsCtrl.getDesc()"></span>&nbsp;Post Date</th>
     </thead>
 
     <tbody>
