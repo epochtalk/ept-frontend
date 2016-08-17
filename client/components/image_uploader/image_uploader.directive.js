@@ -33,12 +33,13 @@ var directive = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3Imag
 
       // image upload function
       function upload(fsImages) {
+        $scope.currentImages = [];
+
         if (fsImages.length > 10) {
           return $timeout(function() { Alert.error('Error: Exceeded 10 images.'); });
         }
 
         // (re)prime loading and progress variables
-        if ($scope.purpose !== 'editor') { $scope.images = []; }
         $scope.imagesUploading = true;
         $scope.imagesProgress = 0;
 
@@ -59,11 +60,11 @@ var directive = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3Imag
             status: 'Initializing',
             progress: 0
           };
-          $scope.images.push(image);
+          $scope.currentImages.push(image);
         });
 
         // append a policy on to each image
-        return s3ImageUpload.policy($scope.images)
+        return s3ImageUpload.policy($scope.currentImages)
         // upload each image
         .then(function(images) {
           images.forEach(function(image) {
@@ -91,6 +92,7 @@ var directive = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3Imag
               updateImagesUploading();
               if ($scope.onDone) { $scope.onDone({data: url}); }
               if ($scope.purpose === 'avatar' || $scope.purpose === 'logo' || $scope.purpose === 'favicon') { $scope.model = url; }
+              else { $scope.images.push(image); }
             })
             .catch(function(err) {
               image.progress = '--';
@@ -109,10 +111,10 @@ var directive = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3Imag
       function updateImagesUploading() {
         var uploading = false;
         var percentComplete = 0;
-        var validImages = $scope.images.length;
+        var validImages = $scope.currentImages.length;
 
         // check each image for it's status
-        $scope.images.map(function(imageProgress) {
+        $scope.currentImages.map(function(imageProgress) {
           if (imageProgress.status === 'Uploading') { uploading = true; }
           if (imageProgress.progress === '--') { validImages = validImages - 1; }
           else { percentComplete = percentComplete + imageProgress.progress; }
@@ -133,8 +135,11 @@ var directive = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3Imag
         var fileList = inputElement.files;
         var images = [];
         for (var i = 0; i < fileList.length; i++) {
-          images.push(fileList[i]);
+          var file = fileList[i];
+          if (!file.type.match(/image.*/)) { continue; }
+          images.push(file);
         }
+        if ($scope.purpose === 'avatar' || $scope.purpose === 'logo' || $scope.purpose === 'favicon') { images = [images[0]]; }
         upload(images);
         inputElement.value = ''; // clear filelist for reuse
       });
