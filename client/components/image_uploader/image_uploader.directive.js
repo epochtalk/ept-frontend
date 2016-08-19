@@ -128,11 +128,7 @@ var directive = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3Imag
         else { $scope.imagesUploading = false; }
       }
 
-      // bind to changes in the image input
-      // because angular can't handle ng-change on input[file=type]
-      angular.element(inputElement).on('change', function() {
-        // get all the images from the file picker
-        var fileList = inputElement.files;
+      function cullImages(fileList) {
         var images = [];
         for (var i = 0; i < fileList.length; i++) {
           var file = fileList[i];
@@ -140,7 +136,16 @@ var directive = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3Imag
           images.push(file);
         }
         if ($scope.purpose === 'avatar' || $scope.purpose === 'logo' || $scope.purpose === 'favicon') { images = [images[0]]; }
-        upload(images);
+
+        if (images.length > 0) { upload(images); }
+        else { Alert.warning('No Images Found'); $scope.$apply(); }
+      }
+
+      // bind to changes in the image input
+      // because angular can't handle ng-change on input[file=type]
+      angular.element(inputElement).on('change', function() {
+        // get all the images from the file picker
+        cullImages(inputElement.files);
         inputElement.value = ''; // clear filelist for reuse
       });
 
@@ -155,17 +160,8 @@ var directive = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3Imag
       $parent.on('drop', function(e) {
         cancelEvent(e);
         var dt = e.dataTransfer || e.originalEvent.dataTransfer;
-        var fileList = dt.files;
-        var images = [];
-        for (var i = 0; i < fileList.length; i++) {
-          var file = fileList[i];
-          if (!file.type.match(/image.*/)) { continue; }
-          images.push(file);
-        }
-        if ($scope.purpose === 'avatar' || $scope.purpose === 'logo' || $scope.purpose === 'favicon') { images = [images[0]]; }
-        upload(images);
+        cullImages(dt.files);
       });
-
     }
   };
 }];
