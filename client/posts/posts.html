@@ -32,7 +32,7 @@
   </div>
 
   <!-- User Controls -->
-  <div class="fill-row">
+  <div class="fill-row" ng-if="PostsParentCtrl.showUserControls() || PostsParentCtrl.showThreadControls() || PostsParentCtrl.canPost()">
     <div class="half-column">
       <!-- Watch Thread -->
       <span ng-if="PostsParentCtrl.showUserControls()">
@@ -50,7 +50,7 @@
     </div>
     <div class="half-column">
       <div>
-        <div class="two-thirds-column">
+        <div class="controls two-thirds-column">
 
         <!-- Thread Lock -->
         <div class="control" data-balloon="{{PostsParentCtrl.thread.locked ? 'Unlock Thread' : 'Lock Thread'}}" ng-if="PostsParentCtrl.canLock()">
@@ -75,9 +75,9 @@
             <a ng-href="#" id="moveBoard" class="fa fa-arrow-right" ng-class="{'clicked' : PostsParentCtrl.showMoveThreadModal }" ng-click="PostsParentCtrl.openMoveThreadModal()">
             </a>
           </div>
-
+          <span ng-if="!PostsParentCtrl.showThreadControls()">&nbsp;</span>
         </div>
-        <div class="one-third-column">
+        <div class="controls one-third-column">
           <a class="button right" ng-click="PostsParentCtrl.loadEditor()" ng-if="PostsParentCtrl.canPost()"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Post Reply</a>
         </div>
       </div>
@@ -157,16 +157,13 @@
       <!-- Editor Header -->
       <div class="editor-top-bar">
         <div class="buttons">
-          <button ng-click="PostsParentCtrl.showFormatting = true"><i class="fa fa-code"></i>&nbsp;&nbsp;Format</button>
-          <button ng-click="PostsParentCtrl.fullscreen()"><i class="fa" ng-class="{ 'fa-expand': PostsParentCtrl.isMinimized, 'fa-compress': !PostsParentCtrl.isMinimized }"></i>&nbsp;&nbsp;{{ PostsParentCtrl.isMinimized ? 'Fullscreen' : 'Minimize' }}</button>
 
-          <div class="left hide-mobile toolbar-title" title="Click to go to this post" ng-if="PostsParentCtrl.posting.post.id">
-            <a ui-sref="posts.data({ threadId: PostsParentCtrl.thread.id, page: PostsParentCtrl.posting.post.page, '#': PostsParentCtrl.posting.post.id })">
-              Editing: <span class="underline">{{ PostsParentCtrl.posting.post.id }}</span>
+          <div class="left toolbar-title" title="Click to go to this post" ng-if="PostsParentCtrl.posting.post.id">
+              Editing Post:&nbsp;&nbsp;<a ui-sref="posts.data({ threadId: PostsParentCtrl.thread.id, page: PostsParentCtrl.posting.post.page, '#': PostsParentCtrl.posting.post.id })">{{ PostsParentCtrl.posting.post.id }}</a>
             </a>
           </div>
 
-          <div class="left hide-mobile toolbar-title" ng-if="!PostsParentCtrl.posting.post.id">
+          <div class="left toolbar-title" ng-if="!PostsParentCtrl.posting.post.id">
             New Post in "{{ PostsParentCtrl.thread.title}}"
           </div>
         </div>
@@ -248,13 +245,21 @@
         <epochtalk-editor class="posts-editor" body="PostsParentCtrl.posting.post.body" raw-body="PostsParentCtrl.posting.post.raw_body" reset-switch="PostsParentCtrl.resetEditor" focus-switch="PostsParentCtrl.focusEditor" dirty="PostsParentCtrl.dirtyEditor" quote="PostsParentCtrl.quote">
         </epochtalk-editor>
       </form>
+
+      <div class="editor-tools">
+        <div class="tools">
+          <a data-balloon="Formatting Help" ng-click="PostsParentCtrl.showFormatting = true"><i class="fa fa-code"></i></a>
+          <a data-balloon="{{ PostsParentCtrl.isMinimized ? 'Expand Editor' : 'Minimize Editor' }}" ng-click="PostsParentCtrl.fullscreen()"><i class="fa expand" ng-class="{ 'fa-expand': PostsParentCtrl.isMinimized, 'fa-compress': !PostsParentCtrl.isMinimized }"></i></a>
+        </div>
+      </div>
+
       <!-- Editor Controls -->
       <div class="editor-button-container">
-        <button class="cancel" ng-click="PostsParentCtrl.cancelPost()">
+        <button class="inverted-button cancel" ng-click="PostsParentCtrl.cancelPost()">
           Cancel
         </button>
         <button class="send" ng-click="PostsParentCtrl.savePost()" ng-disabled="form.title.$error.required || !PostsParentCtrl.canSave()">
-          Send
+          <i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Send Reply
         </button>
 
         <span class="label alert" ng-if="PostsParentCtrl.posting.error" ng-bind="PostsParentCtrl.posting.error.message"></span>
@@ -266,12 +271,12 @@
 <!-- Reporting Modal -->
 <modal show="PostsParentCtrl.showReportModal" on-close="PostsParentCtrl.closeReportModal()">
   <form name="$parent.form" class="css-form">
-    <h3 class="thin-underline" ng-if="PostsParentCtrl.reportControlAccess.reportPosts && PostsParentCtrl.reportControlAccess.reportUsers">Report User/Post</h3>
-    <h3 class="thin-underline" ng-if="PostsParentCtrl.reportControlAccess.reportPosts && !PostsParentCtrl.reportControlAccess.reportUsers">Report Post</h3>
-    <h3 class="thin-underline" ng-if="!PostsParentCtrl.reportControlAccess.reportPosts && PostsParentCtrl.reportControlAccess.reportUsers">Report User</h3>
-    <label ng-if="PostsParentCtrl.reportControlAccess.reportPosts && PostsParentCtrl.reportControlAccess.reportUsers">Which would you like to report?</label>
+    <h3 class="thin-underline" ng-if="PostsParentCtrl.reportControlAccess.reportPosts && PostsParentCtrl.reportControlAccess.reportUsers && !PostsParentCtrl.reportedPost.reported">Report User/Post</h3>
+    <h3 class="thin-underline" ng-if="PostsParentCtrl.reportControlAccess.reportPosts && !PostsParentCtrl.reportControlAccess.reportUsers && !PostsParentCtrl.reportedPost.reported">Report Post</h3>
+    <h3 class="thin-underline" ng-if="(!PostsParentCtrl.reportControlAccess.reportPosts && PostsParentCtrl.reportControlAccess.reportUsers) || (PostsParentCtrl.reportControlAccess.reportUsers && PostsParentCtrl.reportedPost.reported)">Report User</h3>
+    <label ng-if="PostsParentCtrl.reportControlAccess.reportPosts && PostsParentCtrl.reportControlAccess.reportUsers && !PostsParentCtrl.reportedPost.reported">Which would you like to report?</label>
     <input ng-if="PostsParentCtrl.reportControlAccess.reportUsers" type="radio" name="reportPost" ng-model="PostsParentCtrl.offendingId" ng-value="PostsParentCtrl.reportedPost.user.id" id="reportUser" ng-disabled="PostsParentCtrl.reportSubmitted" required><label ng-if="PostsParentCtrl.reportControlAccess.reportUsers" for="reportUser">{{PostsParentCtrl.reportedPost.user.username}}</label>
-    <input ng-if="PostsParentCtrl.reportControlAccess.reportPosts" type="radio" name="reportPost" ng-model="PostsParentCtrl.offendingId" ng-value="PostsParentCtrl.reportedPost.id" id="reportPost" ng-disabled="PostsParentCtrl.reportSubmitted" required><label ng-if="PostsParentCtrl.reportControlAccess.reportPosts" for="reportPost">{{PostsParentCtrl.reportedPost.user.username}}'s Post</label>
+    <input ng-if="PostsParentCtrl.reportControlAccess.reportPosts && !PostsParentCtrl.reportedPost.reported" type="radio" name="reportPost" ng-model="PostsParentCtrl.offendingId" ng-value="PostsParentCtrl.reportedPost.id" id="reportPost" ng-disabled="PostsParentCtrl.reportSubmitted" required><label ng-if="PostsParentCtrl.reportControlAccess.reportPosts && !PostsParentCtrl.reportedPost.reported" for="reportPost">{{PostsParentCtrl.reportedPost.user.username}}'s Post</label>
     <label>Reason for Report</label>
     <textarea name="reportReason" ng-model="PostsParentCtrl.reportReason" ng-disabled="PostsParentCtrl.reportSubmitted" placeholder="Give a brief reason for your report" rows="4" required maxlength="255"></textarea>
     <div class="clear">

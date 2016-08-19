@@ -23,7 +23,7 @@
     line-height: unset;
     text-align: center;
   }
-  .two-thirds-column {
+  .controls.two-thirds-column {
     text-align: right;
     .control:last-child { margin-right: 0.5rem; }
   }
@@ -159,7 +159,6 @@
     max-width: $max-width;
     margin: 0 auto;
     .tool-container {
-      padding: 0 $base-grid-padding;
       line-height: 3rem;
       .button { margin: 0; padding: 0.35rem 1rem; }
       .left-col {
@@ -190,12 +189,12 @@
 
 @include media($desktop-small) {
   .thread-controls-wrap {
-    .two-thirds-column {
+    .controls.two-thirds-column {
       text-align: center;
       @include span-columns(6);
       .control:last-child { margin-right: 1rem; }
     }
-    .one-third-column {
+    .controls.one-third-column {
       @include span-columns(6);
       .button { @include span-columns(12); }
     }
@@ -204,8 +203,8 @@
 @include media($mobile-portrait) {
   .thread-data .post-block .post-content .display-name { float: none; width: 100%; }
   .thread-controls-wrap {
-    .one-third-column { @include span-columns(8); }
-    .two-thirds-column {
+    .controls.one-third-column { @include span-columns(8); }
+    .controls.two-thirds-column {
       text-align: center;
       @include span-columns(8);
       .control:last-child { margin-right: 0; }
@@ -228,6 +227,7 @@
     height: 2.5rem;
     .tool-wrap .tool-container {
       line-height: 2.5rem;
+      padding: 0 $base-grid-padding;
       .left-col { @include span-columns(5); }
       .right-col {
         @include span-columns(3);

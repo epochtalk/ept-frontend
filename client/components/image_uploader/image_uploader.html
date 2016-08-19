@@ -1,19 +1,22 @@
 <input type="file" accept="image/*" style="display: none;">
 
 <div ng-if="imagesUploading" style="text-align: center">
-  <div class="progress">
+  <div class="progress" ng-class="{ 'progress-editor': purpose === 'editor'}">
     <span class="meter" ng-style="{ width: imagesProgress }"></span>
   </div>
 </div>
 
-<div ng-if="!imagesUploading">
+<div ng-if="!imagesUploading && purpose !== 'editor'">
   Drag and drop images here or
   <a ng-href="#" ng-click="openImagePicker()">click here</a>
 
   <div ng-if="model && purpose === 'avatar'" class="profile-avatar-container">
     <img ng-src="{{ model }}" />
   </div>
+</div>
 
+<div ng-if="purpose === 'editor'" class="upload-editor">
+  <a data-balloon="Upload Images" ng-click="openImagePicker()"><i class="fa fa-picture-o" aria-hidden="true"></i></a>
   <span ng-if="images.length > 0 && purpose === 'editor'">
     (<a ng-click="openImageModal()">
       <span ng-if="images.length === 1">

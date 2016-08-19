@@ -241,14 +241,20 @@
   <div class="post-editor-overlay" ng-show="ModerationCtrl.showEditor"></div>
 
   <div class="editor-fixed-bottom" ng-class="ModerationCtrl.editorPosition" ng-show="ModerationCtrl.showEditor" resizeable="ModerationCtrl.resize">
-
     <!-- Editor Container-->
     <div class="editor-container">
       <!-- Editor Header -->
       <div class="editor-top-bar">
         <div class="buttons">
-        <button ng-click="ModerationCtrl.showFormatting = true"><i class="fa fa-code"></i>&nbsp;&nbsp;Format</button>
-        <button ng-click="ModerationCtrl.fullscreen()"><i class="fa" ng-class="{ 'fa-expand': ModerationCtrl.isMinimized, 'fa-compress': !ModerationCtrl.isMinimized }"></i>&nbsp;&nbsp;{{ ModerationCtrl.isMinimized ? 'Fullscreen' : 'Minimize' }}</button>
+
+          <div class="left toolbar-title" title="Click to go to this post" ng-if="ModerationCtrl.posting.post.id">
+              Editing Post:&nbsp;&nbsp;<a ui-sref="posts.data({ threadId: ModerationCtrl.previewReport.offender_thread_id, '#': ModerationCtrl.previewReport.offender_post_id })">{{ ModerationCtrl.posting.post.id }}</a>
+            </a>
+          </div>
+
+          <div class="left toolbar-title" ng-if="!ModerationCtrl.posting.post.id">
+            New Post in "{{ ModerationCtrl.thread.title}}"
+          </div>
         </div>
 
         <div class="editor-formatting" ng-if="ModerationCtrl.showFormatting">
@@ -324,17 +330,25 @@
         </div>
       </div>
       <!-- Editor -->
-      <form name="form" class="editor-form" novalidate>
+      <form name="form" class="editor-form admin" novalidate>
         <epochtalk-editor class="posts-editor" body="ModerationCtrl.posting.post.body" raw-body="ModerationCtrl.posting.post.raw_body" reset-switch="ModerationCtrl.resetEditor" focus-switch="ModerationCtrl.focusEditor" dirty="ModerationCtrl.dirtyEditor" quote="ModerationCtrl.quote">
         </epochtalk-editor>
       </form>
+
+      <div class="editor-tools">
+        <div class="tools">
+          <a data-balloon="Formatting Help" ng-click="ModerationCtrl.showFormatting = true"><i class="fa fa-code"></i></a>
+          <a data-balloon="{{ ModerationCtrl.isMinimized ? 'Expand Editor' : 'Minimize Editor' }}" ng-click="ModerationCtrl.fullscreen()"><i class="fa expand" ng-class="{ 'fa-expand': ModerationCtrl.isMinimized, 'fa-compress': !ModerationCtrl.isMinimized }"></i></a>
+        </div>
+      </div>
+
       <!-- Editor Controls -->
-      <div class="editor-button-container">
-        <button class="cancel" ng-click="ModerationCtrl.cancelPost()">
+      <div class="editor-button-container admin">
+        <button class="inverted-button cancel" ng-click="ModerationCtrl.cancelPost()">
           Cancel
         </button>
         <button class="send" ng-click="ModerationCtrl.savePost()" ng-disabled="form.title.$error.required || !ModerationCtrl.canSave()">
-          Send
+          <i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Send Reply
         </button>
 
         <span class="label alert" ng-if="ModerationCtrl.posting.error" ng-bind="ModerationCtrl.posting.error.message"></span>

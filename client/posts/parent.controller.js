@@ -109,6 +109,17 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
       return show;
     };
 
+    this.showThreadControls = function() {
+      if (!ctrl.loggedIn()) { return false; }
+
+      var show = false;
+      if (ctrl.canLock()) { show = true; }
+      if (ctrl.canSticky()) { show = true; }
+      if (ctrl.canPurge()) { show = true; }
+      if (ctrl.canMove()) { show = true; }
+      return show;
+    };
+
     // Poll Permissions
     this.canCreatePoll = function() {
       if (!ctrl.loggedIn()) { return false; }
@@ -450,6 +461,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
 
     this.closeReportModal = function() {
       $timeout(function() {
+        ctrl.reportedPost.reported = true;
         ctrl.showReportModal = false;
         ctrl.offendingId = undefined;
         ctrl.reportReason = '';

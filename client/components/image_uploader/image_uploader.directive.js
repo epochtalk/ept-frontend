@@ -150,18 +150,42 @@ var directive = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3Imag
       });
 
       // drap and drop implementation
-      var $parent = $element.parent();
+      var $parent = $scope.purpose === 'editor' ? angular.element('.editor-input') : $element.parent();
+      var $dragZone = angular.element('.editor-drag-container');
+
       var cancelEvent = function(e) {
         e.stopPropagation();
         e.preventDefault();
+        if ($dragZone) {
+          $dragZone.addClass('visible');
+        }
       };
-      $parent.on('dragenter', cancelEvent);
-      $parent.on('dragover', cancelEvent);
-      $parent.on('drop', function(e) {
-        cancelEvent(e);
+
+      var removeDrag = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        if ($dragZone) {
+          $dragZone.removeClass('visible');
+        }
+      };
+
+      var dropEvent = function(e) {
+        removeDrag(e);
         var dt = e.dataTransfer || e.originalEvent.dataTransfer;
         cullImages(dt.files);
-      });
+      };
+
+      $parent.on('dragenter', cancelEvent);
+      $parent.on('dragover', cancelEvent);
+      $dragZone.on('dragenter', cancelEvent);
+      $dragZone.on('dragover', cancelEvent);
+      $dragZone.on('dragend', removeDrag);
+      $dragZone.on('dragexit', removeDrag);
+      $dragZone.on('dragleave', removeDrag);
+
+      $parent.on('drop', dropEvent);
+      $dragZone.on('drop', dropEvent);
+
     }
   };
 }];
