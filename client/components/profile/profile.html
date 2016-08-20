@@ -17,9 +17,9 @@
     <div class="profile-row">
       <div class="profile-avatar-container">
         <a ng-href="#" ng-if="vm.canUpdate()" ng-click="vm.openEditAvatar()">
-          <img ng-src="{{vm.user.avatar || 'https://fakeimg.pl/400x400/ccc/444?text=' + vm.user.username }}" />
+          <img ng-src="{{vm.user.avatar || 'https://fakeimg.pl/400x400/ccc/444?text=' + vm.user.username }}" class="image-loader" />
         </a>
-        <img ng-if="!vm.canUpdate()" ng-src="{{vm.user.avatar || 'https://fakeimg.pl/400x400/ccc/444?text=' + vm.user.username}}" />
+        <img ng-if="!vm.canUpdate()" ng-src="{{vm.user.avatar || 'https://fakeimg.pl/400x400/ccc/444?text=' + vm.user.username}}" class="image-loader"/>
         <a ng-href="#" class="after" ng-if="vm.canUpdate()" ng-click="vm.openEditAvatar()">
           <div>Change Avatar</div>
         </a>
@@ -291,7 +291,10 @@
 <modal class="medium" show="vm.editAvatar">
   <form name="$parent.form" novalidate>
     <h3 class="thin-underline">Edit Avatar</h3>
-    <label>Avatar address
+    <label>
+      Avatar URL
+      <br>
+      <small>Hotlinked images will receive a new url</small>
       <input type="text" name="avatar" ng-model="vm.editAvatarUser.avatar" auto-focus="$parent.focus" />
     </label>
     <image-uploader model="vm.editAvatarUser.avatar" purpose="avatar"></image-uploader>

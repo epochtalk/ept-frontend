@@ -99,17 +99,23 @@ header {
         #user-dropdown-wrap {
           min-width: 125px;
           position: relative;
-          div {
+          > div {
             text-align: left;
             padding: 0 10px;
             height: inherit;
             display: table-cell;
             vertical-align: middle;
+            .imageContainer { background: url('/static/img/loading.gif') no-repeat center; display: inline;}
+            .imageContainer.loaded { background: none; }
+            .avatar.loaded { opacity: 1; }
             .avatar {
+              @include transition(opacity 0.5s ease-in);
               @include border-radius(100px);
+              border: 2px solid $header-logo-font-color;
+              opacity: 0;
               height: 2.1875rem;
               width: 2.1875rem;
-              border: 2px solid $header-logo-font-color;
+              object-fit: cover;
             }
             a { padding-left: 0; }
             span { padding-left: 0.8rem; }

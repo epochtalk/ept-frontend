@@ -8,6 +8,7 @@ module.exports = ['$timeout', function($timeout) {
       var loaded = function() {
         $(element[0]).addClass('loaded');
         element.parent().addClass('loaded');
+        numTries = 0;
       };
 
       var unload = function() {
@@ -25,10 +26,11 @@ module.exports = ['$timeout', function($timeout) {
       // on image error retry
       element.on('error', function() {
         unload();
+        var currentSrc = $(element[0]).attr('ng-src') || element[0].src || src;
 
         $timeout(function() {
           if (numTries < 5) {
-            element[0].src = src;
+            element[0].src = currentSrc;
             numTries++;
           }
           else { loaded(); }
