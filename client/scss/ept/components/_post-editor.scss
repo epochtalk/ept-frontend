@@ -255,6 +255,8 @@
   }
 }
 
+
+
 .editor-button-container.admin {
   padding-left: $base-grid-padding;
   padding-right: $base-grid-padding;
@@ -338,6 +340,29 @@
       }
     }
   }
+}
+
+.editor-form.new-thread {
+  .editor-header a {
+    line-height: 1rem;
+    height: 1.45rem;
+  }
+  .editor-body .editor-input, .editor-body .editor-preview { border: 1px solid $border-color; }
+  .editor-footer {
+    border-top: 0;
+    height: 0;
+    .progress .meter { margin-top: -0.5rem; }
+    .upload-editor {
+      width: $max-width;
+      padding-left: 0;
+      i::after{
+        font-family: $base-font-sans;
+        margin-left: 0.35rem;
+        content: "Click here or drag and drop images in the compose pane to upload";
+      }
+    }
+  }
+  .editor-body { bottom: 2rem; }
 }
 
 .image-picker {
