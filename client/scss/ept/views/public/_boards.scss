@@ -4,7 +4,7 @@
   .title {
     h4 { display: inline-block; padding-left: 0.5rem; }
     a { display: inline-block; width: 1rem; }
-    .collapse-section { @include no-select; cursor: pointer; display: inline-block; }
+    .collapse-section { @include no-select; margin-left: -1.65rem; cursor: pointer; display: inline-block; }
   }
   .board {
     @include row;

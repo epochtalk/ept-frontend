@@ -231,11 +231,17 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
       });
     };
 
+    this.showMoveThreadModal = false;
+    this.closeMoveThreadModal = function() {
+      $timeout(function() { ctrl.showMoveThreadModal = false; });
+    };
+    this.openMoveThreadModal = function() { ctrl.showMoveThreadModal = true; };
     this.moveThread = function() {
       var newBoardId = ctrl.moveBoard.id;
       return Threads.move({id: ctrl.thread.id}, {newBoardId: newBoardId}).$promise
       .then(function() { $state.go($state.$current, null, {reload:true}); })
-      .catch(function() { Alert.error('Error Moving Thread'); });
+      .catch(function() { Alert.error('Error Moving Thread'); })
+      .finally(function() { ctrl.showMoveThreadModal = false; });
     };
 
     this.showPurgeThreadModal = false;
@@ -455,6 +461,7 @@ var ctrl = [ '$scope', '$timeout', '$location', '$filter', '$state', 'Session', 
 
     this.closeReportModal = function() {
       $timeout(function() {
+        ctrl.reportedPost.reported = true;
         ctrl.showReportModal = false;
         ctrl.offendingId = undefined;
         ctrl.reportReason = '';

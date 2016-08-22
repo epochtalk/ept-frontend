@@ -178,7 +178,6 @@ header {
     @include pad(0 $base-grid-padding);
     background-color: $breadcrumbs-bg-color;
     border-bottom: 1px solid $breadcrumbs-border-color;
-    box-shadow: 0px 2px 6px $breadcrumbs-shadow-color;
     text-align: center;
     height: $breadcrumbs-height;
     margin-bottom: $breadcrumbs-bottom-margin;
