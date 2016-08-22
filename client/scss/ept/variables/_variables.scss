@@ -29,7 +29,7 @@ $placeholder-text-color: lighten($header-bg-color, 20%);
 @if (lightness($header-bg-color) > 50) { $placeholder-text-color: darken($header-bg-color, 20%); }
 
 // Spacing Calculated
-$base-grid-padding: 1rem;
+$base-grid-padding: 2rem;
 
 // Primary Layout Colors Calculated
 $color-primary-alt: lighten($color-primary, 30%);
