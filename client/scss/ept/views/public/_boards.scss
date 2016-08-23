@@ -8,7 +8,7 @@
   }
   .board {
     @include row;
-    @include pad(0 0 1rem 0);
+    @include pad(0 0 1.5rem 0);
     .info {
       @include span-columns(7);
       .description, .childboards { font-size: 0.875rem; }

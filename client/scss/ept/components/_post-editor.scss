@@ -359,6 +359,9 @@
         font-family: $base-font-sans;
         margin-left: 0.35rem;
         content: "Click here or drag and drop images in the compose pane to upload";
+        @include media($mobile) {
+          content: "Click here to upload images";
+        }
       }
     }
   }
@@ -474,7 +477,7 @@
   @include media($mobile) {
     height: 300px;
     .editor-column-left { @include span-columns(8); @include omega; }
-    .editor-footer, .editor-column-preview { display: none; }
+    .editor-column-preview { display: none; }
     .editor-body { bottom: 0px; }
   }
 }

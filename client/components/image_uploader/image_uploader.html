@@ -16,7 +16,7 @@
 </div>
 
 <div ng-if="purpose === 'editor'" class="upload-editor">
-  <a data-balloon="Upload Images" data-balloon-pos="left" ng-click="openImagePicker()"><i class="fa fa-picture-o" aria-hidden="true"></i></a>
+  <a data-balloon="Upload Images" ng-click="openImagePicker()"><i class="fa fa-picture-o" aria-hidden="true"></i></a>
   <span ng-if="images.length > 0 && purpose === 'editor'">
     (<a ng-click="openImageModal()">
       <span ng-if="images.length === 1">
