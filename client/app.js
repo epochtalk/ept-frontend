@@ -113,6 +113,11 @@ app
       // logout from private board (returns a 404)
       else if (error.status === 404 && prev.name === 'threads.data') { $state.go('boards'); }
       // 404 Not Found
+      else if (error.status === 404 && next.name === 'threads.data') {
+        $state.go('404');
+        $state.next = next;
+        $state.nextParams = nextParams;
+      }
       else if (error.status === 404) { $state.go('404'); }
       // 503 Service Unavailable
       else { $state.go('503'); }

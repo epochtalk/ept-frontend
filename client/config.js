@@ -23,12 +23,20 @@ module.exports = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '
     });
 
     $stateProvider.state('404', {
-      views: { 'body': { template: require('./layout/404.html') } },
+      parent: 'public-layout',
+      views: {
+        'header': { template: require('./layout/header.html') },
+        'content': { template: require('./layout/404.html') }
+      },
       resolve: { $title: function() { return '404 Not Found'; } }
     });
 
     $stateProvider.state('503', {
-      views: { 'body': { template: require('./layout/503.html') } },
+      parent: 'public-layout',
+      views: {
+        'header': { template: require('./layout/header.html') },
+        'content': { template: require('./layout/503.html') }
+      },
       resolve: { $title: function() { return '503 Service Unavailable'; } }
     });
 
