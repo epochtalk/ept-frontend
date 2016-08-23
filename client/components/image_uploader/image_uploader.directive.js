@@ -4,6 +4,7 @@ var directive = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3Imag
     scope: {
       model: '=',
       purpose: '@',
+      reset: '=',
       onDone: '&'
     },
     template: require('./image_uploader.html'),
@@ -30,6 +31,10 @@ var directive = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3Imag
       else if ($scope.purpose === 'favicon') {
         $(inputElement).attr('accept', 'image/x-icon, image/png');
       }
+
+      $scope.$watch(function() { return $scope.reset; }, function(newValue) {
+        if (newValue) { $scope.images = []; $scope.reset = false; }
+      });
 
       // image upload function
       function upload(fsImages) {
@@ -185,7 +190,6 @@ var directive = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3Imag
 
       $parent.on('drop', dropEvent);
       $dragZone.on('drop', dropEvent);
-
     }
   };
 }];

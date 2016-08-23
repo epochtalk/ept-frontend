@@ -76,10 +76,6 @@ var directive = ['$timeout', '$window', '$rootScope', '$filter', function($timeo
       $editor.on('blur', onChange);
       $editor.on('input', onChange);
 
-      // scoll binding
-      $editor.on('scroll', function() { preview.scrollTop = editor.scrollTop; });
-      $preview.on('scroll', function() { editor.scrollTop = preview.scrollTop; });
-
       // -- Page Exit Eventing
 
       var confirmMessage = 'It looks like a post is being written.';
@@ -131,9 +127,10 @@ var directive = ['$timeout', '$window', '$rootScope', '$filter', function($timeo
       };
 
       // resets the editor
+      $scope.resetImages = false;
       $scope.resetEditor = function() {
         initEditor();
-        $scope.images = [];
+        $scope.resetImages = true;
         $scope.resetSwitch = false;
       };
 
