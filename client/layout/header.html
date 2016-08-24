@@ -17,8 +17,48 @@
       </li>
     </ul>
 
+    <!-- User Dropdown Mobile -->
+    <ul ng-if="HeaderCtrl.loggedIn()" class="show-mobile">
+      <i ng-click="HeaderCtrl.showMobileMenu = true" class="fa fa-bars fa-lg burger" aria-hidden="true"></i>
+    </ul>
+    <div class="burger-menu" ng-class="{ 'open' : HeaderCtrl.showMobileMenu }">
+      <a ng-click="HeaderCtrl.showMobileMenu = false" class="profile" ui-sref="profile.posts({ username: HeaderCtrl.currentUser.username })">
+        <img ng-src="{{ HeaderCtrl.currentUser.avatar }}" class="avatar image-loader">
+        <span class="username" ng-bind-html="HeaderCtrl.currentUser.username"></span>
+      </a>
+      <div class="close-menu" ng-click="HeaderCtrl.showMobileMenu = false">
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </div>
+      <ul>
+        <li ng-click="HeaderCtrl.showMobileMenu = false" ng-if="HeaderCtrl.hasPermission('adminAccess')">
+          <a ui-sref="^.admin">Admin Panel</a>
+        </li>
+        <li ng-click="HeaderCtrl.showMobileMenu = false" ng-if="HeaderCtrl.hasPermission('modAccess') && !HeaderCtrl.hasPermission('adminAccess')">
+          <a ui-sref="^.admin-moderation">Mod Panel</a>
+        </li>
+        <li ng-click="HeaderCtrl.showMobileMenu = false" ng-if="HeaderCtrl.isPatroller()">
+          <a ui-sref="patrol.data">Patrol</a>
+        </li>
+        <li ng-click="HeaderCtrl.showMobileMenu = false" >
+          <a ui-sref="profile.posts({ username: HeaderCtrl.currentUser.username })">Profile</a>
+        </li>
+        <li ng-click="HeaderCtrl.showMobileMenu = false" >
+          <a ui-sref="user-search" ui-sref-opts="{ reload: true }">Member Search</a>
+        </li>
+        <li ng-click="HeaderCtrl.showMobileMenu = false" >
+          <a ui-sref="messages">Messages</a>
+        </li>
+        <li ng-click="HeaderCtrl.showMobileMenu = false" >
+          <a ui-sref="watchlist">Watchlist</a>
+        </li>
+        <li ng-click="HeaderCtrl.showMobileMenu = false" >
+          <a ng-href="#" ng-click="HeaderCtrl.logout()">Logout</a>
+        </li>
+      </ul>
+    </div>
+
     <!-- User Dropdown -->
-    <ul ng-if="HeaderCtrl.loggedIn()">
+    <ul ng-if="HeaderCtrl.loggedIn()" class="hide-mobile">
       <!-- <li class="search">
         <form action="" autocomplete="off">
           <div>
