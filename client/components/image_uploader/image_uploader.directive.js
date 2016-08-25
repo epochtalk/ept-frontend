@@ -19,7 +19,14 @@ var directive = ['$timeout', 'S3ImageUpload', 'Alert', function($timeout, s3Imag
       // more images modal
       $scope.imageModal = false;
       $scope.openImageModal = function() { $scope.imageModal = true; };
-      $scope.fireDone = function(url) { $scope.onDone({ data: url }); };
+      $scope.fireDone = function(image) {
+        image.added = true;
+        $scope.onDone({ data: image.url });
+        setTimeout(function() {
+          image.added = false;
+          $scope.$apply();
+        }, 1000);
+      };
 
       // input initialization
       if ($scope.purpose === 'avatar') {

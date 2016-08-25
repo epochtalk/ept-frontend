@@ -35,7 +35,7 @@
     <li ng-repeat="image in images">
       <div class="image-picker-cell">
         <!-- image picker header -->
-        <div class="header" >
+        <div class="header" ng-class="{ added: image.added }" >
           (<span ng-bind="image.progress"></span>%):
           <a ng-href="{{image.url}}" target="_blank" ng-if="image.url">
             <span ng-bind="image.name"></span>
@@ -44,9 +44,12 @@
         </div>
         <!-- image picker body -->
         <div class="picker-body">
-          <img ng-src="{{image.url}}" ng-click="fireDone(image.url)"/>
-          <a ng-href="#" class="after" ng-if="image.url" ng-click="fireDone(image.url)">
-            <div>Add to Editor</div>
+          <img ng-src="{{image.url}}" ng-click="fireDone(image)"/>
+          <a class="after" ng-if="image.url" ng-click="fireDone(image)">
+            <div>
+              <span class="stroke" ng-if="!image.added">Add to Editor</span>
+              <span ng-if="image.added"><strong>Added!</strong></span>
+            </div>
           </a>
         </div>
       </div>

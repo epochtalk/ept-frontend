@@ -21,7 +21,9 @@
       padding-left: 0.3125rem;
       border-bottom: 2px solid $border-color;
       font-size: 0.8125rem;
+      transition: background-color 1s;
     }
+    .header.added { background-color: $color-primary; }
     .picker-body {
       @include fill-parent;
       @include clearfix;

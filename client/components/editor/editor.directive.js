@@ -36,13 +36,11 @@ var directive = ['$timeout', '$window', '$rootScope', '$filter', function($timeo
       // editor input elements
       var editor = $element[0].getElementsByClassName('editor-input')[0];
       var $editor = angular.element(editor);
-      // editor preview elements
-      var preview = $element[0].getElementsByClassName('editor-preview')[0];
-      var $preview = angular.element(preview);
 
       // -- Images
 
       $scope.insertImageUrl = function(url) {
+        $scope.preview = false; // show compose tab
         if (!url) { return; }
         editor.focus();
         var inserted = $editor.val() + '[img]' + url + '[/img]';
@@ -99,6 +97,7 @@ var directive = ['$timeout', '$window', '$rootScope', '$filter', function($timeo
       // directive initialization and reset
       var initEditor = function() {
         // on load ng-model body to editor and preview
+        $scope.preview = false; // show compose tab
         if ($scope.rawBody && $scope.rawBody.length > 0) {
           $scope.rawBody = $filter('decode')($scope.rawBody);
           $editor.val($scope.rawBody);
