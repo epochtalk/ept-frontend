@@ -18,10 +18,12 @@
     </ul>
 
     <!-- User Dropdown Mobile -->
-    <ul ng-if="HeaderCtrl.loggedIn()" class="show-mobile">
+    <ul ng-if="HeaderCtrl.loggedIn()" class="burger-icon">
+      <div class="burger-notification show-mobile" ng-if="HeaderCtrl.notificationMessages()"></div>
       <i ng-click="HeaderCtrl.showMobileMenu = true" class="fa fa-bars fa-lg burger" aria-hidden="true"></i>
     </ul>
-    <div class="burger-menu" ng-class="{ 'open' : HeaderCtrl.showMobileMenu }">
+    <div class="burger-close-overlay" ng-if="HeaderCtrl.showMobileMenu" ng-click="HeaderCtrl.showMobileMenu = false"></div>
+    <div class="burger-menu show-mobile" ng-class="{ 'open' : HeaderCtrl.showMobileMenu }">
       <a ng-click="HeaderCtrl.showMobileMenu = false" class="profile" ui-sref="profile.posts({ username: HeaderCtrl.currentUser.username })">
         <img ng-src="{{ HeaderCtrl.currentUser.avatar }}" class="avatar image-loader">
         <span class="username" ng-bind-html="HeaderCtrl.currentUser.username"></span>
@@ -31,28 +33,29 @@
       </div>
       <ul>
         <li ng-click="HeaderCtrl.showMobileMenu = false" ng-if="HeaderCtrl.hasPermission('adminAccess')">
-          <a ui-sref="^.admin">Admin Panel</a>
+          <a ui-sref="^.admin"><i class="fa fa-cogs" aria-hidden="true"></i>Admin Panel</a>
         </li>
         <li ng-click="HeaderCtrl.showMobileMenu = false" ng-if="HeaderCtrl.hasPermission('modAccess') && !HeaderCtrl.hasPermission('adminAccess')">
-          <a ui-sref="^.admin-moderation">Mod Panel</a>
+          <a ui-sref="^.admin-moderation"><i class="fa fa-cogs" aria-hidden="true"></i>Mod Panel</a>
         </li>
         <li ng-click="HeaderCtrl.showMobileMenu = false" ng-if="HeaderCtrl.isPatroller()">
-          <a ui-sref="patrol.data">Patrol</a>
+          <a ui-sref="patrol.data"><i class="fa fa-binoculars" aria-hidden="true"></i>Patrol</a>
         </li>
         <li ng-click="HeaderCtrl.showMobileMenu = false" >
-          <a ui-sref="profile.posts({ username: HeaderCtrl.currentUser.username })">Profile</a>
+          <a ui-sref="profile.posts({ username: HeaderCtrl.currentUser.username })"><i class="fa fa-user" aria-hidden="true"></i>Profile</a>
         </li>
         <li ng-click="HeaderCtrl.showMobileMenu = false" >
-          <a ui-sref="user-search" ui-sref-opts="{ reload: true }">Member Search</a>
+          <a ui-sref="user-search" ui-sref-opts="{ reload: true }"><i class="fa fa-users" aria-hidden="true"></i>Member Search</a>
         </li>
         <li ng-click="HeaderCtrl.showMobileMenu = false" >
-          <a ui-sref="messages">Messages</a>
+          <a ui-sref="messages" ng-click="HeaderCtrl.dismissNotifications('message')"><i class="fa fa-envelope" aria-hidden="true"></i>Messages</a>
+          <div class="count" ng-if="HeaderCtrl.notificationMessages()" ng-bind-html="HeaderCtrl.notificationMessages()"></div>
         </li>
         <li ng-click="HeaderCtrl.showMobileMenu = false" >
-          <a ui-sref="watchlist">Watchlist</a>
+          <a ui-sref="watchlist"><i class="fa fa-eye" aria-hidden="true"></i>Watchlist</a>
         </li>
         <li ng-click="HeaderCtrl.showMobileMenu = false" >
-          <a ng-href="#" ng-click="HeaderCtrl.logout()">Logout</a>
+          <a ng-href="#" ng-click="HeaderCtrl.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
         </li>
       </ul>
     </div>
