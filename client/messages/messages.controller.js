@@ -269,7 +269,7 @@ var ctrl = [
     this.reportSubmitted = false;
     this.closeReportModal = function() {
       $timeout(function() {
-        ctrl.reportedMessage.reported = true;
+        if (ctrl.reportedMessage) { ctrl.reportedMessage.reported = true; }
         ctrl.showReportModal = false;
         ctrl.reportedMessage = null;
         ctrl.reportReason = '';
