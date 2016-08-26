@@ -21,7 +21,7 @@
 .button, button, button:focus, .button:focus {
   @include border-radius(2px);
   @include transition(color 0.15s ease, background-color 0.15s ease);
-  border: 0;
+  border: 1px solid $color-primary;
   background-color: $color-primary;
   border-color: $color-primary;
   font-size: 1rem;
