@@ -7,7 +7,7 @@
       <pagination page-count="ThreadsWrapperCtrl.pageCount" page="ThreadsWrapperCtrl.page"></pagination>
     </div>
     <div class="moderators" ng-if="ThreadsWrapperCtrl.board.moderators.length > 0">
-      <strong>Moderators: </strong>
+      <span class="label">Moderators: </span>
       <a ui-sref="profile.posts({ username: mod.username })" ng-repeat="mod in ThreadsWrapperCtrl.board.moderators" ng-bind="mod.username + ($last ? '' : ', ')"></a>
     </div>
   </div>

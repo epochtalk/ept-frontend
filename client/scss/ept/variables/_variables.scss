@@ -65,6 +65,10 @@ $header-login-font-color: $header-logo-font-color;
 $header-dropdown-bg-color: darken(rgba($header-bg-color, 0.98), 8%);
 $header-dropdown-shadow-color: rgba(0, 0, 0, 0.3);
 
+//Sub header color
+$sub-header-font-color: color-contrast($sub-header-color);
+$sub-header-secondary-font-color: darken($sub-header-font-color, 10%);
+
 // Breadcrumbs Calculated
 $breadcrumbs-height: 2.8125rem;
 $breadcrumbs-font-size: $header-login-font-size;

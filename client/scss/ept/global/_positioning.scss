@@ -32,7 +32,8 @@
   margin-bottom: 1rem;
   div:first-child {
     @include span-columns(6);
-    h4 { font-weight: bold; display: inline; }
+    color: $sub-header-font-color;
+    h4 { color: $sub-header-font-color; font-weight: bold; display: inline; }
     input { margin-bottom: 0.5rem; @include transition(none); }
     button { @include span-columns(6); margin-bottom: 0;}
     button:last-child { @include omega; }
@@ -41,7 +42,11 @@
     @include span-columns(6);
     @include omega;
     pagination { float: right; }
-    &.moderators { @include span-columns(12); @include omega; }
+    &.moderators {
+      @include span-columns(12);
+      @include omega;
+      .label { font-weight: bold; color: $sub-header-secondary-font-color; }
+    }
   }
 
   @include media($mobile) {
