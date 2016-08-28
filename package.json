@@ -1,6 +1,6 @@
 {
   "name": "ept-frontend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Default Frontend Implementation for Epochtalk",
   "main": "index.js",
   "scripts": {
@@ -8,5 +8,5 @@
   },
   "author": "Edward Kim",
   "license": "ISC",
-  "dependencies": { }
+  "dependencies": {}
 }
