@@ -17,8 +17,8 @@ module.exports = ['$filter', function ($filter) {
     }
     else {
       if (isToday) { result = 'Today at ' +  $filter('date')(dateStr, 'h:mm a'); }
-      else if (isThisYear) { result = $filter('date')(dateStr, 'MMMM d at h:mm a'); }
-      else { result = $filter('date')(dateStr, 'MMMM d, y at h:mm a'); }
+      else if (isThisYear) { result = $filter('date')(dateStr, 'MMMM d \'at\' h:mm a'); }
+      else { result = $filter('date')(dateStr, 'MMMM d, y \'at\' h:mm a'); }
     }
     return result;
   };
