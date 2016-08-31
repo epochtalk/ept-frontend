@@ -37,15 +37,24 @@
   <br />
   <h3 class="role-header">{{AdminManagementCtrl.selectedRole.name}} ({{AdminManagementCtrl.userData.count}} users)</h3>
   <div class="add-users">
-    <a ng-show="AdminManagementCtrl.canViewAddUsersControl()" ng-click="AdminManagementCtrl.showAddUsers = !AdminManagementCtrl.showAddUsers">
-      <i class="fa fa-plus"></i> Add Users
+    <a ng-show="AdminManagementCtrl.userData.count > 0" ng-click="AdminManagementCtrl.showFilterUsers = !AdminManagementCtrl.showFilterUsers">
+      <i class="fa fa-search"></i> Filter Users
     </a>
-    <span ng-show="AdminManagementCtrl.selectedRole.lookup === 'banned'">
-      Visit the <a ui-sref="^.users">Users Tab</a> to ban
-    </span>
   </div>
   <br /><br />
-  <div ng-show="AdminManagementCtrl.showAddUsers">
+  <div ng-if="AdminManagementCtrl.userData.count > 0">
+    <div ng-if="AdminManagementCtrl.showFilterUsers" class="roles user-search">
+      <div class="nested-input-container">
+        <a ng-if="AdminManagementCtrl.search" ng-click="AdminManagementCtrl.clearSearch()" class="nested-clear-btn fa fa-times"></a>
+        <a ng-click="AdminManagementCtrl.searchUsers()" class="nested-btn">Search</a>
+        <input class="nested-input" ng-model="AdminManagementCtrl.searchStr" type="text" id="search-users" placeholder="Search users by username" ng-keydown="$event.which === 13 && AdminManagementCtrl.searchUsers()" ng-keyup="$event.which === 27 && AdminManagementCtrl.clearSearch()" />
+      </div>
+    </div>
+    <div class="clear"></div>
+    <span ng-show="AdminManagementCtrl.selectedRole.lookup === 'banned'">
+      Visit the <a ui-sref="^.users">Users Tab</a> to ban users
+    </span>
+  <div ng-show="AdminManagementCtrl.canViewAddUsersControl()">
     <tags-input min-length="1" placeholder="Type username to add" add-from-autocomplete-only="true" replace-spaces-with-dashes="false" ng-model="AdminManagementCtrl.usersToAdd">
       <auto-complete min-length="1" debounce-delay="250" source="AdminManagementCtrl.loadTags($query)"></auto-complete>
     </tags-input>
@@ -54,14 +63,6 @@
       <button class="half-button" ng-click="AdminManagementCtrl.addUsers()" ng-disabled="!AdminManagementCtrl.usersToAdd || AdminManagementCtrl.usersToAdd.length < 1">Add User(s)</button>
     </div>
   </div>
-  <div ng-if="AdminManagementCtrl.userData.count > 0">
-    <div class="roles user-search">
-      <div class="nested-input-container">
-        <a ng-if="AdminManagementCtrl.search" ng-click="AdminManagementCtrl.clearSearch()" class="nested-clear-btn fa fa-times"></a>
-        <a ng-click="AdminManagementCtrl.searchUsers()" class="nested-btn">Search</a>
-        <input class="nested-input" ng-model="AdminManagementCtrl.searchStr" type="text" id="search-users" placeholder="Search users by username" ng-keydown="$event.which === 13 && AdminManagementCtrl.searchUsers()" ng-keyup="$event.which === 27 && AdminManagementCtrl.clearSearch()" />
-      </div>
-    </div>
     <table class="underlined" width="100%">
       <thead>
         <th>Username</th>

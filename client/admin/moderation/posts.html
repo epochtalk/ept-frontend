@@ -348,7 +348,7 @@
           Cancel
         </button>
         <button class="send" ng-click="ModerationCtrl.savePost()" ng-disabled="form.title.$error.required || !ModerationCtrl.canSave()">
-          <i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Send Reply
+          <i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Edit Post
         </button>
 
         <span class="label alert" ng-if="ModerationCtrl.posting.error" ng-bind="ModerationCtrl.posting.error.message"></span>

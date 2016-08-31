@@ -19,7 +19,7 @@
       .imageContainer { background: url('/static/img/loading.gif') no-repeat center; display: inline;}
       img {
         @include transition(opacity 0.5s ease-in);
-        width: 100%; 
+        width: 100%;
         opacity: 0;
         object-fit: cover;
       }
@@ -70,7 +70,7 @@
 }
 .profile-posts, & {
   .profile-row {
-    .title { @include span-columns(2); font-weight: 600; }
+    .title { @include span-columns(3); font-weight: 600; }
     .pagination-wrap {
       @include span-columns(9);
       @include omega;
@@ -80,12 +80,12 @@
   }
 }
 .profile-posts table {
-  word-break: break-all;
-  .truncate-title { width: 185px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  table-layout: fixed;
+  .truncate-title { width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .post-body {
     white-space: pre-wrap;
     &.closed {
-      width: 545px;
+      width: 100%;
       max-height: 18px;
       white-space: nowrap;
       overflow: hidden;
@@ -114,6 +114,7 @@
       text-align: center;
     }
   }
+  .profile-row.profile-action { text-align: center; }
   .mobile-post-time { color: $secondary-font-color; padding-bottom: 1rem; }
   .mobile-post { padding: 1rem; }
   .mobile-post:nth-child(even) { background: $sub-header-color; }
