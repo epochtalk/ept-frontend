@@ -159,6 +159,7 @@ header {
           line-height: $header-height;
           cursor: pointer;
         }
+        &.signed-out li { padding-left: 1.25rem; }
         &.signed-out li a {
           display: table-cell;
           height: inherit;
