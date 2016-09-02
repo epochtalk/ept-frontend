@@ -36,6 +36,7 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
     // Patrol
     this.isPatroller = function() {
       var patrol = false;
+      if (!ctrl.loggedIn()) { return patrol; }
       this.currentUser.roles.map(function(role) {
         if (role === 'patroller') { patrol = true; }
       });

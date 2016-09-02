@@ -27,10 +27,7 @@ var route = ['$stateProvider', function($stateProvider) {
         if (Session.isAuthenticated && Session.hasPermission('messages.latest.allow')) {
           return Messages.latest().$promise;
         }
-        else {
-          Alert.error('You do not have access to this page.');
-          return $q.reject('NoPageChange');
-        }
+        else { return $q.reject({ status: 401, statusText: 'Unauthorized' }); }
       }]
     }
   });

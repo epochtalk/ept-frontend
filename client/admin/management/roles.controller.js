@@ -15,7 +15,7 @@ var ctrl = ['$rootScope', '$scope', '$location', 'Session', 'Alert', 'AdminRoles
   this.searchStr = search;
   this.roleId = roleId;
   this.selectedRole = null;
-  this.showAddUsers = false;
+  this.showFilterUsers = false;
   this.maxPriority = null;
   this.newRole = {};
   this.basedRoleId = null;
@@ -178,7 +178,7 @@ var ctrl = ['$rootScope', '$scope', '$location', 'Session', 'Alert', 'AdminRoles
         view = ctrl.selectedRole.priority > Session.user.permissions.priority;
       }
     }
-    if (ctrl.showAddUsers) { ctrl.showAddUsers = view; }
+    if (ctrl.showFilterUsers) { ctrl.showFilterUsers = view; }
     return view;
   };
 

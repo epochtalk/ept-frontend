@@ -24,6 +24,11 @@ var route = ['$stateProvider', function($stateProvider) {
           deferred.resolve();
         });
         return deferred.promise;
+      }],
+      authCheck: ['$q', 'Session', function($q, Session) {
+        var authed = Session.isAuthenticated();
+        if (authed) { return authed; }
+        else { return $q.reject({ status: 401, statusText: 'Unauthorized' }); }
       }]
     }
   });

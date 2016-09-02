@@ -159,6 +159,7 @@ header {
           line-height: $header-height;
           cursor: pointer;
         }
+        &.signed-out li { padding-left: 1.25rem; }
         &.signed-out li a {
           display: table-cell;
           height: inherit;
@@ -168,7 +169,7 @@ header {
         li a {
           color: $header-login-font-color;
           font-size: $header-login-font-size;
-          padding-left: 1.25rem; }
+        }
         form, form div { height: inherit; }
         .search {
           position: relative;
