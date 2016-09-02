@@ -11,7 +11,7 @@ function ($stateParams, $location, Breadcrumbs) {
 
   var pathLookup = {
     home: {
-      state: '^.boards',
+      state: '^.home',
       label: 'Home'
     },
     profiles: {

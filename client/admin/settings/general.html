@@ -38,6 +38,25 @@
   <image-uploader class="editor-image-uploader" model="AdminSettingsCtrl.settings.website.favicon" purpose="favicon"></image-uploader>
   <input type="text" class="input-text" id="website-favicon" ng-model="AdminSettingsCtrl.settings.website.favicon" placeholder="favicon.ico" />
 
+  <!-- Portal Configurations -->
+  <h5 class="thin-underline section-header-top-spacing">Portal Configurations</h5>
+  <div class="setting-row">
+    <div class="switch-desc">
+      <label for="public-forum">Enable Portal</label>
+      <label class="desc-label" for="public-forum">Default the homepage to the portal</label>
+    </div>
+    <div class="switch-block">
+      <input id="portal-enabled" class="toggle-switch" type="checkbox" ng-model="AdminSettingsCtrl.settings.portal.enabled">
+      <label for="portal-enabled"></label>
+    </div>
+  </div>
+  <div class="setting-row">
+    <label for="portal-boardId">Board to Show</label>
+    <div class="control-full-width">
+      <select name="boards" id="portal-boardId" ng-model="AdminSettingsCtrl.settings.portal.board_id" ng-options="board.id as board.name group by board.parent_name for board in AdminSettingsCtrl.boards | orderBy:board.view_order"></select>
+    </div>
+  </div>
+
   <!-- Analytics -->
   <h5 class="thin-underline section-header-top-spacing">Google Analytics</h5>
   <label for="google-analytics-key">Google Analytics Key</label>

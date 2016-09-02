@@ -27,7 +27,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
     else if (Session.hasPermission('modAccess.boardBans')) {
       $state.go('admin-moderation.board-bans', {}, {location: 'replace'});
     }
-    else { $state.go('boards', {}, {location: 'replace'}); }
+    else { $state.go('home', {}, {location: 'replace'}); }
   }];
 
   $urlRouterProvider.when('/admin/moderation', moderationRedirect);

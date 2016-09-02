@@ -33,13 +33,13 @@ var adminRoute = ['$stateProvider', '$urlRouterProvider', function($stateProvide
         $state.go('admin-settings.general', {}, {location: 'replace'}); }
       else if (Session.hasPermission('adminAccess.settings.advanced')) { $state.go('admin-settings.advanced', {}, {location: 'replace'}); }
       else if (Session.hasPermission('adminAccess.settings.theme')) { $state.go('admin-settings.theme', {}, {location: 'replace'}); }
-      else { $state.go('boards', {}, {location: 'replace'}); }
+      else { $state.go('home', {}, {location: 'replace'}); }
     }
     else if (Session.hasPermission('adminAccess.management')) {
       if (Session.hasPermission('adminAccess.management.boards')) { $state.go('admin-management.boards', {}, {location: 'replace'}); }
       else if (Session.hasPermission('adminAccess.management.users')) { $state.go('admin-management.users', {}, {location: 'replace'}); }
       else if (Session.hasPermission('adminAccess.management.roles')) { $state.go('admin-management.roles', {}, {location: 'replace'}); }
-      else { $state.go('boards', {}, {location: 'replace'}); }
+      else { $state.go('home', {}, {location: 'replace'}); }
     }
     else if (Session.hasPermission('modAccess')) {
       if (Session.hasPermission('modAccess.users')) {
@@ -51,9 +51,9 @@ var adminRoute = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       else if (Session.hasPermission('modAccess.messages')) {
         $state.go('admin-moderation.messages', { filter: 'Pending'}, { location: 'replace' });
       }
-      else { $state.go('boards', {}, {location: 'replace'}); }
+      else { $state.go('home', {}, {location: 'replace'}); }
     }
-    else { $state.go('boards', {}, {location: 'replace'}); }
+    else { $state.go('home', {}, {location: 'replace'}); }
   }];
 
   $urlRouterProvider.when('/admin', adminRedirect);

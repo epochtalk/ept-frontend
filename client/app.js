@@ -30,6 +30,7 @@ var ngDeps = [
   'ngTagsInput',
   require('oclazyload'),
   require('./layout/header.controller'),
+  require('./portal'),
   require('./boards'),
   // users
   require('./users/confirm'),
@@ -69,6 +70,7 @@ require('./boards/resource');
 require('./threads/resource');
 require('./posts/resource');
 require('./patrol/resource');
+require('./portal/resource');
 
 // Set Angular Configs
 app
@@ -80,6 +82,20 @@ app
 
   // Fetch website configs (title, logo, favicon)
   $rootScope.$webConfigs = forumData;
+
+  $rootScope.$on('$stateChangeStart', function (event, toState) {
+    if (toState.name === 'home') {
+      event.preventDefault();
+
+      // fork between portal and home here
+      if ($rootScope.$webConfigs.portal.enabled) {
+        $state.go('portal', {}, { reload: true});
+      }
+      else {
+        $state.go('boards', {}, { reload: true });
+      }
+    }
+  });
 
   // Dynamically populate breadcrumbs
   $rootScope.$on('$stateChangeSuccess', function() {
@@ -107,17 +123,23 @@ app
         $state.next = next;
         $state.nextParams = nextParams;
       }
-      // Forbidden redirect home
-      else if (error.status === 403 || error.statusText === 'Forbidden' && next.name !== 'boards') { $state.go('boards'); }
-      else if (error.status === 429) { Alert.error('Too Many Requests'); }
-      // logout from private board (returns a 404)
-      else if (error.status === 404 && prev.name === 'threads.data') { $state.go('boards'); }
-      // 404 Not Found
-      else if (error.status === 404 && next.name === 'threads.data') {
+      // Forbidden
+      else if (error.status === 403 || error.statusText === 'Forbidden') {
         $state.go('404');
         $state.next = next;
         $state.nextParams = nextParams;
       }
+      // Too Many Requests
+      else if (error.status === 429) { Alert.error('Too Many Requests'); }
+      // logout from private board or thread (returns a 404)
+      else if (error.status === 404 && (prev.name === 'threads.data' || prev.name === 'posts.data')) { $state.go('home'); }
+      // 404 Not Found
+      else if (error.status === 404 && (next.name === 'threads.data' || next.name === 'posts.data')) {
+        $state.go('404');
+        $state.next = next;
+        $state.nextParams = nextParams;
+      }
+      // 404 catch all
       else if (error.status === 404) { $state.go('404'); }
       // 503 Service Unavailable
       else { $state.go('503'); }

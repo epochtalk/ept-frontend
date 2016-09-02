@@ -1,4 +1,4 @@
-var ctrl = ['$scope', 'settings', 'AdminSettings', 'Alert', function($scope, settings, AdminSettings, Alert) {
+var ctrl = ['$scope', '$filter', 'settings', 'AdminSettings', 'AdminBoards', 'Alert', function($scope, $filter, settings, AdminSettings, AdminBoards, Alert) {
   var ctrl = this;
 
   // Tab control
@@ -19,6 +19,19 @@ var ctrl = ['$scope', 'settings', 'AdminSettings', 'Alert', function($scope, set
   this.showAccessKey = false;
   this.showSecretKey = false;
   this.showSmtpPass = false;
+
+  // get boards for portal select
+  this.boards = [];
+  function getBoards() {
+    return AdminBoards.moveBoards().$promise
+    .then(function(allBoards) {
+      ctrl.boards = allBoards || [];
+      ctrl.boards.map(function(board) {
+        board.name = $filter('decode')(board.name); // decode html entities
+      });
+    });
+  }
+  getBoards();
 
   // Save action
   $scope.child.save = function() {

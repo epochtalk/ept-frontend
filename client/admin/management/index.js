@@ -22,7 +22,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
     else if (Session.hasPermission('adminAccess.management.bannedAddresses')) {
       $state.go('admin-management.banned-addresses', {}, {location: 'replace'});
     }
-    else { $state.go('boards', {}, {location: 'replace'}); }
+    else { $state.go('home', {}, {location: 'replace'}); }
   }];
 
   // Default child state for admin-management is users

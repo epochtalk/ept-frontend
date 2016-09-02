@@ -3,7 +3,7 @@
 
 module.exports = ['$filter', function ($filter) {
   return function(dateStr, hideTime) {
-    var result, format;
+    var result;
     var now = new Date();
     var maxDate = new Date(8640000000000000);
     var date = new Date(dateStr);
@@ -17,8 +17,8 @@ module.exports = ['$filter', function ($filter) {
     }
     else {
       if (isToday) { result = 'Today at ' +  $filter('date')(dateStr, 'h:mm a'); }
-      else if (isThisYear) { result = $filter('date')(dateStr, 'MMMM d \'at\' h:mm a'); }
-      else { result = $filter('date')(dateStr, 'MMMM d, y \'at\' h:mm a'); }
+      else if (isThisYear) { result = $filter('date')(dateStr, "MMMM d 'at' h:mm a"); }
+      else { result = $filter('date')(dateStr, "MMMM d, y 'at' h:mm a"); }
     }
     return result;
   };

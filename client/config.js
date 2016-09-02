@@ -40,6 +40,8 @@ module.exports = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '
       resolve: { $title: function() { return '503 Service Unavailable'; } }
     });
 
+    $stateProvider.state('home', { url: '/' });
+
     // 404 without redirecting user from current url
     $urlRouterProvider.otherwise(function($injector){
        var state = $injector.get('$state');

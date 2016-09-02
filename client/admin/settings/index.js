@@ -24,7 +24,7 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
     else if (Session.hasPermission('adminAccess.settings.theme')) {
       $state.go('admin-settings.theme', {}, {location: 'replace'});
     }
-    else { $state.go('boards', {}, {location: 'replace'}); }
+    else { $state.go('home', {}, {location: 'replace'}); }
   }];
 
   $urlRouterProvider.when('/admin/settings', adminSettingsRedirect);
