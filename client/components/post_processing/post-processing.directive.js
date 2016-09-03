@@ -40,6 +40,31 @@ module.exports = ['$timeout', '$filter', '$compile', function($timeout, $filter,
         return wrap.innerHTML;
       };
 
+      // Auto video embed Regex
+      var autoVideoRegex = /((http(s)?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/gi;
+      var autoVideo = function(url) {
+        var key = '';
+        var temp = new URL(url);
+
+        // parse url for youtube key
+        if (url.indexOf('youtube') > 0) { key = temp.searchParams.get('v'); }
+        else { key = temp.pathname.replace('/', ''); }
+
+        // create youtube iframe
+        var wrap = document.createElement('div');
+        var frame = document.createElement('iframe');
+        frame.width = 600;
+        frame.height = 480;
+        frame.src = 'https://www.youtube.com/embed/' + key;
+        frame.setAttribute('frameborder', 0);
+        frame.setAttribute('allowfullscreen', '');
+        wrap.appendChild(frame);
+
+        // return content
+        if (key) { return wrap.innerHTML; }
+        else { return url; }
+      };
+
       // Style Fix Regex
       var styleFixRegex = /(class="bbcode-\S*")/ig;
       var styleFix = function(styleString) {
@@ -96,6 +121,7 @@ module.exports = ['$timeout', '$filter', '$compile', function($timeout, $filter,
 
         // autoDate and autoLink
         processed = processed.replace(autoDateRegex, autoDate) || processed;
+        processed = processed.replace(autoVideoRegex, autoVideo) || processed;
         processed = processed.replace(autoLinkRegex, autoLink) || processed;
 
         // styleFix
