@@ -43,19 +43,33 @@ module.exports = ['$timeout', '$filter', '$compile', function($timeout, $filter,
       // Auto video embed Regex
       var autoVideoRegex = /((http(s)?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/gi;
       var autoVideo = function(url) {
-        var key = '';
         var temp = new URL(url);
 
+        // create query params dict
+        var queryParams = {};
+        var query = temp.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+          var pair = vars[i].split("=");
+          queryParams[pair[0]] = pair[1];
+        }
+
         // parse url for youtube key
-        if (url.indexOf('youtube') > 0) { key = temp.searchParams.get('v'); }
+        var key = '';
+        if (url.indexOf('youtube') > 0) { key = queryParams.v; }
         else { key = temp.pathname.replace('/', ''); }
+
+        // time search param
+        var time = queryParams.t;
+        var src = 'https://www.youtube.com/embed/' + key;
+        if (time) { src += '?start=' + time; }
 
         // create youtube iframe
         var wrap = document.createElement('div');
         var frame = document.createElement('iframe');
-        frame.width = 600;
-        frame.height = 480;
-        frame.src = 'https://www.youtube.com/embed/' + key;
+        frame.width = 640;
+        frame.height = 360;
+        frame.src = src;
         frame.setAttribute('frameborder', 0);
         frame.setAttribute('allowfullscreen', '');
         wrap.appendChild(frame);
