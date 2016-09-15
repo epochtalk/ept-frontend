@@ -186,10 +186,41 @@ header {
             border: none;
             box-shadow: none;
             margin: 0;
-            padding: 0 0.4rem 0 2rem;
-            width: 250px;
+            padding: 0;
+            width: 0;
+            -webkit-transition: width 0.5s ease-in-out;
+            -moz-transition: width 0.5s ease-in-out;
+            -o-transition: width 0.5s ease-in-out;
+            transition: width 0.5s ease-in-out;
           }
-          label { color: $header-logo-font-color; position: absolute; left: 0.4rem; top: 1rem; bottom: 1rem; }
+          .search-input-minimized {
+            width: 0;
+            cursor: default;
+            -webkit-transition: width 0.5s ease-in-out;
+            -moz-transition: width 0.5s ease-in-out;
+            -o-transition: width 0.5s ease-in-out;
+            transition: width 0.5s ease-in-out;
+          }
+          .search-input-expanded {
+            width: 250px;
+            cursor: auto;
+            -webkit-transition: width 0.5s ease-in-out;
+            -moz-transition: width 0.5s ease-in-out;
+            -o-transition: width 0.5s ease-in-out;
+            transition: width 0.5s ease-in-out;
+          }
+          label {
+            @include pad(0 1rem);
+            color: $header-logo-font-color;
+            line-height: $header-height;
+            &:hover {
+              background-color:  $header-dropdown-bg-color;
+            }
+            &.search-label-expanded {
+              background-color: transparent;
+              &:hover { background-color: transparent; }
+            }
+          }
         }
         #notifications-tray {
           line-height: $header-height;
@@ -200,7 +231,9 @@ header {
             display: inline-block;
             color: $header-logo-font-color;
             position: relative;
-            &:hover { background-color:  $header-dropdown-bg-color; }
+            &:hover {
+              background-color:  $header-dropdown-bg-color;
+            }
             .count {
               @include pad(0 0.125rem);
               @include border-radius(0.2rem);
@@ -274,10 +307,6 @@ header {
       }
     }
 
-    // Mobile Menu Layout
-    @include media($mobile) {
-      #menu ul .search { display: none; }
-    }
   }
 
   #breadcrumbs-wrap {

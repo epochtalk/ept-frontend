@@ -68,16 +68,16 @@
     </div>
 
     <!-- User Dropdown -->
-    <ul ng-if="HeaderCtrl.loggedIn()" class="hide-mobile">
-      <!-- <li class="search">
-        <form action="" autocomplete="off">
-          <div>
-            <input class="search-input" type="text" name="search" placeholder="Search" autocomplete="off" />
-            <label for="search" class="icon-epoch-search"></label>
+    <ul ng-if="HeaderCtrl.loggedIn()">
+      <li class="search" ng-init="HeaderCtrl.focusSearch = false" >
+        <form class="search-btn" autocomplete="off" ng-submit="HeaderCtrl.searchForum()">
+          <div data-balloon="Search" data-balloon-pos="down">
+            <label for="search" class="fa fa-search" ng-class="{ 'search-label-expanded' : HeaderCtrl.searchExpanded || HeaderCtrl.focusSearch }" ng-click="HeaderCtrl.toggleFocusSearch()"></label>
+            <input class="search-input" ng-model="HeaderCtrl.searchTerms" ng-class="{ 'search-input-expanded' : HeaderCtrl.focusSearch, 'search-input-minimized' : !HeaderCtrl.focusSearch }" type="text" name="search" placeholder="Search" autocomplete="off" disable-init-focus="true" auto-focus="HeaderCtrl.focusSearch" />
           </div>
         </form>
-      </li> -->
-      <li id="notifications-tray">
+      </li>
+      <li id="notifications-tray" class="hide-mobile">
         <!-- <div class="tray-icon">
           <i class="fa fa-at"></i>
           <div class="count" ng-if="HeaderCtrl.notificationMentions()" ng-bind-html="HeaderCtrl.notificationMentions()"></div>
@@ -94,7 +94,7 @@
           <div class="count" ng-if="HeaderCtrl.notificationOther" ng-bind-html="HeaderCtrl.notificationOther"></div>
         </div> -->
       </li>
-      <li id="user-dropdown-wrap">
+      <li id="user-dropdown-wrap" class="hide-mobile">
         <div>
           <a ui-sref="profile.posts({ username: HeaderCtrl.currentUser.username })">
             <img ng-src="{{ HeaderCtrl.currentUser.avatar }}" class="avatar image-loader">
