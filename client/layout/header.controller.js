@@ -48,6 +48,23 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
     this.notificationMentions = NotificationSvc.getMentions;
     this.dismissNotifications = NotificationSvc.dismiss;
 
+    // Search
+    this.searchTerms = null;
+    this.searchExpanded = false;
+    this.focusSearch = false;
+    this.searchForum = function() {
+      ctrl.toggleFocusSearch();
+      $state.go('search-posts', { search: ctrl.searchTerms }, { reload: false });
+      ctrl.searchTerms = null;
+    };
+
+    this.toggleFocusSearch = function() {
+      ctrl.focusSearch = !ctrl.focusSearch;
+      $timeout(function() {
+        ctrl.searchExpanded = ctrl.focusSearch;
+      }, 500);
+    };
+
     // Login/LogOut
     this.user = {};
     this.showLogin = false;
