@@ -39,6 +39,8 @@ var adminRoute = ['$stateProvider', '$urlRouterProvider', function($stateProvide
       if (Session.hasPermission('adminAccess.management.boards')) { $state.go('admin-management.boards', {}, {location: 'replace'}); }
       else if (Session.hasPermission('adminAccess.management.users')) { $state.go('admin-management.users', {}, {location: 'replace'}); }
       else if (Session.hasPermission('adminAccess.management.roles')) { $state.go('admin-management.roles', {}, {location: 'replace'}); }
+      else if (Session.hasPermission('adminAccess.management.invitations')) {
+        $state.go('admin-management.invitations', {}, {location: 'replace'}); }
       else { $state.go('home', {}, {location: 'replace'}); }
     }
     else if (Session.hasPermission('modAccess')) {

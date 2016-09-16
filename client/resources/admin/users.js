@@ -32,6 +32,10 @@ module.exports = ['$resource',
       resetPassword: {
         method: 'POST',
         url: '/api/admin/recover'
+      },
+      register: {
+        method: 'POST',
+        url: '/api/join'
       }
     });
   }

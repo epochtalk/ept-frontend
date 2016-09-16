@@ -3,10 +3,12 @@
 .inline-block { display: inline-block; }
 .right { float: right; }
 .left { float: left; }
+.centered { text-align: center; }
 .centered-text { text-align: center; }
 .clear { @include clearfix; }
 .show-mobile { display: none; @include media($mobile) { display: inline-block; } }
 .hide-mobile { @include media($mobile) { display: none !important; } }
+.padding-top { padding-top: 1rem; }
 
 /*-- Banner Message Layout --*/
 .banner-container {

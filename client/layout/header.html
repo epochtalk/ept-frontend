@@ -56,6 +56,11 @@
         <li ng-click="HeaderCtrl.showMobileMenu = false" >
           <a ui-sref="watchlist"><i class="fa fa-eye" aria-hidden="true"></i>Watchlist</a>
         </li>
+        <li ng-click="HeaderCtrl.showMobileMenu = false" ng-if="HeaderCtrl.canInvite()">
+          <a ng-click="HeaderCtrl.showInvite = true">
+            <i class="fa fa-eye" aria-hidden="true"></i>Invite User
+          </a>
+        </li>
         <li ng-click="HeaderCtrl.showMobileMenu = false" >
           <a ng-href="#" ng-click="HeaderCtrl.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
         </li>
@@ -115,6 +120,11 @@
           <li>
             <a ui-sref="watchlist">Watchlist</a>
           </li>
+          <li ng-if="HeaderCtrl.canInvite()">
+            <a ng-click="HeaderCtrl.showInvite = true">
+              Invite User
+            </a>
+          </li>
           <li>
             <a ng-href="#" ng-click="HeaderCtrl.logout()">Logout</a>
           </li>
@@ -138,5 +148,7 @@
 
 <div id="ban-notice" ng-if="HeaderCtrl.isBanned()" ng-bind-html="HeaderCtrl.isBanned()">
 </div>
+
+<invite show="HeaderCtrl.showInvite"></invite>
 
 <alert></alert>

@@ -22,6 +22,9 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
     else if (Session.hasPermission('adminAccess.management.bannedAddresses')) {
       $state.go('admin-management.banned-addresses', {}, {location: 'replace'});
     }
+    else if (Session.hasPermission('adminAccess.management.invitations')) {
+      $state.go('admin-management.invitations', {}, {location: 'replace'});
+    }
     else { $state.go('home', {}, {location: 'replace'}); }
   }];
 
@@ -235,6 +238,37 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           search: $stateParams.search
         };
         return Bans.pageBannedAddresses(query).$promise;
+      }]
+    }
+  })
+  .state('admin-management.invitations', {
+    url: '/invitations?page&limit',
+    reloadOnSearch: false,
+    views: {
+      'data@admin-management': {
+        controller: 'InvitationsCtrl',
+        controllerAs: 'AdminManagementCtrl',
+        templateUrl: '/static/templates/admin/management/invitations.html'
+      }
+    },
+    resolve: {
+      userAccess: adminCheck('management.invitations'),
+      $title: function() { return 'Invitations'; },
+      loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
+        var deferred = $q.defer();
+        require.ensure([], function() {
+          require('./invitations.controller');
+          $ocLazyLoad.load({ name: 'ept.admin.management.invitations.ctrl' });
+          deferred.resolve();
+        });
+        return deferred.promise;
+      }],
+      pageData: ['Invitations', '$stateParams', function(Invitations, $stateParams) {
+        var query = {
+          limit: Number($stateParams.limit) || 25,
+          page: Number($stateParams.page) || 1,
+        };
+        return Invitations.list(query).$promise;
       }]
     }
   });

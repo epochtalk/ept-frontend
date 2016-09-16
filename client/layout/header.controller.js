@@ -43,6 +43,14 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
       return patrol;
     };
 
+    // invitations
+    this.canInvite = function() {
+      var isAuthed = Session.isAuthenticated();
+      var hasPermission = Session.hasPermission('users.invite');
+      if (isAuthed && hasPermission) { return true; }
+      else { return false; }
+    };
+
     // Notifications
     this.notificationMessages = NotificationSvc.getMessages;
     this.notificationMentions = NotificationSvc.getMentions;
@@ -119,7 +127,7 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
         }
       })
       .catch(function(err) {
-        if (err.data && err.data.message) { Alert.error(err.data.message); }
+        if (err.status === 423) { Alert.error(err.data.message); }
         else { Alert.error('Registration Error'); }
       });
     };

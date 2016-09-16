@@ -1,5 +1,6 @@
 /*-- General --*/
 .green { color: green; }
+.red { color: red; }
 .pointer { cursor: pointer; }
 .default-cursor { cursor: default; }
 .error-label { @include label(error,  0.6875rem, 2px, 0.1rem); }

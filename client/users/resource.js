@@ -63,6 +63,10 @@ var resource = ['$resource',
         method: 'POST',
         url: '/api/users/:id/reactivate',
         params: { id: '@id' }
+      },
+      join: {
+        method: 'POST',
+        url: '/api/join'
       }
     });
   }

@@ -22,6 +22,16 @@
       <label for="verify-registration"></label>
     </div>
   </div>
+  <div class="setting-row">
+    <div class="switch-desc">
+      <label for="invite-only">Invite Only</label>
+      <label class="desc-label" for="invite-only">Disable public registration</label>
+    </div>
+    <div class="switch-block">
+      <input id="invite-only" class="toggle-switch" type="checkbox" ng-model="AdminSettingsCtrl.settings.invite_only">
+      <label for="invite-only"></label>
+    </div>
+  </div>
 
   <!-- Web Configurations -->
   <h5 class="thin-underline section-header-top-spacing">Web Configurations</h5>
