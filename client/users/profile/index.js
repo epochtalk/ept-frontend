@@ -7,7 +7,8 @@ var route = ['$stateProvider', function($stateProvider) {
       'content': {
         controller: [ function() {} ],
         controllerAs: 'ProfileCtrl',
-        template: require('./profile.html')
+        template: '<profile user="ProfileCtrl.user"></profile>'
+
       }
     },
     resolve: {

@@ -6,6 +6,7 @@
   .imageContainer.loaded { background: none; }
   .imageContainer { background: url('/static/img/loading.gif') no-repeat center; display: inline;}
   ul, ol { @include pad(0 0 0 1.15rem); }
+  ul { white-space: normal }
   img.loaded { opacity: 1; }
   img { @include transition(opacity 0.5s ease-in); opacity: 0; }
 }

@@ -320,7 +320,7 @@
   <form name="$parent.form" class="css-form" novalidate>
     <h3 class="thin-underline">Edit Signature</h3>
     <label>Signature
-      (<span ng-bind="vm.editSigUser.raw_signature.length"></span>/5000)
+      (<span ng-bind="vm.editSigUser.raw_signature.length || 0"></span>/5000)
       <textarea type="text" rows="10" placeholder="Signature" ng-model="vm.editSigUser.raw_signature" auto-focus="$parent.focus" maxlength="5000"></textarea>
     </label>
     <!-- Save Button -->

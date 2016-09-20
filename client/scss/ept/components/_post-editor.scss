@@ -146,6 +146,7 @@
       padding: 1rem;
       resize: none;
       ul, ol { margin-left: 1.25rem; }
+      ul { white-space: normal; }
     }
     .editor-drag-container {
       display: none;
