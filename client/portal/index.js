@@ -2,7 +2,6 @@ var ctrl = require('./portal.controller.js');
 
 var route = ['$stateProvider', function($stateProvider) {
   $stateProvider.state('portal', {
-    url: '/portal',
     parent: 'public-layout',
     views: {
       'content': {

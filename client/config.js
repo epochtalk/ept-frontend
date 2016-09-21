@@ -40,7 +40,27 @@ module.exports = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '
       resolve: { $title: function() { return '503 Service Unavailable'; } }
     });
 
-    $stateProvider.state('home', { url: '/' });
+    $stateProvider.state('home', {
+      parent: 'public-layout',
+      url: '/',
+      views: {
+        'content': {
+          controller: ['$rootScope', '$state', function($rootScope, $state) {
+            var action;
+            var enabled = $rootScope.$webConfigs.portal.enabled;
+
+            // fork between portal and boards here
+            if (enabled) { action = $state.go('portal', {}, { reload: true }); }
+            else { action = $state.go('boards', {}, { reload: true }); }
+
+            return action.catch(function() {
+              $rootScope.$webConfigs.portal.enabled = false;
+              $state.go('boards', {}, { reload: true });
+            });
+          }]
+        }
+      },
+    });
 
     // 404 without redirecting user from current url
     $urlRouterProvider.otherwise(function($injector){

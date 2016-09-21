@@ -84,20 +84,6 @@ app
   // Fetch website configs (title, logo, favicon)
   $rootScope.$webConfigs = forumData;
 
-  $rootScope.$on('$stateChangeStart', function (event, toState) {
-    if (toState.name === 'home') {
-      event.preventDefault();
-
-      // fork between portal and home here
-      if ($rootScope.$webConfigs.portal.enabled) {
-        $state.go('portal', {}, { reload: true});
-      }
-      else {
-        $state.go('boards', {}, { reload: true });
-      }
-    }
-  });
-
   // Dynamically populate breadcrumbs
   $rootScope.$on('$stateChangeSuccess', function() {
     // update title
