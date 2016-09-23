@@ -70,12 +70,7 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
       .then(function() {
         ctrl.showLogin = false;
         ctrl.clearLoginFields();
-        if ($state.current.name === 'login') { // handle login via login page
-          $state.go($state.next, $state.nextParams, { reload: true });
-          $state.next = undefined;
-          $state.nextParams = undefined; //clear out next state info after redirect
-        }
-        else if ($state.current.name === '404' && $state.next) {
+        if ($state.next) {
           $state.go($state.next, $state.nextParams, { reload: true });
           $state.next = undefined;
           $state.nextParams = undefined; //clear out next state info after redirect

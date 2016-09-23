@@ -22,6 +22,15 @@ module.exports = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '
       resolve: { $title: function() { return 'Login'; } }
     });
 
+    $stateProvider.state('403', {
+      parent: 'public-layout',
+      views: {
+        'header': { template: require('./layout/header.html') },
+        'content': { template: require('./layout/403.html') }
+      },
+      resolve: { $title: function() { return 'Private Forum'; } }
+    });
+
     $stateProvider.state('404', {
       parent: 'public-layout',
       views: {
@@ -53,9 +62,12 @@ module.exports = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '
             if (enabled) { action = $state.go('portal', {}, { reload: true }); }
             else { action = $state.go('boards', {}, { reload: true }); }
 
-            return action.catch(function() {
-              $rootScope.$webConfigs.portal.enabled = false;
-              $state.go('boards', {}, { reload: true });
+            return action.catch(function(err) {
+              if (err.status === 403) { throw err; }
+              else {
+                $rootScope.$webConfigs.portal.enabled = false;
+                $state.go('boards', {}, { reload: true });
+              }
             });
           }]
         }

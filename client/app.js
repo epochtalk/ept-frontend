@@ -105,14 +105,14 @@ app
       if (error === 'NoPageChange') { return; }
 
       // Unauthorized is redirected to login, save next so we can redirect after login
-      if (error.status === 401 || error.statusText === 'Unauthorized') {
+      if (error.status === 401) {
         $state.go('login');
         $state.next = next;
         $state.nextParams = nextParams;
       }
       // Forbidden
-      else if (error.status === 403 || error.statusText === 'Forbidden') {
-        $state.go('404');
+      else if (error.status === 403 && error.statusText === 'Forbidden') {
+        $state.go('403');
         $state.next = next;
         $state.nextParams = nextParams;
       }
