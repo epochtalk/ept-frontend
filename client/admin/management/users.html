@@ -48,8 +48,7 @@
         <td class="email-column" ng-class="{'hide-mobile': AdminManagementCtrl.tableFilter == 1 }"><a ng-href="mailto:{{user.email}}" ng-bind="user.email"></a></td>
         <td ng-show="AdminManagementCtrl.tableFilter == 1" ng-bind="user.ban_expiration | humanDate:true"></td>
         <td class="hide-mobile" ng-bind="user.created_at | humanDate"></td>
-        <!-- TODO: CHANGE THIS TO LAST LOGIN DATE -->
-        <td class="hide-mobile" ng-bind="user.created_at | humanDate"></td>
+        <td class="hide-mobile" ng-bind="(user.last_active | humanDate) || '--'"></td>
         <td class="hide-mobile">
           <span ng-repeat="ip in user.user_ips track by $index">
             <span ng-bind="ip"></span>{{ !$last ? ', ' : '' }}

@@ -1,6 +1,6 @@
 {
   "name": "ept-frontend",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Default Frontend Implementation for Epochtalk",
   "main": "index.js",
   "scripts": {
