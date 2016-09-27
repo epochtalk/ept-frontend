@@ -61,6 +61,7 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
     this.searchExpanded = false;
     this.focusSearch = false;
     this.searchForum = function() {
+      ctrl.collapseMobileKeyboard();
       ctrl.toggleFocusSearch();
       $state.go('search-posts', { search: ctrl.searchTerms }, { reload: false });
       ctrl.searchTerms = null;
@@ -80,11 +81,14 @@ var ctrl = ['$scope', '$location', '$timeout', '$state', '$stateParams', 'Auth',
       $timeout(function() { ctrl.user = {}; }, 500);
     };
 
+    this.collapseMobileKeyboard = function() { document.activeElement.blur(); };
+
     this.login = function() {
       if (ctrl.user.username.length === 0 || ctrl.user.password.length === 0) { return; }
 
       Auth.login(ctrl.user)
       .then(function() {
+        ctrl.collapseMobileKeyboard();
         ctrl.showLogin = false;
         ctrl.clearLoginFields();
         if ($state.next) {

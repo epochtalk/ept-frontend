@@ -1,6 +1,6 @@
 <!-- Login Modal -->
 <modal show="HeaderCtrl.showLogin" on-close="HeaderCtrl.clearLoginFields()">
-  <form name="$parent.form" class="css-form" novalidate>
+  <form action="." name="$parent.form" class="css-form" ng-submit="$event.preventDefault();" novalidate>
     <h3 class="thin-underline">Login</h3>
     <input type="text" class="input-text" placeholder="Username" ng-model="HeaderCtrl.user.username" auto-focus="$parent.focus" required>
     <label>
@@ -12,7 +12,7 @@
       Remember Me
     </label>
     <div class="clear">
-      <button class=" fill-row" ng-click="HeaderCtrl.login()" ng-disabled="$parent.form.$invalid || $parent.form.$errors || HeaderCtrl.user.password.length < 8">
+      <button class=" fill-row" ng-click="HeaderCtrl.login()" type="submit" ng-disabled="$parent.form.$invalid || $parent.form.$errors || HeaderCtrl.user.password.length < 8">
         Login
       </button>
     </div>

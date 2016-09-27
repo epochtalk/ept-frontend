@@ -1,5 +1,5 @@
 <!-- Menu -->
-<div id="menu-wrap">
+<div id="menu-wrap" ng-class="{ 'mobile-expanded' : HeaderCtrl.focusSearch }">
   <nav id="menu">
     <!-- Logo Section -->
     <h3>
@@ -70,10 +70,10 @@
     <!-- User Dropdown -->
     <ul ng-if="HeaderCtrl.loggedIn()">
       <li class="search" ng-init="HeaderCtrl.focusSearch = false" >
-        <form class="search-btn" autocomplete="off" ng-submit="HeaderCtrl.searchForum()">
-          <div data-balloon="Search" data-balloon-pos="down">
+        <form action="." class="search-btn" autocomplete="off" ng-submit="$event.preventDefault(); HeaderCtrl.searchForum()">
+          <div class="balloon" data-balloon="Search" data-balloon-pos="down">
             <label for="search" class="fa fa-search" ng-class="{ 'search-label-expanded' : HeaderCtrl.searchExpanded || HeaderCtrl.focusSearch }" ng-click="HeaderCtrl.toggleFocusSearch()"></label>
-            <input class="search-input" ng-model="HeaderCtrl.searchTerms" ng-class="{ 'search-input-expanded' : HeaderCtrl.focusSearch, 'search-input-minimized' : !HeaderCtrl.focusSearch }" type="text" name="search" placeholder="Search" autocomplete="off" disable-init-focus="true" auto-focus="HeaderCtrl.focusSearch" />
+            <input class="search-input" ng-model="HeaderCtrl.searchTerms" ng-class="{ 'search-input-expanded' : HeaderCtrl.focusSearch, 'search-input-minimized' : !HeaderCtrl.focusSearch }" type="search" name="search" placeholder="Search" autocomplete="off" disable-init-focus="true" auto-focus="HeaderCtrl.focusSearch" />
           </div>
         </form>
       </li>
