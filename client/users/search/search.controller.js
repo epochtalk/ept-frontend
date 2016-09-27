@@ -13,6 +13,7 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll','$location', '$timeout', '$s
     this.searchStr = pageData.search;
 
     this.searchUsers = function() {
+      ctrl.collapseMobileKeyboard();
       if (!ctrl.searchStr.length) {
         ctrl.clearSearch();
         return;
@@ -24,6 +25,8 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll','$location', '$timeout', '$s
       };
       $location.search(ctrl.queryParams);
     };
+
+    this.collapseMobileKeyboard = function() { document.activeElement.blur(); };
 
     this.clearSearch = function() {
       ctrl.queryParams = {

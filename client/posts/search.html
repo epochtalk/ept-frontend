@@ -1,10 +1,12 @@
 <div class="fill-row">
   <div>
-    <div class="nested-input-container">
-      <a ng-if="PostSearchCtrl.search" ng-click="PostSearchCtrl.clearSearch()" class="nested-clear-btn fa fa-times"></a>
-      <a ng-click="PostSearchCtrl.searchPosts()" class="nested-btn">Search</a>
-      <input class="input-text nested-input" ng-model="PostSearchCtrl.searchStr" type="text" id="search-users" placeholder="Search forum posts" ng-keydown="$event.which === 13 && PostSearchCtrl.searchPosts()" ng-keyup="$event.which === 27 && PostSearchCtrl.clearSearch()" />
-    </div>
+    <form action="." ng-submit="$event.preventDefault();">
+      <div class="nested-input-container">
+        <a ng-if="PostSearchCtrl.search" ng-click="PostSearchCtrl.clearSearch()" class="nested-clear-btn fa fa-times"></a>
+        <a ng-click="PostSearchCtrl.searchPosts()" class="nested-btn">Search</a>
+        <input class="input-text nested-input" type="search" ng-model="PostSearchCtrl.searchStr" type="text" id="search-users" placeholder="Search forum posts" ng-keydown="$event.which === 13 && PostSearchCtrl.searchPosts()" ng-keyup="$event.which === 27 && PostSearchCtrl.clearSearch()" />
+      </div>
+    </form>
   </div>
 </div>
 <div class="fill-row search-data" ng-if="PostSearchCtrl.count > 0 || PostSearchCtrl.search">
