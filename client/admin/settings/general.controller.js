@@ -40,7 +40,10 @@ var ctrl = ['$scope', '$filter', 'settings', 'AdminSettings', 'AdminBoards', 'Al
       Alert.success('Successfully saved settings');
       ctrl.originalSettings = angular.copy(ctrl.settings);
     })
-    .catch(function() { Alert.error('Settings could not be updated'); });
+    .catch(function(err) {
+      if (err.status === 422) { Alert.error(err.data.message); }
+      else { Alert.error('Error saving setting'); }
+    });
   };
 
   // Reset action
