@@ -434,10 +434,34 @@
 
 @include media($mobile) {
   .editor-form .editor-body {
-    bottom: 4rem;
+    bottom: 5rem;
+  }
+  .editor-form .editor-header {
+    height: 2.6rem;
+    line-height: 3.5rem;
   }
   .editor-tools {
     bottom: 2.5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    padding: 0 2rem;
+    left: 50vw;
+    z-index: 999;
+    a {
+      font-size: 1.25rem;
+      height: 100%;
+      display: inline-block;
+      padding: 0 0.5rem;
+      z-index:
+      &:last-child {
+        margin-right: -0.5rem;
+      }
+    }
+    .tools {
+      float: none;
+      height: 100%;
+      .expand { margin-left: 0; }
+    }
   }
   .editor-button-container {
     @include row;
@@ -456,7 +480,17 @@
     background-color: transparent;
     border: 0;
     .upload-editor {
-      top: -0.85rem;
+      top: -2rem;
+      padding-left: 2rem;
+      height: 2.5rem;
+      line-height: 2.5rem;
+      a {
+        font-size: 1.25rem;
+        height: 100%;
+        display: inline-block;
+        padding: 0 0.5rem;
+        margin-left: -0.5rem;
+      }
     }
   }
 }

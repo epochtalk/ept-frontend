@@ -58,12 +58,11 @@
   height: 0.25rem;
   border: 0;
   margin-bottom: 0.625rem;
-  width: $max-width;
+  width: $max-width - 2;
   margin-left: 50px;
   top: -1.8rem;
   position: absolute;
   @include media($mobile) {
-    top: -1.3rem;
-    margin-left: 49px;
+    top: -2.3rem;
   }
 }
