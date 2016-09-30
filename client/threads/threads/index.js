@@ -26,9 +26,12 @@ var route = ['$stateProvider', function($stateProvider) {
       loadCtrl: ['$q', '$ocLazyLoad', function($q, $ocLazyLoad) {
         var deferred = $q.defer();
         require.ensure([], function() {
-          var ctrl = require('./threads.controller');
-          $ocLazyLoad.load({ name: 'ept.threads.ctrl' });
-          deferred.resolve(ctrl);
+          require('./threads.controller');
+          $ocLazyLoad.load([
+            { name: 'ept.threads.ctrl' },
+            { name: 'ept.directives.setModerators' }
+          ]);
+          deferred.resolve();
         });
         return deferred.promise;
       }],

@@ -71,7 +71,8 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
             { name: 'ept.admin.management.boards.ctrl' },
             { name: 'ept.directives.category-editor'},
             { name: 'ept.directives.nestable-boards'},
-            { name: 'ept.directives.nestable-categories'}
+            { name: 'ept.directives.nestable-categories'},
+            { name: 'ept.directives.setModerators' }
           ]);
           deferred.resolve();
         });

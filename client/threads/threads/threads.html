@@ -19,6 +19,9 @@
     <a class="inverted-button" ng-click="ThreadsWrapperCtrl.watchBoard()" ng-if="!ThreadsWrapperCtrl.board.watched">
       <i class="icon-epoch-watch"></i>Watch This Board
     </a>
+    <a class="inverted-button" ng-click="ThreadsWrapperCtrl.showSetModerators = true" ng-if="ThreadsWrapperCtrl.canSetModerator()">
+      <i class="icon-epoch-watch"></i>Set Moderators
+    </a>
   </div>
 
   <div class="clear"></div>
@@ -29,3 +32,5 @@
 <div class="fill-row">
   <pagination page-count="ThreadsWrapperCtrl.pageCount" page="ThreadsWrapperCtrl.page"></pagination>
 </div>
+
+<set-moderators board="ThreadsWrapperCtrl.board" show="ThreadsWrapperCtrl.showSetModerators"></set-moderators>

@@ -133,8 +133,18 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll', '$location', '$timeout', 'A
       .catch(function() { Alert.error('Error watching this board'); });
     };
 
+    this.parent.showSetModerators = false;
+    this.parent.canSetModerator = function() {
+      if (!ctrl.loggedIn()) { return false; }
+      if (ctrl.parent.bannedFromBoard) { return false; }
+      if (!Session.hasPermission('adminModerators.add')) { return false; }
+      if (!Session.hasPermission('adminModerators.remove')) { return false; }
+      return true;
+    };
   }
 ];
+
+require('../../components/set_moderators/set-moderators.directive');
 
 module.exports = angular.module('ept.threads.ctrl', [])
 .controller('ThreadsCtrl', ctrl)

@@ -1,10 +1,7 @@
 var rem = require('lodash/remove');
-var get = require('lodash/get');
-var some = require('lodash/some');
-var filter = require('lodash/filter');
 
-var ctrl = ['$timeout', '$location', '$stateParams', '$scope', '$q', '$anchorScroll', 'Alert', 'AdminBoards', 'Boards', 'Categories', 'AdminUsers', 'AdminModerators', 'boards', 'categories', 'roleData',
-  function($timeout, $location, $stateParams, $scope, $q, $anchorScroll, Alert, AdminBoards, Boards, Categories, AdminUsers, AdminModerators, boards, categories, roleData) {
+var ctrl = ['$location', '$stateParams', '$scope', '$q', '$anchorScroll', 'Alert', 'AdminBoards', 'Boards', 'Categories', 'boards', 'categories', 'roleData',
+  function($location, $stateParams, $scope, $q, $anchorScroll, Alert, AdminBoards, Boards, Categories, boards, categories, roleData) {
     this.parent = $scope.$parent.AdminManagementCtrl;
     this.parent.tab = 'boards';
     var ctrl = this;
@@ -45,124 +42,11 @@ var ctrl = ['$timeout', '$location', '$stateParams', '$scope', '$q', '$anchorScr
 
     cleanBoardList();
 
-    this.showModeratorsModal = false;
-    this.nestableBoard = null;
     this.modBoard = null;
-    this.modsToRemove = [];
-    this.modsToAdd = [];
-    this.usersWithBadPermissions = [];
+    this.showModeratorsModal = false;
     $scope.openModeratorsModal = function(board) {
       ctrl.showModeratorsModal = true;
-      ctrl.nestableBoard = board;
-      ctrl.modBoard = angular.copy(board);
-    };
-
-    this.closeModerators = function() {
-      ctrl.showModeratorsModal = false;
-      $timeout(function() {
-        ctrl.nestableBoard = null;
-        ctrl.modBoard = null;
-        ctrl.modsToAdd = [];
-        ctrl.modsToRemove = [];
-        ctrl.usersWithBadPermissions = [];
-      }, 200);
-    };
-
-    this.markModForRemoval = function(username) {
-      this.modsToRemove.push(username);
-      rem(ctrl.modBoard.moderators, function(user) { return user.username === username; });
-    };
-
-    this.checkPermissions = function(mods) {
-      // check that the user has at least one of these permissions set
-      var modPermissions = [
-        'boards.viewUncategorized',
-        'posts.privilegedUpdate',
-        'posts.privilegedDelete',
-        'posts.privilegedPurge',
-        'posts.viewDeleted',
-        'posts.bypassLock',
-        'threads.privilegedTitle',
-        'threads.privilegedLock',
-        'threads.privilegedSticky',
-        'threads.privilegedMove',
-        'threads.privilegedPurge',
-      ];
-      return filter(mods.map(function(mod) {
-        var hasSomeModePrivileges = some(mod.roles.map(function(role) {
-          var hasModPermission = false;
-          modPermissions.forEach(function(perm) {
-            if (get(role.permissions, perm)) { hasModPermission = true; }
-          });
-          return hasModPermission;
-        }));
-        return hasSomeModePrivileges ? undefined : mod.username;
-      }), undefined);
-    };
-
-    this.saveModChanges = function() {
-      ctrl.modsToAdd = ctrl.modsToAdd.map(function(tag) { return tag.text; });
-      var removeParams = { usernames: ctrl.modsToRemove, board_id: ctrl.modBoard.id };
-      var addParams = { usernames: ctrl.modsToAdd, board_id: ctrl.modBoard.id };
-
-      if (ctrl.modsToAdd.length && ctrl.modsToRemove.length) { // Add and Remove mods
-        return AdminModerators.remove(removeParams).$promise
-        .then(function(users) {
-          return users.map(function(user) {
-            rem(ctrl.nestableBoard.moderators, function(oldMod) {
-              return oldMod.username === user.username;
-            });
-          });
-        })
-        .then(function() { Alert.success('Moderators successfully removed'); })
-        .then(function() {
-          return AdminModerators.add(addParams).$promise
-          .then(function(users) {
-            users.forEach(function(user) {
-              ctrl.nestableBoard.moderators.push({ username: user.username, id: user.id });
-            });
-            return users;
-          })
-          .then(function(users) { return ctrl.checkPermissions(users); })
-          .then(function(badPermissionUsers) { ctrl.usersWithBadPermissions = badPermissionUsers; })
-          .then(function() { Alert.success('Moderators successfully added'); });
-        })
-        .catch(function() { Alert.error('There was an error updating moderators'); })
-        .finally(function() {
-          if (!ctrl.usersWithBadPermissions || !ctrl.usersWithBadPermissions.length) { ctrl.closeModerators(); }
-        });
-      }
-      else if (ctrl.modsToAdd.length && !ctrl.modsToRemove.length) { // Add Mods only
-        return AdminModerators.add(addParams).$promise
-        .then(function(users) {
-          users.forEach(function(user) {
-            ctrl.nestableBoard.moderators.push({ username: user.username, id: user.id });
-          });
-          return users;
-        })
-        .then(function(users) { return ctrl.checkPermissions(users); })
-        .then(function(badPermissionUsers) { ctrl.usersWithBadPermissions = badPermissionUsers; })
-        .then(function() { Alert.success('Moderators successfully added'); })
-        .catch(function() { Alert.error('There was an error adding moderators'); })
-        .finally(function() {
-          if (!ctrl.usersWithBadPermissions || !ctrl.usersWithBadPermissions.length) { ctrl.closeModerators(); }
-        });
-      }
-      else { // Remove mods only
-        return AdminModerators.remove(removeParams).$promise
-        .then(function(users) {
-          return users.map(function(user) {
-            rem(ctrl.nestableBoard.moderators, function(oldMod) { return oldMod.username === user.username; });
-          });
-        })
-        .then(function() { Alert.success('Moderators successfully removed'); })
-        .catch(function() { Alert.error('There was an error removing users from moderators'); })
-        .finally(function() { ctrl.closeModerators(); });
-      }
-    };
-
-    this.loadTags = function(query) {
-      return AdminUsers.searchUsernames({ username: query }).$promise;
+      ctrl.modBoard = board;
     };
 
     // 0) Create Categories which have been added
@@ -241,7 +125,7 @@ var ctrl = ['$timeout', '$location', '$stateParams', '$scope', '$q', '$anchorScr
 
     // 5) Updated all Categories
     $scope.processCategories = function(boardMapping) {
-      // console.log('5) Updating board mapping: \n' + JSON.stringify(boardMapping, null, 2));
+      console.log('5) Updating board mapping: \n' + JSON.stringify(boardMapping, null, 2));
       return AdminBoards.updateCategories({ boardMapping: boardMapping }).$promise
       .catch(function(response) { console.log(response); });
     };
@@ -253,6 +137,7 @@ var ctrl = ['$timeout', '$location', '$stateParams', '$scope', '$q', '$anchorScr
 require('../../components/category_editor/category-editor.directive');
 require('../../components/category_editor/nestable-boards.directive');
 require('../../components/category_editor/nestable-categories.directive');
+require('../../components/set_moderators/set-moderators.directive');
 
 module.exports = angular.module('ept.admin.management.boards.ctrl', [])
 .controller('CategoriesCtrl', ctrl);
