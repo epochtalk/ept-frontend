@@ -23,13 +23,6 @@ var ctrl = [
       checkUsersOnline();
     })();
 
-    // default post avatar image if not found
-    ctrl.posts.map(function(post) {
-      if (!post.avatar) {
-        post.avatar = 'https://fakeimg.pl/400x400/ccc/444/?text=' + post.user.username;
-      }
-    });
-
     // Posts Permissions
     this.canUpdate = function(post) {
       if (!Session.isAuthenticated()) { return false; }
@@ -119,12 +112,6 @@ var ctrl = [
       // replace current posts with new posts
       Patrol.index(query).$promise
       .then(function(pageData) {
-        // default post avatar image if not found
-        pageData.posts.map(function(post) {
-          if (!post.avatar) {
-            post.avatar = 'https://fakeimg.pl/400x400/ccc/444/?text=' + post.user.username;
-          }
-        });
         ctrl.posts = pageData.posts;
         parent.posts = pageData.posts;
         parent.hasMorePosts = pageData.hasMorePosts;

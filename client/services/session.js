@@ -44,7 +44,7 @@ module.exports = ['$window', function($window) {
     function loadContainer(newUser, container, isStorage) {
       container.id = newUser.id;
       container.username = newUser.username;
-      container.avatar = newUser.avatar || 'https://fakeimg.pl/400x400/ccc/444/?text=' + user.username;
+      container.avatar = newUser.avatar;
       if (newUser.malicious_score) {
         container.malicious_score = newUser.malicious_score;
       }

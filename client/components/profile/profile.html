@@ -17,9 +17,9 @@
     <div class="profile-row">
       <div class="profile-avatar-container">
         <a ng-href="#" ng-if="vm.canUpdate()" ng-click="vm.openEditAvatar()">
-          <img ng-src="{{vm.user.avatar || 'https://fakeimg.pl/400x400/ccc/444?text=' + vm.user.username }}" class="image-loader" />
+          <img ng-src="{{vm.user.avatar }}" class="image-loader" />
         </a>
-        <img ng-if="!vm.canUpdate()" ng-src="{{vm.user.avatar || 'https://fakeimg.pl/400x400/ccc/444?text=' + vm.user.username}}" class="image-loader"/>
+        <img ng-if="!vm.canUpdate()" ng-src="{{vm.user.avatar }}" class="image-loader"/>
         <a ng-href="#" class="after" ng-if="vm.canUpdate()" ng-click="vm.openEditAvatar()">
           <div>Change Avatar</div>
         </a>

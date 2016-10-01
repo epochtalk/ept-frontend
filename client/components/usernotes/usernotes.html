@@ -3,8 +3,7 @@
     <div class="comment-container">
       <div class="comment" ng-repeat="comment in usernotesvm.usernotes track by comment.id">
         <div class="avatar">
-          <img ng-if="comment.author_avatar" ng-style="usernotesvm.avatarHighlight(comment.author_highlight_color)" src="{{comment.author_avatar}}" />
-          <img ng-if="!comment.author_avatar" ng-style="usernotesvm.avatarHighlight(comment.author_highlight_color)" src="https://fakeimg.pl/400x400/ccc/444/?text={{comment.author_name}}" />
+          <img ng-style="usernotesvm.avatarHighlight(comment.author_highlight_color)" ng-src="{{comment.author_avatar}}" />
         </div>
         <div class="content">
           <div class="title">
