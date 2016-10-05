@@ -74,7 +74,8 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
             { name: 'ept.admin.moderation.users.ctrl' },
             { name: 'ept.directives.image-uploader' },
             { name: 'ept.directives.profile'},
-            { name: 'ept.directives.usernotes'}
+            { name: 'ept.directives.usernotes'},
+            { name: 'ept.directives.ban-modal'}
           ]);
           deferred.resolve();
         });
@@ -93,10 +94,6 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           search: $stateParams.search
         };
         return Reports.pageUserReports(query).$promise;
-      }],
-      boards: ['Boards', function(Boards) {
-        return Boards.query({ stripped: true }).$promise
-        .then(function(data) { return data.boards; });
       }]
     }
   })
@@ -121,7 +118,8 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
             { name: 'ept.admin.moderation.posts.ctrl' },
             { name: 'ept.directives.epochtalk-editor' },
             { name: 'ept.directives.image-uploader' },
-            { name: 'ept.directives.resizeable' }
+            { name: 'ept.directives.resizeable' },
+            { name: 'ept.directives.ban-modal'}
           ]);
           deferred.resolve();
         });
@@ -145,10 +143,6 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
         };
         if (Session.globalModeratorCheck()) { delete query.mod_id; } // default to all if global mod
         return Reports.pagePostReports(query).$promise;
-      }],
-      boards: ['Boards', function(Boards) {
-        return Boards.query({ stripped: true }).$promise
-        .then(function(data) { return data.boards; });
       }]
     }
   })
@@ -169,7 +163,10 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
         var deferred = $q.defer();
         require.ensure([], function() {
           require('./messages.controller');
-          $ocLazyLoad.load({ name: 'ept.admin.moderation.messages.ctrl' });
+          $ocLazyLoad.load([
+            { name: 'ept.admin.moderation.messages.ctrl' },
+            { name: 'ept.directives.ban-modal'}
+          ]);
           deferred.resolve();
         });
         return deferred.promise;
@@ -187,10 +184,6 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           search: $stateParams.search
         };
         return Reports.pageMessageReports(query).$promise;
-      }],
-      boards: ['Boards', function(Boards) {
-        return Boards.query({ stripped: true }).$promise
-        .then(function(data) { return data.boards; });
       }]
     }
   })
