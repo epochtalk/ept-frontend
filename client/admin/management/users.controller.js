@@ -24,19 +24,13 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
 
   // Banning Vars
   this.showConfirmBanModal = false; // confirmation ban modal visible bool
-  this.showConfirmUnbanModal = false; // confirmation unban modal visible bool
-  this.banSubmitted = false; // form submitted bool
   this.selectedUser = null; //  model backing selected user
-  this.confirmBanBtnLabel = 'Confirm'; // modal button label
-  this.banType = undefined; // boolean indicating if ban is permanent
-  this.banUntil = undefined; // model backing ban type
 
   this.searchUsers = function() {
     if (!ctrl.searchStr.length) {
       ctrl.clearSearch();
       return;
     }
-    console.log(ctrl.searchIps);
     ctrl.queryParams = {
       filter: ctrl.filter,
       field: 'username',
@@ -83,92 +77,22 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
     .finally(function() { ctrl.closeEditUser(); });
   };
 
-  this.minDate = function() {
-    var d = new Date();
-    var month = '' + (d.getMonth() + 1);
-    var day = '' + d.getDate();
-    var year = d.getFullYear();
-    if (month.length < 2) { month = '0' + month; }
-    if (day.length < 2) { day = '0' + day; }
-    return [year, month, day].join('-');
-  };
-
-  this.showBanConfirm = function(user) {
+  this.showManageBans = function(user) {
     ctrl.selectedUser = user;
     ctrl.showConfirmBanModal = true;
   };
 
-  this.closeConfirmBan = function() {
-    ctrl.selectedUser = null;
-    ctrl.banType = undefined;
-    ctrl.banUntil = null;
-    // Fix for modal not opening after closing
-    $timeout(function() { ctrl.showConfirmBanModal = false; });
-  };
-
-  this.banUser = function() {
-    ctrl.confirmBanBtnLabel = 'Loading...';
-    ctrl.banSubmitted = true;
-    var params = {
-      user_id: ctrl.selectedUser.id,
-      expiration: ctrl.banUntil || undefined,
-      ip_ban: ctrl.banType === 'ip' || undefined
-    };
-    Bans.ban(params).$promise
-    .then(function(ban) {
-      if (ctrl.tableFilter === 0) { ctrl.pullPage(); }
-      else { ctrl.selectedUser.ban_expiration = ban.expiration; }
-      Alert.success(ctrl.selectedUser.username + ' has been banned');
-    })
-    .catch(function(err) {
-      var msg = 'There was an error banning ' + ctrl.selectedUser.username;
-      if (err.status === 403) { msg += '.  This user has higher permissions than you.'; }
-      Alert.error(msg);
-    })
-    .finally(function() {
-      ctrl.closeConfirmBan();
-      $timeout(function() { // wait for modal to close
-        ctrl.confirmBanBtnLabel = 'Confirm';
-        ctrl.banSubmitted = false;
-      }, 500);
-    });
-  };
-
-  this.showUnbanConfirm = function(user) {
-    ctrl.selectedUser = user;
-    ctrl.showConfirmUnbanModal = true;
-  };
-
-  this.closeConfirmUnban = function() {
-    ctrl.selectedUser = null;
-    // Fix for modal not opening after closing
-    $timeout(function() { ctrl.showConfirmUnbanModal = false; });
-  };
-
-  this.unbanUser = function() {
-    ctrl.confirmBanBtnLabel = 'Loading...';
-    ctrl.banSubmitted = true;
-    var params = {
-      user_id: ctrl.selectedUser.id,
-    };
-    Bans.unban(params).$promise
-    .then(function() {
-      if (ctrl.tableFilter === 0) { ctrl.pullPage(); }
-      else { ctrl.selectedUser.ban_expiration = null; }
-      Alert.success(ctrl.selectedUser.username + ' has been unbanned');
-    })
-    .catch(function(err) {
-      var msg = 'There was an error unbanning ' + ctrl.selectedUser.username;
-      if (err.status === 403) { msg += '.  This user has higher permissions than you.'; }
-      Alert.error(msg);
-    })
-    .finally(function() {
-      ctrl.closeConfirmUnban();
-      $timeout(function() { // wait for modal to close
-        ctrl.confirmBanBtnLabel = 'Confirm';
-        ctrl.banSubmitted = false;
-      }, 500);
-    });
+  this.updateViewBans = function(params) {
+    // Loop reports and update ban info on reports with matching offender ids
+    for (var i = 0; i < ctrl.users.length; i++) {
+      if (params.user_id === ctrl.users[i].id) {
+        // unbanning sets ban expiration to current time
+        if (!params.banError && params.expiration) {
+          var expiration = new Date(params.expiration) > new Date() ? params.expiration : undefined;
+          ctrl.users[i].ban_expiration = expiration;
+        }
+      }
+    }
   };
 
   this.setFilter = function(newFilter) {
@@ -300,6 +224,7 @@ var ctrl = ['$rootScope', '$scope', '$location', '$timeout', '$anchorScroll', '$
 }];
 
 require('../../components/image_uploader/image_uploader.directive');
+require('../../components/ban_modal/ban-modal.directive');
 
 module.exports = angular.module('ept.admin.management.users.ctrl', [])
 .controller('UsersCtrl', ctrl);

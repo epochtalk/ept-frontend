@@ -102,7 +102,8 @@ module.exports = ['$stateProvider', '$urlRouterProvider', function($stateProvide
           require('./users.controller');
           $ocLazyLoad.load([
             { name: 'ept.admin.management.users.ctrl' },
-            { name: 'ept.directives.image-uploader' }
+            { name: 'ept.directives.image-uploader' },
+            { name: 'ept.directives.ban-modal'}
           ]);
           deferred.resolve();
         });
