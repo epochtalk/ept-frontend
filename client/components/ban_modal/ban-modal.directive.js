@@ -82,6 +82,8 @@ var directive = ['$q', '$filter', '$timeout', 'Session', 'Alert', 'Bans', 'Board
       };
 
       this.canBoardBanUser = function(boardId) {
+        var loggedIn = Session.isAuthenticated();
+        if (!loggedIn) { return; }
         var moderatingBoard = ctrl.authedUser.moderating.indexOf(boardId) >= 0;
         var banAllBoardsPermission = Session.hasPermission('bans.privilegedBanFromBoards.all');
         if (moderatingBoard || banAllBoardsPermission) { return true; }
