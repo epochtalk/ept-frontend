@@ -63,6 +63,9 @@
     <div class="profile-row profile-action" ng-if="vm.canUpdatePrivate()">
       <a ng-href="#" ng-click="vm.openEditEmail()">Edit Email</a>
     </div>
+    <div class="profile-row profile-action" ng-if="vm.pageOwner()">
+      <a ng-href="#" ng-click="vm.openEditPreferences()">Edit Preferences</a>
+    </div>
     <trust-link ng-if="vm.pageOwner()"></trust-link>
     <div class="profile-row profile-action" ng-if="vm.canDeactivate()">
       <a ng-href="#" ng-click="vm.showDeactivate = true">Deactivate Account</a>
@@ -479,6 +482,28 @@
     <div class="clear">
       <button class="fill-row" ng-click="vm.updateBans()"
         ng-disabled="$parent.form.$invalid || $parent.form.$errors || vm.banSubmitted" ng-bind="vm.confirmBanBtnLabel"></button>
+    </div>
+  </form>
+</modal>
+
+<!-- Edit Preferences Modal -->
+<modal class="medium" show="vm.editPreferences">
+  <h3 class="thin-underline">Edit Preferences</h3>
+  <form name="$parent.form" class="css-form" novalidate>
+    <!-- Preferences Fields -->
+    <label>Posts Per Page
+      <input type="number" name="posts_per_page" ng-model="vm.tempPreferences.posts_per_page" placeholder="25" min="25" step="1" max="100" auto-focus="$parent.focus"/>
+    </label>
+
+    <label>Threads Per Page
+      <input type="number" name="threads_per_page" ng-model="vm.tempPreferences.threads_per_page" placeholder="25" min="25" step="1" max="100"/>
+    </label>
+
+    <!-- Save Button -->
+    <div class="clear">
+      <button class="fill-row" ng-click="vm.savePreferences()" ng-disabled="$parent.form.$invalid || $parent.form.$errors">
+        Save
+      </button>
     </div>
   </form>
 </modal>

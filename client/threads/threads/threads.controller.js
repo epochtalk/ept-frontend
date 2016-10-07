@@ -1,6 +1,7 @@
-var ctrl = ['$rootScope', '$scope', '$anchorScroll', '$location', '$timeout', 'Alert', 'BanSvc', 'Session', 'Threads', 'Watchlist', 'pageData',
-  function($rootScope, $scope, $anchorScroll, $location, $timeout, Alert, BanSvc, Session, Threads, Watchlist, pageData) {
+var ctrl = ['$rootScope', '$scope', '$anchorScroll', '$location', '$timeout', 'Alert', 'BanSvc', 'Session', 'Threads', 'Watchlist', 'PreferencesSvc', 'pageData',
+  function($rootScope, $scope, $anchorScroll, $location, $timeout, Alert, BanSvc, Session, Threads, Watchlist, PreferencesSvc, pageData) {
     var ctrl = this;
+    var prefs = PreferencesSvc.preferences;
     this.loggedIn = Session.isAuthenticated; // check Auth
     this.board = pageData.board;
     this.page = pageData.page; // this page
@@ -12,7 +13,7 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll', '$location', '$timeout', 'A
     this.parent.loggedIn = Session.isAuthenticated;
     this.parent.board  = pageData.board;
     this.parent.page = pageData.page;
-    this.parent.pageCount = Math.ceil(this.board.thread_count / this.limit);
+    this.parent.pageCount = Math.ceil(ctrl.board.thread_count / ctrl.limit);
     // TODO: This will not be here once actual boards are stored in this array
     this.parent.bannedFromBoard = BanSvc.banStatus().boards.length > 0;
 
@@ -73,7 +74,7 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll', '$location', '$timeout', 'A
     // page count for each thread
     function threadPageCount(thread) {
       // user based UI
-      thread.page_count = Math.ceil(thread.post_count / ctrl.limit);
+      thread.page_count = Math.ceil(thread.post_count / (prefs.posts_per_page || 25));
       ctrl.getPageKeysForThread(thread);
     }
     this.threads.forEach(threadPageCount);
@@ -85,7 +86,7 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll', '$location', '$timeout', 'A
     this.offLCS = $rootScope.$on('$locationChangeSuccess', function() {
       var params = $location.search();
       var page = Number(params.page) || 1;
-      var limit = Number(params.limit) || 25;
+      var limit = Number(params.limit);
       var pageChanged = false;
       var limitChanged = false;
 

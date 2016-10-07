@@ -1,5 +1,5 @@
-module.exports = ['User', 'Session', '$rootScope',
-  function(User, Session, $rootScope) {
+module.exports = ['User', 'Session', 'PreferencesSvc', '$rootScope',
+  function(User, Session, PreferencesSvc, $rootScope) {
     // Service API
     var serviceAPI = {
       register: function(user) {
@@ -17,19 +17,22 @@ module.exports = ['User', 'Session', '$rootScope',
       login: function(user) {
         return User.login(user).$promise
         .then(function(resource) { Session.setUser(resource); })
+        .then(function() { PreferencesSvc.pullPreferences(); })
         .then(function() { $rootScope.$emit('loginEvent'); });
       },
 
       logout: function() {
         return User.logout().$promise
         .then(function() { Session.clearUser(); })
+        .then(function() { PreferencesSvc.clearPreferences(); })
         .finally(function() { $rootScope.$emit('logoffEvent'); });
       },
 
       authenticate: function() {
         if (Session.getToken()) {
           User.ping().$promise
-          .then(function(user) { Session.setUser(user); });
+          .then(function(user) { Session.setUser(user); })
+          .then(function() { PreferencesSvc.pullPreferences(); });
         }
         else { Session.clearUser(); }
       }

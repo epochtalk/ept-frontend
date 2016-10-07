@@ -1,7 +1,7 @@
 var difference = require('lodash/difference');
 
-var directive = ['Conversations', 'User', 'Session', 'Alert', '$filter', '$state', '$q', '$timeout', 'Boards', 'Bans', 'Websocket',
-function(Conversations, User, Session, Alert, $filter, $state, $q, $timeout, Boards, Bans, Websocket) {
+var directive = ['Conversations', 'User', 'Session', 'Alert', 'PreferencesSvc', '$filter', '$state', '$q', '$timeout', 'Boards', 'Bans', 'Websocket',
+function(Conversations, User, Session, Alert, PreferencesSvc, $filter, $state, $q, $timeout, Boards, Bans, Websocket) {
   return {
     restrict: 'E',
     scope: true,
@@ -497,6 +497,33 @@ function(Conversations, User, Session, Alert, $filter, $state, $q, $timeout, Boa
           else { ctrl.isOnline = data.online; }
         });
       });
+
+      // Preferences
+      this.editPreferences = false;
+      this.tempPreferences = {};
+      this.openEditPreferences = function() {
+        ctrl.tempPreferences.username = ctrl.user.username;
+        ctrl.tempPreferences.posts_per_page = ctrl.user.posts_per_page;
+        ctrl.tempPreferences.threads_per_page = ctrl.user.threads_per_page;
+        ctrl.tempPreferences.collapsed_categories = ctrl.user.collapsed_categories;
+        this.editPreferences = true;
+      };
+      this.savePreferences = function() {
+        User.update({ id: ctrl.user.id }, ctrl.tempPreferences).$promise
+        .then(function(data) {
+          ctrl.user.posts_per_page = data.posts_per_page;
+          ctrl.user.threads_per_page = data.threads_per_page;
+        })
+        .then(function() {
+          var tempPref = PreferencesSvc.preferences;
+          tempPref.posts_per_page = ctrl.user.posts_per_page;
+          tempPref.threads_per_page = ctrl.user.threads_per_page;
+          PreferencesSvc.setPreferences(tempPref);
+        })
+        .then(function() { Alert.success('Successfully saved preferences'); })
+        .catch(function() { Alert.error('Preferences could not be updated'); })
+        .finally(function() { ctrl.editPreferences = false; });
+      };
     }]
   };
 }];

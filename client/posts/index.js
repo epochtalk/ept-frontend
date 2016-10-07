@@ -48,11 +48,12 @@ var route = ['$stateProvider', function($stateProvider) {
         });
         return deferred.promise;
       }],
-      pageData: ['Posts', 'Threads', '$stateParams', function(Posts, Threads, $stateParams) {
+      pageData: ['Posts', 'Threads', 'PreferencesSvc', '$stateParams', function(Posts, Threads, PreferencesSvc, $stateParams) {
+        var pref = PreferencesSvc.preferences;
         var query = {
           thread_id: $stateParams.threadId,
           page: $stateParams.page,
-          limit: $stateParams.limit,
+          limit: $stateParams.limit || pref.posts_per_page || 25,
           start: $stateParams.start
         };
         Threads.viewed({ id: $stateParams.threadId });

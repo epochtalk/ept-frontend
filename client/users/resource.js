@@ -67,6 +67,10 @@ var resource = ['$resource',
       join: {
         method: 'POST',
         url: '/api/join'
+      },
+      preferences: {
+        method: 'GET',
+        url: '/api/users/preferences'
       }
     });
   }

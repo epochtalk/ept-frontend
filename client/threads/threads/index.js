@@ -35,10 +35,11 @@ var route = ['$stateProvider', function($stateProvider) {
         });
         return deferred.promise;
       }],
-      pageData: ['Threads', '$stateParams', function(Threads, $stateParams) {
+      pageData: ['Threads', 'PreferencesSvc', '$stateParams', function(Threads, PreferencesSvc, $stateParams) {
+        var prefs = PreferencesSvc.preferences;
         var query = {
           board_id: $stateParams.boardId,
-          limit: Number($stateParams.limit) || 25,
+          limit: Number($stateParams.limit) || prefs.threads_per_page || 25,
           page: Number($stateParams.page) || 1
         };
         return Threads.byBoard(query).$promise;
