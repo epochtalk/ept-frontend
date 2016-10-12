@@ -83,10 +83,9 @@ var route = ['$stateProvider', function($stateProvider) {
         });
         return deferred.promise;
       }],
-      pageData: ['Posts', '$stateParams', function(Posts, $stateParams) {
-        return Posts.search({
-          search: $stateParams.search
-        }).$promise;
+      pageData: ['Posts', '$stateParams', '$q', function(Posts, $stateParams, $q) {
+        return Posts.search({ search: $stateParams.search }).$promise
+        .catch(function(err) { return $q.reject(err); });
       }]
     }
   });

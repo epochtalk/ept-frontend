@@ -69,7 +69,7 @@
 
     <!-- User Dropdown -->
     <ul ng-if="HeaderCtrl.loggedIn()">
-      <li class="search" ng-init="HeaderCtrl.focusSearch = false" >
+      <li ng-if="HeaderCtrl.hasPermission('posts.search.allow')" class="search" ng-init="HeaderCtrl.focusSearch = false" >
         <form action="." class="search-btn" autocomplete="off" ng-submit="$event.preventDefault(); HeaderCtrl.searchForum()">
           <div class="balloon" data-balloon="Search" data-balloon-pos="down">
             <label for="search" class="fa fa-search" ng-class="{ 'search-label-expanded' : HeaderCtrl.searchExpanded || HeaderCtrl.focusSearch }" ng-click="HeaderCtrl.toggleFocusSearch()"></label>
