@@ -5,12 +5,17 @@
   .post-block {
     @include row;
     @include clearfix;
-    @include pad(0.5rem 0);
+    @include pad(2rem 0);
     @include transition(background-color 250ms ease-in);
     position: relative;
+    border-top: 1px solid $border-color;
+    &.first { border-top: 0; padding-top: 0.5rem; }
     &.hidden { background-color: $sub-header-color; }
     &.deleted { display: none; }
-    .post-body { color: $secondary-font-color-dark; }
+    .post-body {
+      color: $secondary-font-color-dark;
+      .highlighted { background-color: yellow; font-weight: bold; display:inline; color: $base-font-color; }
+    }
     .post-content {
       display: block;
       .thread-title {

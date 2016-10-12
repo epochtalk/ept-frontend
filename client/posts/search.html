@@ -13,7 +13,7 @@
   <div ng-if="PostSearchCtrl.search">
   Displaying {{PostSearchCtrl.count | number}} search result(s) for "<strong>{{PostSearchCtrl.search}}</strong>":<br /><br />
   </div>
-  <div id="{{::post.id}}" ng-repeat="post in PostSearchCtrl.posts track by post.id" class="post-block" ng-class="{ 'hidden': post.hidden, 'deleted': post._deleted || post.user.ignored }">
+  <div id="{{::post.id}}" ng-repeat="post in PostSearchCtrl.posts track by post.id" class="post-block" ng-class="{ 'hidden': post.hidden, 'deleted': post._deleted || post.user.ignored, 'first': $first }">
     <!-- Delete Post View -->
     <div class="deleted" ng-if="post._deleted || post.user.ignored">
       Post
@@ -32,13 +32,13 @@
         <!-- Post Title -->
         <div class="thread-title">
           <h5>
-            <a ng-href="{{::PostsCtrl.rootUrl}}?start={{::post.position}}#{{::post.id}}" ng-bind="::post.thread_title"></a>
+            <a ng-href="{{::PostsCtrl.rootUrl}}?start={{::post.position}}#{{::post.id}}" ng-bind-html="::post.thread_title"></a>
           </h5>
           <span ng-if="post.user.online" class="online green"><i class="fa fa-circle"></i></span>
           <span ng-if="!post.user.online" class="online green"><i class="fa fa-circle-o"></i></span>
           <a class="username" data-balloon="{{post.user.role_name || 'User'}}" ui-sref="profile.posts({ username: post.user.username})" ng-style="PostSearchCtrl.usernameHighlight(post.user.highlight_color)" ng-bind="::post.user.username"></a>
           <div class="posted-in">posted in</div>
-          <a class="board-name" ui-sref="threads.data({ boardId: post.board_id })" ng-bind="::post.board_name"></a>
+          <a class="board-name" ui-sref="threads.data({ boardId: post.board_id })" ng-bind-html="::post.board_name"></a>
           <div class="timestamp">
             <span ng-bind="::post.created_at | humanDate"></span>
           </div>

@@ -1,5 +1,5 @@
-var ctrl = ['$rootScope', '$scope', '$anchorScroll','$location', '$timeout', '$stateParams', 'Auth', 'Alert', 'pageData',
-  function($rootScope, $scope, $anchorScroll, $location, $timeout, $stateParams, Auth, Alert, pageData) {
+var ctrl = ['Posts', '$rootScope', '$scope', '$anchorScroll','$location', '$timeout', '$stateParams', 'Auth', 'Alert', 'pageData',
+  function(Posts, $rootScope, $scope, $anchorScroll, $location, $timeout, $stateParams, Auth, Alert, pageData) {
     var ctrl = this;
     this.posts = pageData.posts;
     this.count = pageData.count;
@@ -51,7 +51,7 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll','$location', '$timeout', '$s
     this.offLCS = $rootScope.$on('$locationChangeSuccess', function() {
       var params = $location.search();
       var page = Number(params.page) || 1;
-      var limit = Number(params.limit) || 15;
+      var limit = Number(params.limit) || 25;
       var field = params.field;
       var search = params.search;
       var descending = params.desc === 'true';
@@ -82,7 +82,7 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll','$location', '$timeout', '$s
         ctrl.search = search;
         ctrl.searchStr = search;
       }
-      // if(pageChanged || limitChanged || fieldChanged || descChanged || searchChanged) { ctrl.pullPage(); }
+      if(pageChanged || limitChanged || fieldChanged || descChanged || searchChanged) { ctrl.pullPage(); }
     });
     $scope.$on('$destroy', function() { ctrl.offLCS(); });
 
@@ -95,19 +95,17 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll','$location', '$timeout', '$s
         search: ctrl.search
       };
 
-      // // replace current users with new users
-      // User.pagePublic(query).$promise
-      // .then(function(updatedData) {
-      //   ctrl.posts = updatedData.users;
-      //   ctrl.count = updatedData.count;
-      //   ctrl.page = updatedData.page;
-      //   ctrl.limit = updatedData.limit;
-      //   ctrl.field = updatedData.field;
-      //   ctrl.desc = updatedData.desc;
-      //   ctrl.search = updatedData.search;
-      //   ctrl.pageCount = updatedData.page_count;
-      //   $timeout($anchorScroll);
-      // });
+      // replace current users with new users
+      Posts.search(query).$promise
+      .then(function(updatedData) {
+        ctrl.posts = updatedData.posts;
+        ctrl.count = updatedData.count;
+        ctrl.page = updatedData.page;
+        ctrl.limit = updatedData.limit;
+        ctrl.search = updatedData.search;
+        ctrl.pageCount = updatedData.page_count;
+        $timeout($anchorScroll);
+      });
     };
 
   }

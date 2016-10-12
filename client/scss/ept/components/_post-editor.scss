@@ -485,7 +485,9 @@
       padding-left: 2rem;
       height: 2.5rem;
       line-height: 2.5rem;
+      span a { font-size: 0.875rem; }
       a {
+        i { font-size: 0.875rem; }
         font-size: 1.25rem;
         height: 100%;
         display: inline-block;
@@ -512,8 +514,7 @@
   @include media($mobile) {
     height: 300px;
     .editor-column-left { @include span-columns(8); @include omega; }
-    .editor-column-preview { display: none; }
-    .editor-body { bottom: 0px; }
+    .editor-form .editor-body { bottom: 2.5rem; top: 2.7rem; }
   }
 }
 

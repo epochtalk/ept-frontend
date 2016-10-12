@@ -64,5 +64,12 @@
   position: absolute;
   @include media($mobile) {
     top: -2.3rem;
+    width: 100vw;
+
   }
+}
+
+@include media($mobile) {
+  .progress-editor { top: -2.3rem; width: 100vw; }
+  .new-thread .progress-editor { padding-right: $base-grid-padding * 2; }
 }

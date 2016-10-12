@@ -116,8 +116,7 @@
   <div id="post-tools-fixed">
     <div class="tool-wrap">
       <div class="tool-container">
-        <div class="half-column left-col">
-          {{::PostsParentCtrl.thread.title}}
+        <div class="half-column left-col" ng-bind-html="PostsParentCtrl.thread.title">
         </div>
         <div class="half-column right-col">
           <!-- Thread Lock -->
