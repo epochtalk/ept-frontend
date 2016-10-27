@@ -11,7 +11,7 @@
 </div>
 <div class="fill-row search-data" ng-if="PostSearchCtrl.count > 0 || PostSearchCtrl.search">
   <div ng-if="PostSearchCtrl.search">
-  Displaying {{PostSearchCtrl.count | number}} search result(s) for "<strong>{{PostSearchCtrl.search}}</strong>":<br /><br />
+  Displaying search result(s) for "<strong>{{PostSearchCtrl.search}}</strong>":<br /><br />
   </div>
   <div id="{{::post.id}}" ng-repeat="post in PostSearchCtrl.posts track by post.id" class="post-block" ng-class="{ 'hidden': post.hidden, 'deleted': post._deleted || post.user.ignored, 'first': $first }">
     <!-- Delete Post View -->
@@ -50,8 +50,15 @@
       </div>
     </div>
   </div>
-  <br />
-  <div class="pagination-wrap">
-    <pagination ng-if="PostSearchCtrl.count > 0" page-count="PostSearchCtrl.pageCount" page="PostSearchCtrl.page" query-params="PostSearchCtrl.queryParams"></pagination>
+  <div class="pagination-simple">
+    <a ng-show="PostSearchCtrl.prev" ui-sref=".({ page: PostSearchCtrl.prev, limit: PostSearchCtrl.limit, search: PostSearchCtrl.search, field: PostSearchCtrl.field, desc: PostSearchCtrl.desc })">
+      &#10094; Previous
+    </a>
+    <span ng-hide="PostSearchCtrl.prev">&#10094; Previous</span>
+    &nbsp;&nbsp;&nbsp;
+    <a ng-show="PostSearchCtrl.next" ui-sref=".({ page: PostSearchCtrl.next, limit: PostSearchCtrl.limit, search: PostSearchCtrl.search, field: PostSearchCtrl.field, desc: PostSearchCtrl.desc })">
+       Next &#10095;
+    </a>
+    <span ng-hide="PostSearchCtrl.next">Next &#10095;</span>
   </div>
 </div>

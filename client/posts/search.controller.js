@@ -5,9 +5,10 @@ var ctrl = ['Posts', '$rootScope', '$scope', '$anchorScroll','$location', '$time
     this.count = pageData.count;
     this.page = pageData.page;
     this.limit = pageData.limit;
+    this.prev = pageData.prev;
+    this.next = pageData.next;
     this.field = pageData.field;
     this.desc = pageData.desc;
-    this.pageCount = pageData.page_count;
     this.search = pageData.search;
     this.queryParams = $location.search();
     this.searchStr = pageData.search;
@@ -79,7 +80,6 @@ var ctrl = ['Posts', '$rootScope', '$scope', '$anchorScroll','$location', '$time
       }
       if ((search === undefined || search) && search !== ctrl.search) {
         searchChanged = true;
-        ctrl.search = search;
         ctrl.searchStr = search;
       }
       if(pageChanged || limitChanged || fieldChanged || descChanged || searchChanged) { ctrl.pullPage(); }
@@ -92,7 +92,7 @@ var ctrl = ['Posts', '$rootScope', '$scope', '$anchorScroll','$location', '$time
         limit: ctrl.limit,
         desc: ctrl.desc,
         field: ctrl.field,
-        search: ctrl.search
+        search: ctrl.searchStr
       };
 
       // replace current users with new users
@@ -101,9 +101,10 @@ var ctrl = ['Posts', '$rootScope', '$scope', '$anchorScroll','$location', '$time
         ctrl.posts = updatedData.posts;
         ctrl.count = updatedData.count;
         ctrl.page = updatedData.page;
+        ctrl.prev = updatedData.prev;
+        ctrl.next = updatedData.next;
         ctrl.limit = updatedData.limit;
         ctrl.search = updatedData.search;
-        ctrl.pageCount = updatedData.page_count;
         $timeout($anchorScroll);
       });
     };

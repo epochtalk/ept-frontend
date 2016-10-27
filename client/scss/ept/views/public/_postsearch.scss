@@ -12,9 +12,9 @@
     &.first { border-top: 0; padding-top: 0.5rem; }
     &.hidden { background-color: $sub-header-color; }
     &.deleted { display: none; }
+    .highlighted { background-color: yellow; font-weight: bold; display:inline; color: $base-font-color; }
     .post-body {
       color: $secondary-font-color-dark;
-      .highlighted { background-color: yellow; font-weight: bold; display:inline; color: $base-font-color; }
     }
     .post-content {
       display: block;
