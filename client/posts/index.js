@@ -84,7 +84,11 @@ var route = ['$stateProvider', function($stateProvider) {
         return deferred.promise;
       }],
       pageData: ['Posts', '$stateParams', '$q', function(Posts, $stateParams, $q) {
-        return Posts.search({ search: $stateParams.search }).$promise
+        return Posts.search({
+          search: $stateParams.search,
+          page: $stateParams.page,
+          limit: $stateParams.limit
+        }).$promise
         .catch(function(err) { return $q.reject(err); });
       }]
     }

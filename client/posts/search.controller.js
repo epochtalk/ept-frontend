@@ -1,5 +1,5 @@
-var ctrl = ['Posts', '$rootScope', '$scope', '$anchorScroll','$location', '$timeout', '$stateParams', 'Auth', 'Alert', 'pageData',
-  function(Posts, $rootScope, $scope, $anchorScroll, $location, $timeout, $stateParams, Auth, Alert, pageData) {
+var ctrl = ['Posts', '$rootScope', '$scope', '$anchorScroll','$location', '$timeout', '$stateParams', 'Auth', 'Alert', 'pageData', 'Websocket',
+  function(Posts, $rootScope, $scope, $anchorScroll, $location, $timeout, $stateParams, Auth, Alert, pageData, Websocket) {
     var ctrl = this;
     this.posts = pageData.posts;
     this.count = pageData.count;
@@ -12,6 +12,9 @@ var ctrl = ['Posts', '$rootScope', '$scope', '$anchorScroll','$location', '$time
     this.search = pageData.search;
     this.queryParams = $location.search();
     this.searchStr = pageData.search;
+
+    // init function
+    (function() { checkUsersOnline(); })();
 
     this.searchPosts = function() {
       ctrl.collapseMobileKeyboard();
@@ -106,11 +109,35 @@ var ctrl = ['Posts', '$rootScope', '$scope', '$anchorScroll','$location', '$time
         ctrl.limit = updatedData.limit;
         ctrl.search = updatedData.search;
         $timeout($anchorScroll);
+        checkUsersOnline();
       });
     };
 
+    function checkUsersOnline() {
+      var uniqueUsers = {};
+      ctrl.posts.forEach(function(post) {
+        uniqueUsers[post.user.id] = 'user';
+      });
+
+      Object.keys(uniqueUsers).map(function(user) {
+        return Websocket.isOnline(user, setOnline);
+      });
+    }
+
+    function setOnline(err, data) {
+      if (err) { return console.log(err); }
+      else {
+        ctrl.posts.map(function(post) {
+          if (post.user.id === data.id) {
+            post.user.online = data.online;
+          }
+        });
+      }
+    }
+
   }
 ];
+
 
 module.exports = angular.module('ept.postsearch.ctrl', [])
 .controller('PostSearchCtrl', ctrl)
