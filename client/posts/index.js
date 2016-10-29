@@ -83,11 +83,13 @@ var route = ['$stateProvider', function($stateProvider) {
         });
         return deferred.promise;
       }],
-      pageData: ['Posts', '$stateParams', '$q', function(Posts, $stateParams, $q) {
+      pageData: ['Posts', '$stateParams', '$q', 'PreferencesSvc', function(Posts, $stateParams, $q, PreferencesSvc) {
+        var pref = PreferencesSvc.preferences;
+
         return Posts.search({
           search: $stateParams.search,
           page: $stateParams.page,
-          limit: $stateParams.limit
+          limit: $stateParams.limit || pref.posts_per_page || 25
         }).$promise
         .catch(function(err) { return $q.reject(err); });
       }]
