@@ -66,13 +66,16 @@ module.exports = ['$timeout', '$filter', '$compile', function($timeout, $filter,
 
         // create youtube iframe
         var wrap = document.createElement('div');
+        var vidWrap = document.createElement('div');
+        vidWrap.className = 'video-wrap';
         var frame = document.createElement('iframe');
         frame.width = 640;
         frame.height = 360;
         frame.src = src;
         frame.setAttribute('frameborder', 0);
         frame.setAttribute('allowfullscreen', '');
-        wrap.appendChild(frame);
+        vidWrap.appendChild(frame);
+        wrap.appendChild(vidWrap);
 
         // return content
         if (key) { return wrap.innerHTML; }
