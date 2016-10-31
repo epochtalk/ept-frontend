@@ -19,6 +19,10 @@ var resource = ['$resource',
         method: 'GET',
         params: { username: '@username' }
       },
+      search: {
+        url: '/api/search/posts',
+        method: 'GET'
+      },
       delete: {
         url: '/api/posts/:id',
         method: 'DELETE',

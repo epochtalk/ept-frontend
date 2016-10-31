@@ -17,7 +17,7 @@ var directive = ['$document',
 
         function init() {
           destroyed = false;
-          element.prepend('<div id="ec-bar" class="editor-container-bar"><div class="bar"></div></div>');
+          element.prepend('<div id="ec-bar" class="editor-container-bar hide-mobile"><div class="bar"></div></div>');
           spacer = angular.element(doc[0].getElementById('post-spacer'));
           doc.on('mousemove', onMove);
           doc.on('mouseup', onUp);

@@ -98,3 +98,4 @@
 /*-------------- New Thread Layout -------------- */
 .padded-row { @include row; @include pad(0 0 1rem 0); }
 .padded-row { .h4, .h6 { display: inline-block; } }
+@include media($mobile) { input[type="text"].thread-title { margin-bottom: 0; } }

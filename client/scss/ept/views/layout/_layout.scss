@@ -32,9 +32,9 @@
 .admin-table-header {
   @include clearfix;
   @include row;
-  @include pad(1.25rem 3rem 0);
+  @include pad(1.25rem 6rem 0);
   background-color: $sub-header-color;
-  margin: 0 -3rem 2rem;
+  margin: 0 -6rem 2rem;
 
   @include media($mobile) { @include pad(1.25rem 1rem 0); margin: 0 -1rem 2rem; }
 }

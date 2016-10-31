@@ -16,6 +16,9 @@ header {
     background-color: $header-bg-color;
     text-align: center;
     min-height: $header-height;
+    @include media($mobile-portrait) {
+      &.mobile-expanded { min-height: 2 * $header-height; }
+    }
     #menu {
       @include outer-container;
       h3 {
@@ -59,7 +62,7 @@ header {
         bottom: 0;
         left: 0;
         right: 0;
-        z-index: 998;
+        z-index: 1004;
       }
       .burger-notification {
         width: 10px;
@@ -83,7 +86,7 @@ header {
         right: 0;
         left: 100%;
         width: 40vw;
-        z-index: 999;
+        z-index: 1005;
         text-align: left;
         padding: 1.5rem;
         font-size: 1.5rem;
@@ -186,10 +189,70 @@ header {
             border: none;
             box-shadow: none;
             margin: 0;
-            padding: 0 0.4rem 0 2rem;
-            width: 250px;
+            padding: 0;
+            width: 0;
+            -webkit-transition: width 0.5s ease-in-out;
+            -moz-transition: width 0.5s ease-in-out;
+            -o-transition: width 0.5s ease-in-out;
+            transition: width 0.5s ease-in-out;
+            &::-webkit-search-cancel-button{
+              -webkit-appearance: none;
+            }
           }
-          label { color: $header-logo-font-color; position: absolute; left: 0.4rem; top: 1rem; bottom: 1rem; }
+          .search-input-minimized {
+            width: 0;
+            cursor: default;
+            -webkit-transition: width 0.5s ease-in-out;
+            -moz-transition: width 0.5s ease-in-out;
+            -o-transition: width 0.5s ease-in-out;
+            transition: width 0.5s ease-in-out;
+          }
+          .search-input-expanded {
+            width: 15.625rem;
+            cursor: auto;
+            -webkit-transition: width 0.5s ease-in-out;
+            -moz-transition: width 0.5s ease-in-out;
+            -o-transition: width 0.5s ease-in-out;
+            transition: width 0.5s ease-in-out;
+          }
+          label {
+            @include pad(0 1rem);
+            color: $header-logo-font-color;
+            line-height: $header-height;
+            &:hover {
+              background-color:  $header-dropdown-bg-color;
+            }
+            &.search-label-expanded {
+              background-color: transparent;
+              &:hover { background-color: transparent; }
+            }
+          }
+          @include media($mobile-portrait) {
+            position: inherit;
+            label &:hover { background-color: transparent; }
+            .search-input-expanded {
+              position: absolute;
+              left: 0;
+              top: $header-height;
+              width: 100vw;
+              padding: 0 $base-grid-padding;
+              height: 2.59375rem;
+            }
+            .search-input-minimized {
+              height: 0;
+              width: 0;
+              display: none;
+            }
+            .search-label-expanded, .search-input, .search-input-minimized {
+              -webkit-transition: width 0 ease-in-out;
+              -moz-transition: width 0 ease-in-out;
+              -o-transition: width 0 ease-in-out;
+              transition: width 0 ease-in-out;
+            }
+            .balloon {
+              position: inherit;
+            }
+          }
         }
         #notifications-tray {
           line-height: $header-height;
@@ -200,7 +263,9 @@ header {
             display: inline-block;
             color: $header-logo-font-color;
             position: relative;
-            &:hover { background-color:  $header-dropdown-bg-color; }
+            &:hover {
+              background-color:  $header-dropdown-bg-color;
+            }
             .count {
               @include pad(0 0.125rem);
               @include border-radius(0.2rem);
@@ -274,10 +339,6 @@ header {
       }
     }
 
-    // Mobile Menu Layout
-    @include media($mobile) {
-      #menu ul .search { display: none; }
-    }
   }
 
   #breadcrumbs-wrap {

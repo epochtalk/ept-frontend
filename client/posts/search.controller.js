@@ -1,73 +1,53 @@
-var ctrl = ['$rootScope', '$scope', '$anchorScroll','$location', '$timeout', '$stateParams', 'User', 'Auth', 'Alert', 'pageData',
-  function($rootScope, $scope, $anchorScroll, $location, $timeout, $stateParams, User, Auth, Alert, pageData) {
+var ctrl = ['Posts', '$rootScope', '$scope', '$anchorScroll','$location', '$timeout', '$stateParams', 'Auth', 'Alert', 'pageData', 'Websocket',
+  function(Posts, $rootScope, $scope, $anchorScroll, $location, $timeout, $stateParams, Auth, Alert, pageData, Websocket) {
     var ctrl = this;
-    this.users = pageData.users;
+    this.posts = pageData.posts;
     this.count = pageData.count;
     this.page = pageData.page;
     this.limit = pageData.limit;
+    this.prev = pageData.prev;
+    this.next = pageData.next;
     this.field = pageData.field;
     this.desc = pageData.desc;
-    this.pageCount = pageData.page_count;
     this.search = pageData.search;
     this.queryParams = $location.search();
     this.searchStr = pageData.search;
 
-    this.searchUsers = function() {
+    // init function
+    (function() { checkUsersOnline(); })();
+
+    this.searchPosts = function() {
       ctrl.collapseMobileKeyboard();
       if (!ctrl.searchStr.length) {
         ctrl.clearSearch();
         return;
       }
-      ctrl.queryParams = {
-        filter: ctrl.filter,
-        field: 'username',
-        search: ctrl.searchStr
-      };
+      ctrl.queryParams = { search: ctrl.searchStr };
       $location.search(ctrl.queryParams);
     };
 
     this.collapseMobileKeyboard = function() { document.activeElement.blur(); };
 
     this.clearSearch = function() {
-      ctrl.queryParams = {
-        field: 'username',
-        filter: ctrl.filter
-      };
+      ctrl.queryParams = {};
       $location.search(ctrl.queryParams);
       ctrl.searchStr = null;
     };
 
-    this.setSortField = function(sortField) {
-      // Sort Field hasn't changed just toggle desc
-      var unchanged = sortField === ctrl.field || (sortField === 'username' && !ctrl.field);
-      if (unchanged) { ctrl.desc = ctrl.desc ? 'false' : 'true'; } // bool to str
-      // Sort Field changed default to ascending order
-      else { ctrl.desc = 'false'; }
-      ctrl.field = sortField;
-      ctrl.page = 1;
-      $location.search('page', ctrl.page);
-      $location.search('desc', ctrl.desc);
-      $location.search('field', sortField);
-
-      // Update queryParams (forces pagination to refresh)
-      ctrl.queryParams = $location.search();
+    this.avatarHighlight = function(color) {
+      var style = {};
+      if (color) { style.border = '0.225rem solid ' + color; }
+      return style;
     };
 
-    this.getSortClass = function(sortField) {
-      var sortClass;
-      var sortDesc = ctrl.desc;
-      // Username is sorted asc by default
-      if (sortField === 'username' && !ctrl.field && !sortDesc) {
-        sortClass = 'fa fa-sort-asc';
+    this.usernameHighlight = function(color) {
+      var style = {};
+      if (color) {
+        style.background = color;
+        style.padding = '0 0.3rem';
+        style.color = '#ffffff';
       }
-      else if (ctrl.field === sortField && sortDesc) {
-        sortClass = 'fa fa-sort-desc';
-      }
-      else if (ctrl.field === sortField && !sortDesc) {
-        sortClass = 'fa fa-sort-asc';
-      }
-      else { sortClass = 'fa fa-sort'; }
-      return sortClass;
+      return style;
     };
 
     $timeout($anchorScroll);
@@ -75,7 +55,7 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll','$location', '$timeout', '$s
     this.offLCS = $rootScope.$on('$locationChangeSuccess', function() {
       var params = $location.search();
       var page = Number(params.page) || 1;
-      var limit = Number(params.limit) || 15;
+      var limit = Number(params.limit) || 25;
       var field = params.field;
       var search = params.search;
       var descending = params.desc === 'true';
@@ -103,7 +83,7 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll','$location', '$timeout', '$s
       }
       if ((search === undefined || search) && search !== ctrl.search) {
         searchChanged = true;
-        ctrl.search = search;
+        ctrl.searchStr = search;
       }
       if(pageChanged || limitChanged || fieldChanged || descChanged || searchChanged) { ctrl.pullPage(); }
     });
@@ -115,27 +95,50 @@ var ctrl = ['$rootScope', '$scope', '$anchorScroll','$location', '$timeout', '$s
         limit: ctrl.limit,
         desc: ctrl.desc,
         field: ctrl.field,
-        search: ctrl.search
+        search: ctrl.searchStr
       };
 
       // replace current users with new users
-      User.pagePublic(query).$promise
+      Posts.search(query).$promise
       .then(function(updatedData) {
-        ctrl.users = updatedData.users;
+        ctrl.posts = updatedData.posts;
         ctrl.count = updatedData.count;
         ctrl.page = updatedData.page;
+        ctrl.prev = updatedData.prev;
+        ctrl.next = updatedData.next;
         ctrl.limit = updatedData.limit;
-        ctrl.field = updatedData.field;
-        ctrl.desc = updatedData.desc;
         ctrl.search = updatedData.search;
-        ctrl.pageCount = updatedData.page_count;
         $timeout($anchorScroll);
+        checkUsersOnline();
       });
     };
+
+    function checkUsersOnline() {
+      var uniqueUsers = {};
+      ctrl.posts.forEach(function(post) {
+        uniqueUsers[post.user.id] = 'user';
+      });
+
+      Object.keys(uniqueUsers).map(function(user) {
+        return Websocket.isOnline(user, setOnline);
+      });
+    }
+
+    function setOnline(err, data) {
+      if (err) { return console.log(err); }
+      else {
+        ctrl.posts.map(function(post) {
+          if (post.user.id === data.id) {
+            post.user.online = data.online;
+          }
+        });
+      }
+    }
 
   }
 ];
 
-module.exports = angular.module('ept.usersearch.ctrl', [])
-.controller('UserSearchCtrl', ctrl)
+
+module.exports = angular.module('ept.postsearch.ctrl', [])
+.controller('PostSearchCtrl', ctrl)
 .name;

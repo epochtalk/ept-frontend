@@ -187,10 +187,12 @@ var ctrl = [
     $scope.$on('$destroy', function() { ctrl.offLCS(); });
 
     parent.pullPage = function() {
+
       var query = {
         thread_id: parent.thread.id,
-        page: parent.page,
-        limit: parent.limit
+        page: isNaN($location.search().start) ? parent.page : undefined,
+        limit: parent.limit,
+        start: isNaN($location.search().start) ? undefined : Number($location.search().start)
       };
 
       // replace current posts with new posts
@@ -201,9 +203,11 @@ var ctrl = [
         parent.posts = pageData.posts;
         parent.thread.post_count = pageData.thread.post_count;
         parent.thread.poll = pageData.thread.poll;
+        parent.page = pageData.page;
         parent.pageCount = Math.ceil(parent.thread.post_count / parent.limit);
         calculatePollPercentage();
         checkUsersOnline();
+        ctrl.highlightPost();
         $timeout($anchorScroll);
       });
     };
