@@ -64,6 +64,11 @@
     color: $color-primary;
     padding-right: 0.5rem;
   }
+  .no-data-mobile { display: none; }
+  @include media($mobile) {
+    .no-data-mobile { display: table-cell; }
+    .no-data { display: none; }
+  }
 }
 
 /*-------------- Ignore Users Directive Layout --------------- */
