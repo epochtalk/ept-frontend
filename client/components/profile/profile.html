@@ -19,7 +19,7 @@
         <a ng-href="#" ng-if="vm.canUpdate()" ng-click="vm.openEditAvatar()">
           <img ng-src="{{vm.user.avatar }}" class="image-loader" />
         </a>
-        <img ng-if="!vm.canUpdate()" ng-src="{{vm.user.avatar }}" class="image-loader"/>
+        <img ng-if="!vm.canUpdate()" ng-src="{{vm.user.avatar}}" class="image-loader"/>
         <a ng-href="#" class="after" ng-if="vm.canUpdate()" ng-click="vm.openEditAvatar()">
           <div>Change Avatar</div>
         </a>
@@ -38,8 +38,9 @@
       <div><span ng-bind="vm.user.position"></span></div>
       <div><span ng-bind="vm.user.status"></span></div>
       <br />
-      <trust-profile ng-if="vm.isLoggedIn()" username="ProfileCtrl.user.username"></trust-profile>
-      <hr>
+      <div ng-if="vm.user.activity > -1">Activity:&nbsp;&nbsp;<span ng-bind="vm.user.activity"></span></div>
+      <trust-profile ng-if="vm.isLoggedIn()" username="vm.user.username"></trust-profile>
+      <hr ng-if="vm.user.email || vm.user.gender || vm.user.dob || vm.user.location || vm.user.language || vm.userLocalTime">
       <a ng-href="mailto:{{vm.user.email}}" target="_blank" ng-bind="vm.user.email"></a>
       <div><span ng-bind="vm.user.btcAddress"></span></div>
       <div>
@@ -50,7 +51,7 @@
       <div><span ng-bind="vm.user.location"></span></div>
       <div><span ng-bind="vm.user.language"></span></div>
       <div><span ng-bind="vm.userLocalTime | date:'h:mm a (Z)'"></span></div>
-      <hr>
+      <hr ng-if="vm.canUpdate() || vm.canUpdatePrivate() || vm.pageOwner() || vm.canDeactivate() || vm.canReactivate() || vm.canDelete() || vm.canPageUserNotes() || vm.canBanUser() || vm.canMessage()">
     </div>
 
     <!-- Edit Profile Controls -->
@@ -79,6 +80,7 @@
     <div class="profile-row profile-action" ng-if="vm.canMessage()">
       <a ng-href="#" ng-click="vm.openConvoModal()">Message This User</a>
     </div>
+    <ignore-user-profile ng-if="vm.isLoggedIn()" user="ProfileCtrl.user"></ignore-user-profile>
     <div class="profile-row profile-action" ng-if="vm.canPageUserNotes()">
       <a ng-href="#" ng-click="vm.showModNotes = true">
         Moderation Notes
@@ -121,7 +123,7 @@
 
     <div class="profile-row">
       <div class="fill-row">
-        <div class="signature" post-processing="vm.user.signature" style-fix="true"></div>
+        <div class="signature" post-processing="vm.user.signature || vm.user.raw_signature" style-fix="true"></div>
       </div>
     </div>
 

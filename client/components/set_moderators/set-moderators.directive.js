@@ -41,19 +41,24 @@ function(AdminModerators, AdminUsers, Alert, $timeout, $q) {
       this.checkPermissions = function(mods) {
         // check that the user has at least one of these permissions set
         var modPermissions = [
-          'boards.viewUncategorized',
-          'posts.privilegedUpdate',
-          'posts.privilegedDelete',
-          'posts.privilegedPurge',
-          'posts.viewDeleted',
-          'posts.bypassLock',
-          'threads.privilegedTitle',
-          'threads.privilegedLock',
-          'threads.privilegedSticky',
-          'threads.privilegedMove',
-          'threads.privilegedPurge',
+          'boards.update.allow',
+          'posts.update.bypass',
+          'posts.delete.bypass',
+          'posts.purge.bypass',
+          'posts.find.bypass',
+          'posts.create.bypass',
+          'threads.title.bypass',
+          'threads.createPoll.bypass.owner.admin',
+          'threads.editPoll.bypass.owner.admin',
+          'threads.lockPoll.bypass.owner.admin',
+          'threads.lock.bypass.owner.admin',
+          'threads.move.bypass.owner.admin',
+          'threads.purge.bypass.owner.admin',
+          'threads.sticky.bypass.owner.admin',
+          'threads.title.bypass.owner.admin'
         ];
         return filter(mods.map(function(mod) {
+          console.log(mod);
           var hasSomeModePrivileges = some(mod.roles.map(function(role) {
             var hasModPermission = false;
             modPermissions.forEach(function(perm) {

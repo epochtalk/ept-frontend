@@ -2,6 +2,7 @@ var ctrl = require('./boards.controller.js');
 
 var route = ['$stateProvider', function($stateProvider) {
   $stateProvider.state('boards', {
+    url: '/boards',
     parent: 'public-layout',
     views: {
       'content': {

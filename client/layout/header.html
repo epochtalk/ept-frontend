@@ -54,11 +54,14 @@
           <div class="count" ng-if="HeaderCtrl.notificationMessages()" ng-bind-html="HeaderCtrl.notificationMessages()"></div>
         </li>
         <li ng-click="HeaderCtrl.showMobileMenu = false" >
+          <a ui-sref="ignored-users"><i class="fa fa-user-times" aria-hidden="true"></i>Ignored Users</a>
+        </li>
+        <li ng-click="HeaderCtrl.showMobileMenu = false" >
           <a ui-sref="watchlist"><i class="fa fa-eye" aria-hidden="true"></i>Watchlist</a>
         </li>
         <li ng-click="HeaderCtrl.showMobileMenu = false" ng-if="HeaderCtrl.canInvite()">
           <a ng-click="HeaderCtrl.showInvite = true">
-            <i class="fa fa-eye" aria-hidden="true"></i>Invite User
+            <i class="fa fa-user-plus" aria-hidden="true"></i>Invite User
           </a>
         </li>
         <li ng-click="HeaderCtrl.showMobileMenu = false" >
@@ -116,6 +119,9 @@
           </li>
           <li>
             <a ui-sref="messages">Messages</a>
+          </li>
+          <li>
+            <a ui-sref="ignored-users">Ignored Users</a>
           </li>
           <li>
             <a ui-sref="watchlist">Watchlist</a>
