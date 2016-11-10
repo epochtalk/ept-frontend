@@ -39,7 +39,7 @@
       <div><span ng-bind="vm.user.status"></span></div>
       <br />
       <div ng-if="vm.user.activity > -1">Activity:&nbsp;&nbsp;<span ng-bind="vm.user.activity"></span></div>
-      <trust-profile ng-if="vm.isLoggedIn()" username="ProfileCtrl.user.username"></trust-profile>
+      <trust-profile ng-if="vm.isLoggedIn()" username="vm.user.username"></trust-profile>
       <hr ng-if="vm.user.email || vm.user.gender || vm.user.dob || vm.user.location || vm.user.language || vm.userLocalTime">
       <a ng-href="mailto:{{vm.user.email}}" target="_blank" ng-bind="vm.user.email"></a>
       <div><span ng-bind="vm.user.btcAddress"></span></div>
@@ -123,7 +123,7 @@
 
     <div class="profile-row">
       <div class="fill-row">
-        <div class="signature" post-processing="vm.user.signature" style-fix="true"></div>
+        <div class="signature" post-processing="vm.user.signature || vm.user.raw_signature" style-fix="true"></div>
       </div>
     </div>
 
