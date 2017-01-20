@@ -15,8 +15,9 @@
   }
   .remove-inactive { color: $secondary-font-color; }
   ul.depth-tree {
-    list-style-position: inside;
+    list-style-position: outside;
     margin-bottom: 1rem;
+    margin-left: 1.25rem;
     ul { margin-left: 2rem; }
   }
   select { margin-bottom: 0; }
